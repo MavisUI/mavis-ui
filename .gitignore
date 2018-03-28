@@ -1,8 +1,6 @@
 # Project specific #
 ###################
-app/assets/data/img/*
-app/data/0/*
-backup/*
+app/data/0/images/
 node_modules/*
 
 # Compiled source #
