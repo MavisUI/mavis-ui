@@ -1,7 +1,7 @@
 # Project specific #
 ###################
 app/assets/data/img/*
-app/data/img/*
+app/data/0/*
 backup/*
 node_modules/*
 
