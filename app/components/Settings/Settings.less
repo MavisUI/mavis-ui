@@ -1,0 +1,643 @@
+@import '../Global/Vars.less';
+
+#settings {
+	display: inline-block;
+	position: relative;
+	top: 1rem;
+	width: @gridWidth-12;
+
+	#settingsTabs {
+		display: inline-block;
+		float: left;
+		width: @gridWidth-12;
+
+		a {
+			cursor: pointer;
+			display: inline-block;
+			.fontLight();
+			font-size: 1.5rem;
+			float: left;
+			line-height: 2rem;
+			width: 10rem;
+			color: @blue;
+			.transition300ms();
+
+			&.active {
+				color: @blue;
+
+				&:hover {
+					color: @blue;
+				}
+			}
+
+			&:hover {
+				color: @blueBright;
+			}
+		}
+	}
+
+	#settingsTabsLine {
+		background-color: @blue;
+		display: inline-block;
+		position: relative;
+		height: .2rem;
+		width: 9rem;
+		.transition300ms();
+	}
+
+	#settingsContainerMarker {
+		display: inline-block;
+		width: @gridWidth-6;
+		float: left;
+
+		#usergeneratedMarkersList {
+			display: inline-block;
+			width: @gridWidth-12;
+			margin-bottom: 2rem;
+			list-style-type: none;
+			list-style-position: inside;
+
+			li {
+				height: 4rem;
+				width: @gridWidth-12;
+				margin-bottom: .25rem;
+
+				&.marker {
+					border-bottom: 1px solid @greyBright;
+				}
+
+				&.marker[data-edit="false"] {
+					opacity: 0.5;
+				}
+
+				&:last-of-type {
+					border-bottom: none;
+				}
+
+				.markerLabel {
+					display: inline-block;
+					float: left;
+					margin-right: @gridMargin;
+					width: @gridWidth-9;
+
+					input[type="text"] {
+						-webkit-appearance: none;
+						background-color: transparent;
+						border: none;
+						color: @black;
+						outline: none;
+						float: left;
+						.fontLight();
+						line-height: 3.8rem;
+						font-size: 1.5rem;
+						position: relative;
+						width: @gridWidth-12;
+						margin: .1rem 0;
+					}
+
+					.textChange {
+						display: inline-block;
+						width: 8rem;
+						position: relative;
+						left: -8rem;
+						margin-right: -8rem;
+
+						&.hidden {
+							display: none !important;
+						}
+
+						.iconCancel,
+						.iconConfirm {
+							cursor: pointer;
+							font-size: 2.5rem;
+							float: left;
+							outline: none;
+							padding: .75rem .5rem 0 .5rem;
+							position: relative;
+							text-align: center;
+						}
+
+						.iconCancel {
+							color: @red;
+						}
+
+						.iconConfirm {
+							color: @green;
+						}
+					}
+				}
+
+				.markerMetrics {
+					display: inline-block;
+					float: left;
+					line-height: 4rem;
+					color: @black;
+					.fontLight();
+					font-size: 1.5rem;
+					margin-right: @gridMargin;
+					width: @gridWidth-1;
+
+					select {
+						-webkit-appearance: none;
+						background: transparent;
+						border: none;
+						cursor: pointer;
+						color: @black;
+						display: inline-block;
+						line-height: 4rem;
+						float: left;
+						.fontLight();
+						font-size: 1.5rem;
+
+						&:focus {
+							outline: none;
+						}
+					}
+				}
+
+				.markerColor {
+					display: inline-block;
+					text-align: center;
+					float: left;
+					margin-right: @gridMargin;
+					width: @gridWidth-1;
+
+					.color {
+						border: none;
+						border-radius: 1.5rem;
+						border: 1px solid @greyBright;
+						display: inline-block;
+						float: left;
+						height: 3rem;
+						overflow: hidden;
+						width: 3rem;
+						margin: .3rem;
+
+						&.changableColor {
+							cursor: pointer;
+
+							.iconEdit {
+								font-size: 2rem;
+								color: @white;
+								transform: translateX(-5rem);
+								.transition300ms();
+								position: relative;
+								top: .3rem;
+							}
+
+							&:hover {
+								.iconEdit {
+									transform: translateX(0);
+								}
+							}
+						}
+					}
+				}
+
+				.markerDelete {
+					display: inline-block;
+					height: 4rem;
+					width: @gridWidth-1;
+					color: @greyDark;
+					cursor: pointer;
+					font-size: 2rem;
+					line-height: 4rem;
+					text-align: left;
+
+					&:hover {
+						color: @blue;
+						.fontBold();
+					}
+				}
+
+				#usergeneratedAddMarker {
+					display: inline-block;
+					border: none;
+					color: @blue;
+					cursor: pointer;
+					outline: none;
+					float: left;
+					.fontLight();
+					font-size: 1.5rem;
+					padding: 1rem 0;
+					position: relative;
+					width: @gridWidth-12;
+					.transition400ms();
+
+					.icon {
+						display: inline-block;
+						font-size: 1.8rem;
+						position: relative;
+						top: .2rem;
+						margin-left: .75rem;
+					}
+
+					&:hover {
+						color: @blueBright;
+					}
+				}
+			}
+
+			.colorPickerMenu {
+				display: inline-block;
+				width: 15rem;
+				height: 13.5rem;
+				position: relative;
+				float: right;
+				left: 1.25rem;
+				top: -17.5rem;
+				z-index: @foregroundOverlay;
+				margin-bottom: -17rem;
+				padding: .5rem;
+				background-color: @white;
+				border: 1px solid @grey;
+				box-shadow: 2px 2px 4px 0 @grey;
+				text-align: center;
+				-webkit-transform: scale(1);
+				transform: scale(1);
+
+				&.hidden {
+					display: none;
+				}
+
+				&:before {
+					border-color: @grey transparent;
+					border-style: solid;
+					border-width: 17px 17px 0;
+					bottom: -17px;
+					content: '';
+					display: block;
+					left: 4px;
+					position: absolute;
+					width: 0;
+				}
+
+				&:after {
+					border-color: @white transparent;
+					border-style: solid;
+					border-width: 14px 14px 0;
+					bottom: -14px;
+					content: '';
+					display: block;
+					left: 6px;
+					position: absolute;
+					width: 0;
+				}
+
+				.colorPicker {
+					display: inline-block;
+					padding: .5em;
+					margin:  0 0 .5em 0;
+					width: 14.5em;
+
+					.picker {
+						cursor: crosshair;
+						float: left;
+						height: 8em;
+						margin-right: 1em;
+						position: relative;
+						width: 10em;
+					}
+
+					.slide {
+						cursor: crosshair;
+						float: left;
+						height: 8em;
+						position: relative;
+						width: 2em;
+					}
+				}
+
+				button {
+					-webkit-appearance: none;
+					background-color: transparent;
+					border: none;
+					cursor: pointer;
+					outline: none;
+					position: relative;
+					text-align: center;
+
+					.icon {
+						font-size: 2.2rem;
+						cursor: pointer;
+						margin: 0 .5rem;
+
+						&.iconConfirm {
+							color: @green;
+						}
+
+						&.iconCancel {
+							color: @red;
+						}
+					}
+				}
+			}
+
+			.trashMenu {
+				display: inline-block;
+				width: 8rem;
+				height: 3.8rem;
+				-webkit-transform: scale(1);
+				transform: scale(1);
+				position: relative;
+				float: right;
+				left: -.4rem;
+				top: -7.5rem;
+				z-index: @midgroundOverlay;
+				margin-bottom: -7.5rem;
+				padding: .5rem;
+				background-color: @white;
+				border: 1px solid @grey;
+				box-shadow: 2px 2px 4px 0 @grey;
+				text-align: center;
+
+				&.hidden {
+					display: none;
+				}
+
+				&:before {
+					border-color: @grey transparent;
+					border-style: solid;
+					border-width: 17px 17px 0;
+					bottom: -17px;
+					content: '';
+					display: block;
+					left: 17px;
+					position: absolute;
+					width: 0;
+				}
+
+				&:after {
+					border-color: @white transparent;
+					border-style: solid;
+					border-width: 14px 14px 0;
+					bottom: -14px;
+					content: '';
+					display: block;
+					left: 19px;
+					position: absolute;
+					width: 0;
+				}
+
+				button {
+					-webkit-appearance: none;
+					background-color: transparent;
+					border: none;
+					cursor: pointer;
+					outline: none;
+					position: relative;
+					text-align: center;
+
+					.icon {
+						font-size: 2.2rem;
+						cursor: pointer;
+						margin: 0 .5rem;
+
+						&.iconConfirm {
+							color: @green;
+						}
+
+						&.iconCancel {
+							color: @red;
+						}
+					}
+				}
+			}
+
+			#usergeneratedAdd {
+				background-color: @blue;
+				border: none;
+				color: @white;
+				cursor: pointer;
+				display: inline-block;
+				.fontLight();
+				font-size: 1.5em;
+				float: left;
+				height: 2.35em;
+				padding: 0 1em;
+				outline: none;
+				text-align: center;
+			}
+		}
+	}
+
+	#settingsContainerModules {
+
+		.testModule {
+			display: inline-block;
+			width: @gridWidth-6;
+			margin-right: @gridMargin;
+			border-bottom: 1px solid @white;
+			margin-bottom: .5rem;
+			padding: 1rem;
+
+			&:first-of-type {
+				padding-top: 0;
+			}
+
+			&:last-of-type {
+				border-bottom: none;
+			}
+
+			.activate {
+				display: inline-block;
+				margin: 2rem 0 0 0;
+				position: relative;
+				width: @gridWidth-12;
+
+				.switchButton {
+					-webkit-appearance: none;
+					display: inline-block;
+					width: 4rem;
+					height: 2.5rem;
+					cursor: pointer;
+					background-color: @greyBright;
+					border: none;
+					border-radius: 1.25rem;
+					outline: none;
+					.transition300ms();
+
+
+					.switchLid {
+						display: inline-block;
+						width: 2.3rem;
+						height: 2.2rem;
+						position: relative;
+						top: -.05rem;
+						left: .1rem;
+						float: left;
+						border-radius: 1.1rem;
+						cursor: pointer;
+						background-color: @white;
+						box-shadow: 1px 1px 2px 0 @greyDark;
+						.transition200ms();
+					}
+
+					&.active {
+						background-color: @green;
+
+						.switchLid {
+							transform: translateX(1.7rem);
+						}
+					}
+
+				}
+
+				label {
+					display: inline-block;
+					position: relative;
+					width: @gridWidth-4;
+					float: left;
+					.fontLight();
+					font-size: 1.5rem;
+				}
+
+				input[type=checkbox] {
+					display: inline-block;
+					-webkit-appearance: none;
+					border-radius: .1rem;
+					border: 1px solid @greyBright;
+					cursor: pointer;
+					height: 2.5rem;
+					margin: 1rem 0 0 0;
+					outline: none;
+					width: 2.5rem;
+					float: left;
+
+					&:checked {
+						// background-image: url(../img/accept.svg);
+						background-size: 90% auto;
+						background-position: center;
+					}
+				}
+			}
+
+			.settings {
+				display: inline-block;
+				width: @gridWidth-12;
+				margin-top: 2rem;
+
+				label {
+					display: inline-block;
+					width: @gridWidth-4;
+					margin-bottom: 2rem;
+					float: left;
+					.fontLight();
+					font-size: 1.5rem;
+					line-height: 2rem;
+				}
+
+				.threshCurrentValueMin,
+				.threshCurrentValueMax {
+					display: inline-block;
+					float: left;
+					width: 5rem;
+					position: relative;
+					top: -.25rem;
+					padding: .25rem;
+					background-color: @white;
+					color: @black;
+					border: none;
+					.fontLight();
+					font-size: 1.5rem;
+					outline: none;
+
+					&.threshCurrentValueMin {
+						text-align: right;
+					}
+
+					&.threshCurrentValueMax {
+						text-align: left;
+					}
+				}
+
+				.threshSlider {
+					display: inline-block;
+					float: left;
+					width: 30rem;
+					margin: 0.4rem 2rem 0 2rem;
+
+					input[type="range"] {
+						-webkit-appearance: none;
+						position: relative;
+						top: .4rem;
+						width: 30rem;
+						float: left;
+						display: inline-block;
+
+						&::-webkit-slider-thumb {
+							height: 2rem;
+							width: 2rem;
+							border-radius: 1rem;
+							background: @blue;
+							cursor: pointer;
+							-webkit-appearance: none;
+							margin-top: -.75rem;
+						}
+
+						&::-webkit-slider-runnable-track {
+							cursor: pointer;
+							width: 100%;
+						}
+
+						&:nth-of-type(1) {
+
+							&::-webkit-slider-runnable-track {
+								background-color: @greyBright;
+								height: .5rem;
+							}
+						}
+
+						&:nth-of-type(2) {
+
+							&::-webkit-slider-thumb {
+								position: relative;
+								top: -.1rem;
+							}
+
+							&::-webkit-slider-runnable-track {
+								background-color: transparent;
+								height: 0;
+								position: relative;
+								top: -.4rem;
+							}
+						}
+
+						&:focus {
+							outline: none;
+						}
+					}
+
+					.sliderBar {
+						display: inline-block;
+						height: .5rem;
+						background-color: @blue;
+						position: relative;
+						top: -.5rem;
+					}
+				}
+
+				&.active {
+					opacity: 1;
+				}
+
+				&.inactive {
+					label,
+					p,
+					input,
+					.sliderBar {
+						opacity: 0.03;
+						.transition300ms();
+					}
+				}
+			}
+		}
+	}
+}
+
+#settingsSave {
+	display: block;
+	clear: both;
+	margin-top: 1rem;
+	.buttons();
+}

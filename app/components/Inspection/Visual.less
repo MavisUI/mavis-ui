@@ -1,0 +1,261 @@
+@import '../Global/Vars.less';
+
+
+#visual {
+	display: inline-block;
+	height: 57vh;
+	width: @gridWidth-12;
+	background-color: @greyBright;
+	text-align: center;
+
+	#pictures {
+		display: inline-block;
+		text-align: center;
+		padding: .25rem 0;
+
+		.pictureRow {
+			display: inline-block;
+			text-align: center;
+			width: @gridWidth-12;
+
+			&:nth-of-type(1) {
+
+				.pictureWindow {
+
+					&:nth-of-type(1) {
+						span {
+							svg {
+								#label_1 {
+									display: block;
+								}
+
+								#line_1 {
+									stroke-width: 1rem;
+								}
+							}
+						}
+					}
+
+					&:nth-of-type(2) {
+
+						span {
+							svg {
+								#label_2 {
+									display: block;
+								}
+
+								#line_2 {
+									stroke-width: 1rem;
+								}
+							}
+						}
+					}
+
+					&:nth-of-type(3) {
+						span {
+							svg {
+								#label_3 {
+									display: block;
+								}
+
+								#line_3 {
+									stroke-width: 1rem;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			&:nth-of-type(2) {
+
+				.pictureWindow {
+
+					&:nth-of-type(1) {
+						span {
+							svg {
+								#label_6 {
+									display: block;
+								}
+
+								#line_6 {
+									stroke-width: 1rem;
+								}
+							}
+						}
+					}
+
+					&:nth-of-type(2) {
+						span {
+							svg {
+								#label_5 {
+									display: block;
+								}
+
+								#line_5 {
+									stroke-width: 1rem;
+								}
+							}
+						}
+					}
+
+					&:nth-of-type(3) {
+						span {
+							svg {
+								#label_4 {
+									display: block;
+								}
+
+								#line_4 {
+									stroke-width: 1rem;
+								}
+							}
+						}
+
+					}
+				}
+			}
+
+			.pictureWindow {
+				display: inline-block;
+				height: 27vh;
+				width: calc(27vh * 1.333);
+				margin: .5rem;
+				background-color: @grey;
+
+				span {
+					background-color: rgba(0,0,0,0.5);
+					display: block;
+					height: 6rem;
+					left: 7px;
+					margin-bottom: -6rem;
+					padding: .5rem;
+					position: relative;
+					top: .5rem;
+					width: 6rem;
+					z-index: 11;
+
+					svg {
+						fill: @white;
+						height: 5rem;
+						left: 0;
+						position: relative;
+						stroke: @white;
+						stroke-width: .1rem;
+						top: 0;
+						width: 5rem;
+
+						#core_1,
+						#core_2,
+						#core_3,
+						#core_4,
+						#core_5,
+						#core_6,
+						#core_7,
+						#core_8,
+						#core_9,
+						#core_10,
+						#core_11,
+						#core_12,
+						#core_13 {
+							stroke-width: .4rem;
+						}
+
+						#line_1,
+						#line_2,
+						#line_3,
+						#line_4,
+						#line_5,
+						#line_6 {
+							stroke-width: .4rem;
+						}
+
+						#label_1,
+						#label_2,
+						#label_3,
+						#label_4,
+						#label_5,
+						#label_6 {
+							display: none;
+						}
+					}
+				}
+
+				.picture {
+					background-position: top center;
+					background-repeat: no-repeat;
+					background-size: contain;
+					border: 5px solid @greyBright;
+					cursor: pointer;
+					display: inline-block;
+					float: left;
+					position: relative;
+					z-index: 10;
+					width: 100%;
+					height: 27vh;
+				}
+			}
+		}
+	}
+}
+
+/*
+
+#visual {
+
+	#overlay {
+		background-color: @white;
+		box-shadow: 2px 2px 5px @black;
+		display: inline-block;
+		margin: 0 auto 0 @gridWidth-3;
+		min-height: 40rem;
+		position: fixed;
+		top: 4%;
+		width: @gridWidth-7;
+		z-index: @foregroundOverlay;
+
+		&.hidden {
+			display: none;
+		}
+
+		#overlayClose {
+			background-color: transparent;
+			border: none;
+			cursor: pointer;
+			display: inline-block;
+			float: right;
+			height: 2rem;
+			margin: 1.5rem 1.5rem 0 0;
+			outline: none;
+			width: 2rem;
+
+			svg {
+				fill: @black;
+				height: 2rem;
+				width: 2rem;
+			}
+		}
+
+		#overlayTitle {
+			font-size: 1.5rem;
+			.fontLight();
+			margin: 1.25rem 0 0 1rem;
+			width: 60%;
+		}
+
+		#overlayContent {
+
+			img {
+				height: auto;
+				margin: 2%;
+				width: 96%;
+			}
+		}
+	}
+
+	#preloadContainer {
+		display: none;
+	}
+}
+
+*/

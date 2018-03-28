@@ -1,0 +1,78 @@
+@import "../Global/Vars.less";
+
+#cableInfo {
+	background-color: @white;
+	border: 1px solid @greyBright;
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1);
+	display: none;
+	height: 15rem;
+	padding: 1rem;
+	position: fixed;
+	-webkit-transform: scale(1);
+	.transition200ms();
+	width: 16rem;
+	z-index: @foregroundOverlay;
+
+	&.show {
+		display: block;
+	}
+
+	&:before {
+		content: "";
+		position: absolute;
+		bottom: -17px;
+		left: 59px;
+		border-width: 17px 17px 0;
+		border-style: solid;
+		border-color: @greyBright transparent;
+		display: block;
+		width: 0;
+	}
+
+	&:after {
+		content: "";
+		position: absolute;
+		bottom: -15px;
+		left: 60px;
+		border-width: 15px 15px 0;
+		border-style: solid;
+		border-color: @white transparent;
+		display: block;
+		width: 0;
+	}
+
+	h3 {
+		color: @black;
+		display: inline-block;
+		font-size: 1.5rem;
+		.fontBold();
+		overflow: hidden;
+		width: 100%;
+	}
+
+	label {
+		color: @black;
+		display: inline-block;
+		font-size: 1.5rem;
+		.fontLight();
+	}
+
+	#cableInfoCable,
+	#cableInfoPosition {
+		color: @black;
+		display: inline-block;
+		font-size: 1.5em;
+		.fontLight();
+	}
+
+	button {
+		.buttons();
+		background-color: @blue;
+		bottom: 1em;
+		outline: none;
+		padding: .25em 1em !important;
+		margin-left: 5%;
+		margin-top: 1em;
+		width: 90%;
+	}
+}

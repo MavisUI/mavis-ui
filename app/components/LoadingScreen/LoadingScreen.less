@@ -1,0 +1,88 @@
+@import "../Global/Vars.less";
+
+#loading {
+	display: inline-block;
+	width: @gridWidth-12;
+	height: calc(100%);
+	background-color: @blue;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: @foregroundOverlay;
+
+	&.hidden {
+		display: none;
+	}
+
+	#logoLoading {
+
+		display: inline-block;
+		width: @gridWidth-12;
+		height: 15rem;
+		text-align: center;
+		margin: 10rem 0;
+
+		.icon {
+			font-size: 10rem;
+			color: @white;
+		}
+	}
+
+	h1 {
+		text-align: center;
+		color: @white;
+	}
+
+	h2 {
+		text-align: center;
+		color: @white;
+	}
+
+	@-webkit-keyframes spinner {
+		0%   { -webkit-transform: rotate(0deg); }
+		100% { -webkit-transform: rotate(360deg); }
+	}
+
+	#spinner {
+		display: block;
+		margin: 3rem auto 1rem auto;
+		text-align: center;
+		width: @gridWidth-2;
+
+		.spinner {
+			display: inline-block;
+			text-align: center;
+
+			#spinnerElement {
+				border: solid 4px transparent;
+				border-left-color: @white;
+				border-radius: 50%;
+				border-top-color: @white;
+				box-sizing: border-box;
+				height: 6rem;
+				width: 6rem;
+
+				&.spinning {
+					-webkit-animation: spinner 600ms linear infinite;
+				}
+			}
+		}
+	}
+
+	p {
+		font-size: 1.5rem;
+		text-align: center;
+		width: @gridWidth-12;
+		color: @white;
+		margin: 2rem 0 5rem 0;
+	}
+
+	#copyright {
+		bottom: 1rem;
+		display: inline-block;
+		position: fixed;
+		text-align: center;
+		width: @gridWidth-12;
+		color: @white;
+	}
+}

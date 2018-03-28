@@ -1,14 +1,24 @@
+/*
+{
+  test: /\.html$/,
+  loader: 'html-loader',
+  exclude: new RegExp(`${PATH_CONFIG.MAIN}/index.html`)
+},
+*/
+
 const {resolve} = require('./utils');
 const {PATH_CONFIG, RESOLVE_CONFIG,DEFAULT_CONFIG} = require('./config');
 const webpack = require('webpack');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
-const extractCssPlugin = new ExtractTextPlugin('styles.css');
-const cssLoader = extractCssPlugin.extract(['css-loader','autoprefixer-loader']);
-const sassLoader = extractCssPlugin.extract(['css-loader','autoprefixer-loader', 'sass-loader']);
-const lessLoader = extractCssPlugin.extract(['css-loader','autoprefixer-loader', 'less-loader']);
-const stylusLoader = extractCssPlugin.extract(['css-loader','autoprefixer-loader', 'stylus-loader']);
+const ExtractCssPlugin = new ExtractTextPlugin('styles.css');
+const cssLoader = ExtractCssPlugin.extract(['css-loader','autoprefixer-loader']);
+const lessLoader = ExtractCssPlugin.extract(['css-loader','autoprefixer-loader', 'less-loader']);
+
+const path = require("path");
 
 var htmlPlugin = new HtmlWebpackPlugin({filename: 'index.html', template: resolve(`${PATH_CONFIG.MAIN}/index.html`), inject: true, title: DEFAULT_CONFIG.TITLE});
 
@@ -27,7 +37,21 @@ module.exports = {
     modules: [resolve('node_modules')],
     alias: RESOLVE_CONFIG.ALIAS
   },
-  plugins: [htmlPlugin,extractCssPlugin],
+  plugins: [
+    new webpack.ProvidePlugin({
+      THREE: "three",
+      three: "three"
+    }),
+    new webpack.ProvidePlugin({
+      highcharts: "highcharts",
+      Highcharts: "highcharts"
+    }),
+    new webpack.ProvidePlugin({
+      ColorPicker: "flexi-color-picker"
+    }),
+    htmlPlugin,
+    ExtractCssPlugin
+  ],
   resolveLoader: {
     modules: [resolve('node_modules')]
   },
@@ -56,27 +80,24 @@ module.exports = {
           }
         ],
         exclude: /node_modules/
-      },{
-        test: /\.html$/,
+      },
+      {
+        test  : /\.html$/,
         loader: 'html-loader',
-        exclude: new RegExp(`${PATH_CONFIG.MAIN}/index.html`)
+        query : {
+          name: "[name].[ext]"
+        }
       }, {
         test: /\.css$/,
         loader: cssLoader
       }, {
-        test: /\.scss$/,
-        loader: sassLoader
-      }, {
         test: /\.less$/,
         loader: lessLoader
-      }, {
-        test: /\.styl$/,
-        loader: stylusLoader
       }, {
         test: /\.json$/,
         loader: 'json-loader'
       }, {
-        test: /\.(png|jpg|gif|svg|jpeg)$/,
+        test: /\.(png|jpg|gif|svg|jpeg|jpg)$/,
         loader: 'url-loader',
         query: {
           limit: 10000,

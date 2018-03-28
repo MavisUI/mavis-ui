@@ -1,0 +1,174 @@
+@import '../Global/Vars.less';
+
+#modelFilter {
+	display: inline-block;
+	width: @gridWidth-12;
+	height: 5rem;
+	position: relative;
+	z-index: @background;
+
+	label {
+		display: inline-block;
+		float: left;
+		font-size: 1.5rem;
+		.fontLight();
+		line-height: 5rem;
+	}
+
+	select,
+	input {
+		display: inline-block;
+		float: left;
+		-webkit-appearance: none;
+		background: transparent;
+		border: none;
+		color: @blue;
+		display: inline-block;
+		font-size: 1.5rem;
+		line-height: 5rem;
+		margin: 0 4rem 0 1rem;
+		.fontBold();
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+
+
+
+}
+/*
+	background-color: @white;
+	border-left: 1px solid @blue;
+	display: inline-block;
+	height: 20rem;
+	position: fixed;
+	right: 0;
+	top: 4rem;
+	.transition300ms();
+	width: 40rem;
+	z-index: @midgroundOverlay;
+
+	@media print {
+		display: none;
+	}
+
+	&.hidden {
+		-webkit-transform: translateX(40rem);
+
+		#modelfilterToggle {
+			svg:nth-of-type(1) {
+				display: block;
+			}
+
+			svg:nth-of-type(2) {
+				display: none;
+			}
+		}
+	}
+
+	#modelfilterToggle {
+		background-color: @blue;
+		cursor: pointer;
+		display: inline-block;
+		height: 8rem;
+		position: relative;
+		left: -4rem;
+		padding: 2.5rem .5rem;
+		top: 8rem;
+		width: 4rem;
+
+		svg {
+			fill: @white;
+			height: 3rem;
+			width: 3rem;
+		}
+
+		svg:nth-of-type(1) {
+			display: none;
+		}
+
+	}
+
+	#modelfilterBody {
+		display: inline-block;
+		left: 0;
+		padding: 1rem;
+		position: relative;
+		top: -8rem;
+		width: @gridWidth-12;
+
+		.modelfilterSelection {
+			display: inline-block;
+			margin: 0 0 1rem 0;
+			padding: 0 0 2rem 0;
+			width: @gridWidth-12;
+
+			h2 {
+				color: @black;
+				display: inline-block;
+				font-size: 1.5rem;
+				.fontLight();
+				margin: .5rem 0 1.5rem 0;
+				position: relative;
+				width: @gridWidth-12;
+
+				svg {
+					height: 1.5rem;
+					fill: @blue;
+					margin-bottom: -.75rem;
+					margin-right: .5rem;
+					position: relative;
+					stroke: @blue;
+					top: -.35rem;
+					width: auto;
+
+					&#icon_sorting {
+						height: 1.2rem;
+						top: -.6rem;
+					}
+				}
+			}
+
+			label {
+				color: @black;
+				display: inline-block;
+				font-size: 1.5rem;
+				.fontLight();
+				margin: 0 0 0 1rem;
+				overflow: hidden;
+				position: relative;
+				text-overflow: ellipsis;
+				top: -.1rem;
+				white-space: nowrap;
+				width: 85%;
+
+				.mod_color {
+					display: inline-block;
+					height: 1.45rem;
+					margin: 0em .5rem 0 0;
+					position: relative;
+					top: .35rem;
+					width: 1.45rem;
+				}
+			}
+
+			input[type=checkbox] {
+				-webkit-appearance: none;
+				border: 1px solid @greyBright;
+				cursor: pointer;
+				height: 2rem;
+				margin: 1rem 0 0 0;
+				outline: none;
+				width: 2rem;
+
+				&:checked {
+					// background-image: url(../img/accept.svg);
+					background-size: 90% auto;
+					background-position: center;
+				}
+			}
+		}
+	}
+*/

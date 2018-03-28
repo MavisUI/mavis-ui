@@ -1,0 +1,138 @@
+@import "../Global/Vars.less";
+
+header {
+	display: inline-block;
+	flex-grow: 1;
+	height: 5.2rem;
+	width: 100vw;
+	position: relative;
+	top: 0;
+	left: 0;
+	background-color: @white;
+	box-shadow: 1px 1px 2px @grey;
+
+	.left {
+		display: inline-block;
+		width: @gridWidth-4;
+		float: left;
+		margin: 0 @gridMargin 0 0;
+
+		nav {
+			display: inline-block;
+			cursor: pointer;
+
+			#navIcon {
+				position: relative;
+				width: 3rem;
+				height: 1.5rem;
+				float: left;
+				margin: 1.75rem 0 0 0;
+				-webkit-transform: rotate(0deg);
+				-webkit-transition: .5s ease-in-out;
+				cursor: pointer;
+
+				span {
+					display: block;
+					position: absolute;
+					height: .2rem;
+					width: 100%;
+					background: @blue;
+					opacity: 1;
+					left: 0;
+					-webkit-transform: rotate(0deg);
+					-webkit-transition: .25s ease-in-out;
+
+					&:nth-child(1) {
+						top: 0;
+					}
+
+					&:nth-child(2), &:nth-child(3) {
+						top: .8rem;
+					}
+
+					&:nth-child(4) {
+						top: 1.6rem;
+					}
+				}
+
+				&.open span {
+
+					&:nth-child(1) {
+						top: 1.8rem;
+						width: 0%;
+						left: 50%;
+					}
+
+					&:nth-child(2) {
+						-webkit-transform: rotate(45deg);
+					}
+
+					&:nth-child(3) {
+						-webkit-transform: rotate(-45deg);
+					}
+
+					&:nth-child(4) {
+						top: 1.8rem;
+						width: 0%;
+						left: 50%;
+					}
+				}
+			}
+
+			#pageTitle,
+			#menuTitle {
+				float: left;
+				color: @blue;
+				cursor: pointer;
+				font-size: 2rem;
+				.fontLight();
+				line-height: 5.2rem;
+				margin: 0 0 0 1rem;
+				-webkit-app-region: drag;
+				.transition400ms();
+
+				&:hover {
+					color: @blueDark;
+				}
+
+				&.hidden {
+					display: none;
+				}
+			}
+		}
+	}
+
+	.center {
+		display: inline-block;
+		width: @gridWidth-4;
+		float: left;
+		margin: 0 @gridMargin 0 0;
+		text-align: center;
+
+		.iconLogo {
+			color: @blue;
+			font-size: 4rem;
+			margin-top: .6rem;
+		}
+	}
+
+	.right {
+		display: inline-block;
+		width: @gridWidth-4;
+		float: left;
+		text-align: right;
+		margin: 0;
+
+		#getHelp {
+			-webkit-appearance: none;
+			line-height: 5.2rem;
+			background: transparent;
+			border: none;
+			color: @blue;
+			cursor: pointer;
+			.fontLight();
+			font-size: 2rem;
+			outline: none;
+		}
+	}
+}

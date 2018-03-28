@@ -1,0 +1,34 @@
+@import '../Global/Vars.less';
+
+#reportContainerDashboardFilter {
+	display: inline-block;
+	width: @gridWidth-12;
+	margin-bottom: 1rem;
+}
+
+#reportDashboard {
+	display: inline-block;
+	width: @gridWidth-12;
+
+	.reportDashboardChart {
+		display: inline-block;
+		width: @gridWidth-4;
+		margin-right: 2%;
+		float:left;
+
+		&:nth-of-type(3) {
+			margin-right: 0;
+		}
+
+		label {
+			margin: 2rem 0;
+			font-size: 1.5rem;
+			.fontLight();
+		}
+	}
+
+	.reportDashboardChart > div {
+		display: inline-block;
+		width: @gridWidth-12;
+	}
+}

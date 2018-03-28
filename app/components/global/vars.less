@@ -1,20 +1,5 @@
 /*==========  grid  ==========*/
 
-@grid_width_1: 6.5%;
-@grid_width_2: 15%;
-@grid_width_3: 23.5%;
-@grid_width_4: 32%;
-@grid_width_5: 40.5%;
-@grid_width_6: 49%;
-@grid_width_7: 57.5%;
-@grid_width_8: 66%;
-@grid_width_9: 74.5%;
-@grid_width_10: 83%;
-@grid_width_11: 91.5%;
-@grid_width_12: 100%;
-@app_height: 1020px;
-
-
 @gridWidth-1: 6.5%;
 @gridWidth-2: 15%;
 @gridWidth-3: 23.5%;
@@ -34,10 +19,6 @@
 
 /*==========  z-axis  ==========*/
 
-@background_overlay: 10;
-@midground_overlay: 110;
-@foreground_overlay: 1010;
-
 @background: 0;
 @backgroundOverlay: 10;
 @midground: 100;
@@ -46,15 +27,6 @@
 @foregroundOverlay: 1010;
 
 /*==========  colors  ==========*/
-
-@almost_black: #232323;
-@black_alpha: rgba(0,0,0,0.7);
-@white_alpha: rgba(255,255,255,0.9);
-@blue_dark: #0b2b4f;
-@grey_bright: #e7e9eb;
-@grey_mid: #acacac;
-@grey_dark: #4b4b4b;
-@green_dark: #206d0c;
 
 @black: #000000;
 @almostBlack: #232323;
@@ -74,16 +46,6 @@
 @red: #ef0000;
 
 /*==========  font mixins  ==========*/
-
-.font_light() {
-	font-family: 'din_light';
-	font-weight: 100;
-}
-
-.font_bold() {
-	font-family: 'din_bold';
-	font-weight: 700;
-}
 
 .fontLight() {
 	font-family: 'din_light';
@@ -137,9 +99,9 @@
 /*==========  other mixins  ==========*/
 
 .buttons() {
-	-webkit-appearance: none;	
+	-webkit-appearance: none;
 	background-color: transparent;
-	border: none;	
+	border: none;
 	box-shadow: 0 1px 2px @greyDark;
 	color: @greyBright;
 	cursor: pointer;
@@ -150,7 +112,7 @@
 	padding: 1rem 1.5rem;
 
 	&.active {
-		background: @green;	
+		background: @green;
 		box-shadow: 0 1px 2px @greenDark;
 		color: @white;
 	}

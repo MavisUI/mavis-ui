@@ -3,20 +3,20 @@
 
 @font-face {
 	font-family: 'din_light';
-	src: url('../fonts/dinpro-light.eot');
-	src: url('../fonts/dinpro-light.eot?#iefix') format('embedded-opentype'),
-			 url('../fonts/dinpro-light.woff') format('woff'),
-			 url('../fonts/dinpro-light.ttf') format('truetype'),
-			 url('../fonts/dinpro-light.svg#WebSymbolsRegular') format('svg');
+	src: url('../../assets/fonts/dinpro-light.eot');
+	src: url('../../assets/fonts/dinpro-light.eot?#iefix') format('embedded-opentype'),
+			 url('../../assets/fonts/dinpro-light.woff') format('woff'),
+			 url('../../assets/fonts/dinpro-light.ttf') format('truetype'),
+			 url('../../assets/fonts/dinpro-light.svg#WebSymbolsRegular') format('svg');
 }
 
 @font-face {
 	font-family: 'din_bold';
-	src: url('../fonts/dinpro-bold.eot');
-	src: url('../fonts/dinpro-bold.eot?#iefix') format('embedded-opentype'),
-			 url('../fonts/dinpro-bold.woff') format('woff'),
-			 url('../fonts/dinpro-bold.ttf') format('truetype'),
-			 url('../fonts/dinpro-bold.svg#WebSymbolsRegular') format('svg');
+	src: url('../../assets/fonts/dinpro-bold.eot');
+	src: url('../../assets/fonts/dinpro-bold.eot?#iefix') format('embedded-opentype'),
+			 url('../../assets/fonts/dinpro-bold.woff') format('woff'),
+			 url('../../assets/fonts/dinpro-bold.ttf') format('truetype'),
+			 url('../../assets/fonts/dinpro-bold.svg#WebSymbolsRegular') format('svg');
 }
 
 * {
@@ -34,37 +34,44 @@
 html {
 	font-size: 10px;
 
-
-
 	body {
-		background-color: red;
+		background-color: @white;
 
 		&::-webkit-scrollbar {
 			width: 0 !important
 		}
 
-		#app.inspection {
-			display: inline-block;
+		#app {
+			display: block;
+			width: 100vw;
+			height: 100vh;
+			position: relative;
 			overflow: hidden;
-			width: 100%;
+			background-color: @white;
+		}
+
+		#content {
+			display: inline-block;
+			width: 100vw;
+			height: calc(100vh - 5.2rem);
 		}
 
 		h1 {
 			color: inherit;
-			font-size: 3em;
-			.font_bold();
+			font-size: 3rem;
+			.fontBold();
 		}
 
 		h2 {
 			color: inherit;
-			font-size: 2em;
-			.font_light();
+			font-size: 2rem;
+			.fontLight();
 		}
 
 		p {
 			color: inherit;
-			font-size: 1.2em;
-			.font_light();
+			font-size: 1.5rem;
+			.fontLight();
 		}
 
 		img {
@@ -91,15 +98,15 @@ html {
 			cursor: pointer;
 			display: inline-block;
 			float: left;
-			height: 1.725em;
-			margin: .85em 0 0 1em;
+			height: 1.725rem;
+			margin: .85rem 0 0 1rem;
 			outline: 0;
-			width: 6em;
+			width: 6rem;
 
 			img {
 				border: none;
 				height: 100%;
-				margin: 0 .5em;
+				margin: 0 .5rem;
 				position: relative;
 				width: auto;
 				z-index: 2;
@@ -108,10 +115,10 @@ html {
 			.lid {
 				background-color: @green;
 				display: inline-block !important;
-				height: 1.75em !important;
+				height: 1.75rem !important;
 				left: 50%;
 				position: relative;
-				top: -1.9em;
+				top: -1.9rem;
 				width: 50% !important;
 				z-index: 1;
 
@@ -126,10 +133,51 @@ html {
 				}
 
 			}
-
 		}
 
+		.tabs {
+			display: inline-block;
+			float: left;
+			width: @gridWidth-12;
+			margin-top: 1rem;
 
+			a {
+				cursor: pointer;
+				display: inline-block;
+				.fontLight();
+				font-size: 1.5rem;
+				float: left;
+				line-height: 2rem;
+				color: @blue;
+				.transition300ms();
+
+				&.active {
+					color: @blue;
+
+					&:hover {
+						color: @blue;
+					}
+				}
+
+				&:hover {
+					color: @blueBright;
+				}
+			}
+		}
+
+		.tabsLine {
+			background-color: @blue;
+			display: inline-block;
+			position: relative;
+			height: .2rem;
+			margin: .5rem 0 1rem 0;
+			.transition300ms();
+		}
+
+		.tabBody {
+			display: inline-block;
+			width: @gridWidth-12;
+		}
 	}
 }
 

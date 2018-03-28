@@ -1,7 +1,52 @@
 {
+  "name": "mavis",
+  "app_name": "mavis",
+  "author": "Philipp Boue, mavis cable-services GmbH",
+  "maintainers": [
+    {
+      "web": "http://www.mavis-cableservice.com/",
+      "name": "Philipp Boue, MAVIS cable-service GmbH",
+      "email": "philipp.boue@gmail.com"
+    }
+  ],
+  "version": "4.0.0",
   "main": "index.html",
-  "name": "node-webkit",
+  "window": {
+    "title": "MAVIS UI",
+    "show_in_taskbar": true,
+    "show": true,
+    "visible": true,
+    "always-on-top": false,
+    "as_desktop": false,
+    "kiosk": false,
+    "kiosk_emulation": false,
+    "fullscreen": false,
+    "resizable": true,
+    "frame": true,
+    "transparent": false,
+    "width": 1855,
+    "min_width": 1024,
+    "max_width": 1855,
+    "height": 1020,
+    "min_height": 768,
+    "max_height": 1020,
+    "icon": "assets/img/mavis.png"
+  },
+  "license": "EULA",
+  "description": "MAVIS User Interface",
+  "keywords": [
+    "MAVIS",
+    "MAVIS cable-services GmbH",
+    "MAVIS User Interface",
+    "MAVIS UI"
+  ],
+  "nodejs": true,
   "webkit": {
+    "page-cache": false,
+    "java": false,
     "plugin": true
+  },
+  "dependencies": {
+    "archiver": "^0.14.4"
   }
 }

@@ -1,0 +1,36 @@
+@import '../Global/Vars.less';
+
+#cableSelection {
+	display: inline-block;
+	width: @gridWidth-2;
+	height: 6rem;
+	float: left;
+	margin-top: 1rem;
+	margin-right: 2%;
+
+	label {
+		display: inline-block;
+		float: left;
+		font-size: 1.5rem;
+		.fontLight();
+		line-height: 5rem;
+	}
+
+	select {
+		display: inline-block;
+		float: left;
+		-webkit-appearance: none;
+		background: transparent;
+		border: none;
+		color: @blue;
+		display: inline-block;
+		font-size: 1.5rem;
+		line-height: 5rem;
+		margin: 0 4rem 0 1rem;
+		.fontBold();
+
+		&:focus {
+			outline: none;
+		}
+	}
+}

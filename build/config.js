@@ -1,5 +1,5 @@
 const DEFAULT_CONFIG = {
-  TITLE: 'node-webkit'        // index.html head title
+  TITLE: 'mavis ui'        // index.html head title
 };
 
 const SERVER_CONFIG = {
