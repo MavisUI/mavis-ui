@@ -1,0 +1,135 @@
+@import 'vars.less';
+
+
+@font-face {
+	font-family: 'din_light';
+	src: url('../fonts/dinpro-light.eot');
+	src: url('../fonts/dinpro-light.eot?#iefix') format('embedded-opentype'),
+			 url('../fonts/dinpro-light.woff') format('woff'),
+			 url('../fonts/dinpro-light.ttf') format('truetype'),
+			 url('../fonts/dinpro-light.svg#WebSymbolsRegular') format('svg');
+}
+
+@font-face {
+	font-family: 'din_bold';
+	src: url('../fonts/dinpro-bold.eot');
+	src: url('../fonts/dinpro-bold.eot?#iefix') format('embedded-opentype'),
+			 url('../fonts/dinpro-bold.woff') format('woff'),
+			 url('../fonts/dinpro-bold.ttf') format('truetype'),
+			 url('../fonts/dinpro-bold.svg#WebSymbolsRegular') format('svg');
+}
+
+* {
+	box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+	margin: 0;
+	padding: 0;
+	-webkit-text-size-adjust: none;
+
+	&::selection {
+		background: transparent; /* WebKit/Blink Browsers */
+	}
+}
+
+html {
+	font-size: 10px;
+
+
+
+	body {
+		background-color: red;
+
+		&::-webkit-scrollbar {
+			width: 0 !important
+		}
+
+		#app.inspection {
+			display: inline-block;
+			overflow: hidden;
+			width: 100%;
+		}
+
+		h1 {
+			color: inherit;
+			font-size: 3em;
+			.font_bold();
+		}
+
+		h2 {
+			color: inherit;
+			font-size: 2em;
+			.font_light();
+		}
+
+		p {
+			color: inherit;
+			font-size: 1.2em;
+			.font_light();
+		}
+
+		img {
+			border: none;
+			outline: none;
+		}
+
+		input[type="text"],
+		textarea {
+			&::selection {
+				background: @grey; /* WebKit/Blink Browsers */
+			}
+		}
+
+		.inner {
+			margin: 0 auto;
+			width: 98%;
+			max-width: 1900px;
+		}
+
+		.switch {
+			background-color: transparent;
+			border: 1px solid @grey;
+			cursor: pointer;
+			display: inline-block;
+			float: left;
+			height: 1.725em;
+			margin: .85em 0 0 1em;
+			outline: 0;
+			width: 6em;
+
+			img {
+				border: none;
+				height: 100%;
+				margin: 0 .5em;
+				position: relative;
+				width: auto;
+				z-index: 2;
+			}
+
+			.lid {
+				background-color: @green;
+				display: inline-block !important;
+				height: 1.75em !important;
+				left: 50%;
+				position: relative;
+				top: -1.9em;
+				width: 50% !important;
+				z-index: 1;
+
+				&.left {
+					-webkit-transition: all ease .75s;
+					-webkit-transform: translateX(-100%);
+				}
+
+				&.right {
+					-webkit-transition: all ease .75s;
+					-webkit-transform: translateX(0);
+				}
+
+			}
+
+		}
+
+
+	}
+}
+
