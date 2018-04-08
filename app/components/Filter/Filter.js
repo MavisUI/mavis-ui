@@ -387,7 +387,7 @@ Mavis.Filter = {
 					fn = Mavis.Graph.init;
 					break;
 				case 'Model':
-					fn = Mavis.Model.init;
+					fn = Mavis.Model.rerender;
 					break;
 			}
 

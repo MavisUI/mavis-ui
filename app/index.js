@@ -26,4 +26,4 @@ Mavis.LoadingScreen.init()
   .then(Mavis.Data.init())
   .then(Mavis.Header.init())
   .then(Mavis.MainMenu.init())
-  .then(Mavis.Pages.loadPage('report'));
+  .then(Mavis.Pages.loadPage('model'));

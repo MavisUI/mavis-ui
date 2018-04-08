@@ -5,632 +5,584 @@ const ProjectorRenderer = require('three-projector-renderer')(THREE);
 
 Mavis.Model = {
 
-	Scene: null,
-	Camera: null,
-	Renderer: null,
-	Gravity: 0,
-	View: null,
-	Bridge: null,
-	Labels: null,
-	Filter: '',
-	Animation: null,
-	Orbit: null,
-	Raycaster: null,
-	Projector: null,
-	Vector: null,
-	Intersect: 0,
-
-	_render: () => {
+  Camera: null,
+  CameraPosition: {
+    x: 20,
+    y: 20,
+    z: 220
+  },
+  ClickPosition: {
+    x: 0,
+    y: 0
+  },
+  Mouse: null,
+  Scene: null,
+  Renderer: null,
+  Gravity: 0,
+  View: null,
+  Bridge: null,
+  Labels: null,
+  Filter: '',
+  Animation: null,
+  Orbit: null,
+  Raycaster: null,
+  Intersected: 0,
+
+  _renderDom: () => {
+
+    return new Promise(function(resolve, reject) {
+
+      // content container
+      const content = [
+        '<div class="inner">',
+          '<menu id="modelFilter"></menu>',
+        '</div>',
+        '<div id="model"></div>',
+        '<div id="cableInfo" class="hidden">',
+          '<a id="cableInfoClose"><span class="icon iconCancel"></span></a>',
+          '<h3 id="cableInfoCase">Schichtendicke</h3>',
+          '<label>Seil:</label>',
+          '<div id="cableInfoCable">0</div>',
+          '<br />',
+          '<label>Position:</label>',
+          '<div id="cableInfoPosition">200.00</div>',
+          '<br />',
+          '<button id="cableInfoButton" class="active">Ansehen</button>',
+        '</div>',
+        '<div id="objectinfo">',
+          '<h1 id="name">Name</h1>',
+          '<p>',
+            '<span id="street">Straßenname</span>,',
+            '<span id="zip">0000</span>',
+            '<span id="city">Stadt</span>,',
+            '<span id="country">Land</span>',
+          '</p>',
+        '</div>'
+      ];
 
-		return new Promise(function(resolve, reject) {
-
-			// content container
-			const content = [
-				'<div class="inner">',
-					'<menu id="modelFilter"></menu>',
-				'</div>',
-				'<div id="model"></div>',
-				'<div id="cableInfo"></div>',
-				'<div id="objectinfo">',
-					'<h1><span id="name">Name</span></h1>',
-					'<p>',
-						'<span id="street">Straßenname</span>,',
-						'<span id="zip">0000</span>',
-						'<span id="city">Stadt</span>,',
-						'<span id="country">Land</span>',
-					'</p>',
-				'</div>'
-			];
-
-			document.getElementById('content').innerHTML = content.join('');
-			resolve();
-		});
-	},
-
-	Canvas: {
+      document.getElementById('content').innerHTML = content.join('');
+      resolve();
+    });
+  },
 
-		_setScene: function() {
-			return new Promise(function(resolve, reject) {
-
-				// initiate new Three Scene
-				let scene = new THREE.Scene({alpha: true});
-
-				// make available in global var
-				Mavis.Model.Scene = scene;
+  _setMouse: () => {
 
-				resolve();
-			});
-		},
+    return new Promise(function(resolve, reject) {
 
-		_setCamera: function() {
-			return new Promise(function(resolve, reject) {
+      Mavis.Model.Mouse = new THREE.Vector2();
+      resolve();
+    });
+  },
 
-				// get DOM container
-				const content = document.getElementById('content');
+  _setCamera:() => {
 
-				// get width & height and initiate new Three camera with properties
-				let	width = content.clientWidth,
-						height = content.clientHeight,
-						camera = new THREE.PerspectiveCamera(80, width/height, 0.1, 1000);
+    return new Promise(function(resolve, reject) {
 
-				// set camera position
-				camera.position.set(20,20,220);
+      Mavis.Model.Camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
 
-				// set camera view
-				camera.lookAt(Mavis.Model.Scene.position);
+      Mavis.Model.Camera.position.set(Mavis.Model.CameraPosition.x,Mavis.Model.CameraPosition.y,Mavis.Model.CameraPosition.z);
 
-				// make camera available as global var
-				Mavis.Model.Camera = camera;
+      resolve();
+    });
+  },
 
-				resolve();
-			});
-		},
+  _setScene: () => {
 
-		_setRenderer: function() {
-			return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-				// get container element
-				const modelContainer = document.getElementById('model');
+      Mavis.Model.Scene = new THREE.Scene();
+      Mavis.Model.Scene.background = new THREE.Color(0xffffff);
 
-				// clear container
-				modelContainer.innerHTML = '';
+      resolve();
+    });
 
-				// initiate new Three Renderer
-				let renderer = new THREE.WebGLRenderer();
+  },
 
-				// Make available as var
-				Mavis.Model.Renderer = renderer;
+  _setLight: () => {
 
-				// MAVIS.MODEL.CANVAS.renderer.clearTarget();
+    return new Promise(function(resolve, reject) {
 
-				// append to DOM
-				modelContainer.appendChild(Mavis.Model.Renderer.domElement);
+      Mavis.Model.Light = new THREE.DirectionalLight( 0xffffff, 1 );
+      Mavis.Model.Light.position.set( 1, 1, 1 ).normalize();
 
+      Mavis.Model.Scene.add(Mavis.Model.Light);
 
-				resolve();
-			});
-		},
+      resolve();
+    });
 
-		resize: function() {
-			return new Promise(function(resolve, reject) {
+  },
 
-				// get DOM container
-				const model = document.getElementById('model');
+  Construction: {
 
-				// get client width and height
-				let	width = model.clientWidth,
-					height = model.clientHeight;
+    _renderFloor: function() {
 
-				Mavis.Model.Camera.aspect = width / height;
-				Mavis.Model.Camera.updateProjectionMatrix();
+      return new Promise(function(resolve, reject) {
 
-				// set size of Three renderer
-				Mavis.Model.Renderer.setSize(width, height);
+        let data = Mavis.Data.Construction.ground,
+            floorMaterial = new THREE.MeshBasicMaterial({color: data.color, side:THREE.DoubleSide}),
+            floorGeometry = new THREE.PlaneGeometry(data.width, data.depth, data.height, 1),
+            floor = new THREE.Mesh(floorGeometry, floorMaterial);
 
-				resolve();
-			});
-		},
+        floor.rotation.x = Mavis.Model.Gravity;
+        floor.position.set(data.x, data.y, data.z);
+        floor.name = 'Floor';
 
-		_init: function() {
-			return new Promise(function(resolve, reject) {
+        Mavis.Model.View.add(floor);
 
-				Mavis.Model.Canvas._setScene()
-				.then(Mavis.Model.Canvas._setCamera())
-				.then(Mavis.Model.Canvas._setRenderer())
-				.then(Mavis.Model.Canvas.resize())
-				.then(resolve());
-			});
-		}
-	},
+        resolve();
+      });
+    },
 
-	Construction: {
+    _renderRiver: function() {
 
-		_renderFloor: function() {
-			return new Promise(function(resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
-				let 	data = Mavis.Data.Construction.ground,
-						floorMaterial = new THREE.MeshBasicMaterial({color: data.color, side:THREE.DoubleSide}),
-						floorGeometry = new THREE.PlaneGeometry(data.width, data.depth, data.height, 1),
-						floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        let data = Mavis.Data.Construction.river,
+          riverMaterial = new THREE.MeshBasicMaterial({color: data.color, side:THREE.DoubleSide}),
+          riverGeometry = new THREE.BoxGeometry(data.width, data.depth, data.height, 1),
+          river = new THREE.Mesh(riverGeometry, riverMaterial);
 
-				floor.rotation.x = Mavis.Model.Gravity;
-				floor.position.set(data.x, data.y, data.z);
-				floor.name = data.name;
+        river.rotation.x = Mavis.Model.gravity;
+        river.position.set(data.x, data.y, data.z);
+        river.name = 'Rhein';
 
-				Mavis.Model.View.add(floor);
+        Mavis.Model.View.add(river);
 
-				Mavis.Model.Renderer.setClearColor(0xd3edfa, 1);
+        resolve();
+      });
+    },
 
-				resolve();
-			});
-		},
+    _renderSupports: () => {
 
-		_renderRiver: function() {
-			return new Promise(function(resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
-				let 	data = Mavis.Data.Construction.river,
-						riverMaterial = new THREE.MeshBasicMaterial({color: data.color, side:THREE.DoubleSide}),
-						riverGeometry = new THREE.BoxGeometry(data.width, data.depth, data.height, 1),
-						river = new THREE.Mesh(riverGeometry, riverMaterial);
+        let data = Mavis.Data.Construction.supports;
 
-				river.rotation.x = Mavis.Model.gravity;
-				river.position.set(data.x, data.y, data.z);
-				river.name = data.name;
+        data.forEach(function(el, i) {
 
-				Mavis.Model.View.add(river);
+          let supportMaterial = new THREE.MeshBasicMaterial({color: el.color, side:THREE.DoubleSide}),
+            supportGeometry = new THREE.BoxGeometry(el.width, el.height, el.depth),
+            support = new THREE.Mesh(supportGeometry, supportMaterial);
 
-				resolve();
-			});
-		},
+          support.position.set(el.x, el.y, el.z);
+          support.name = 'Supporter-' + i;
 
-		_renderSupports: function() {
-			return new Promise(function(resolve, reject) {
+          Mavis.Model.Bridge.add(support);
+        });
 
-				let data = Mavis.Data.Construction.supports;
+        resolve();
+      });
+    },
 
-				data.forEach(function(el) {
+    _renderPillars: () => {
 
-					let 	supportMaterial = new THREE.MeshBasicMaterial({color: el.color, side:THREE.DoubleSide}),
-							supportGeometry = new THREE.BoxGeometry(el.width, el.height, el.depth),
-							support = new THREE.Mesh(supportGeometry, supportMaterial);
+      return new Promise(function(resolve, reject) {
 
-					support.position.set(el.x, el.y, el.z);
-					support.name = el.name;
+        let data = Mavis.Data.Construction.pillars;
 
-					Mavis.Model.Bridge.add(support);
-				});
+        data.forEach(function(el, i) {
 
-				resolve();
-			});
-		},
+          let pillarMaterial = new THREE.MeshBasicMaterial({color: el.color, side:THREE.DoubleSide}),
+            pillarGeometry = new THREE.BoxGeometry(el.width, el.height, el.depth),
+            pillar = new THREE.Mesh(pillarGeometry, pillarMaterial);
 
-		_renderPillars: function() {
-			return new Promise(function(resolve, reject) {
+          pillar.name = 'Pillar-' + i;
+          pillar.position.set(el.x, el.y, el.z);
 
-				let data = Mavis.Data.Construction.pillars;
+          Mavis.Model.Bridge.add(pillar);
+        });
 
-				data.forEach(function(el) {
+        resolve();
+      });
+    },
 
-					let 	pillarMaterial = new THREE.MeshBasicMaterial({color: el.color, side:THREE.DoubleSide}),
-							pillarGeometry = new THREE.BoxGeometry(el.width, el.height, el.depth),
-							pillar = new THREE.Mesh(pillarGeometry, pillarMaterial);
+    _renderDeck: () => {
 
-					pillar.name = el.name;
-					pillar.position.set(el.x, el.y, el.z);
-					Mavis.Model.Bridge.add(pillar);
-				});
+      return new Promise(function(resolve, reject) {
 
-				resolve();
-			});
-		},
+        let data = Mavis.Data.Construction.deck,
+          deckMaterial = new THREE.MeshBasicMaterial({color: data.color, side:THREE.DoubleSide}),
+          deckGeometry = new THREE.BoxGeometry(data.width, data.height, data.depth),
+          deck = new THREE.Mesh(deckGeometry, deckMaterial);
 
-		_renderDeck: function() {
-			return new Promise(function(resolve, reject) {
+        deck.position.set(data.x, data.y, data.z);
+        deck.name = 'Deck';
 
-				let 	data = Mavis.Data.Construction.deck,
-						deckMaterial = new THREE.MeshBasicMaterial({color: data.color, side:THREE.DoubleSide}),
-						deckGeometry = new THREE.BoxGeometry(data.width, data.height, data.depth),
-						deck = new THREE.Mesh(deckGeometry, deckMaterial);
+        Mavis.Model.Bridge.add(deck);
 
-				deck.position.set(data.x, data.y, data.z);
-				deck.name = 'deck';
+        resolve();
+      });
+    },
 
-				Mavis.Model.Bridge.add(deck);
+    _generateMarkerMesh: (cableDiameter, distance, color, position, cableLength, cableIndex, label) => {
 
+      if(distance === 0) distance = 0.5;
 
-				resolve();
-			});
-		},
+      let diameter = cableDiameter + 0.01,
+        geometry = new THREE.CylinderGeometry(diameter, diameter, distance),
+        material = new THREE.MeshBasicMaterial({color: color}),
+        mesh = new THREE.Mesh(geometry, material),
+        x = position - (cableLength / 2) + 6.1;
 
-		_generateMarkerMesh: function(marker, cableIndex, cableDiameter, cableLength, color) {
+      mesh.position.set(0,x,0);
+      mesh.name = 'marker(' + cableIndex + ')[' + position + ']{' + label + '}';
+      // mesh.name = 'Marker';
 
-			let 	diameter = cableDiameter + 0.01,
-					geometry = new THREE.CylinderGeometry(diameter, diameter, 0.5),
-					material = new THREE.MeshBasicMaterial({color: color}),
-					mesh = new THREE.Mesh(geometry, material),
-					x = marker.position - (cableLength / 2) + 6.1;
+      return(mesh);
 
-			mesh.position.set(0,x,0);
-			mesh.name = 'marker(' + cableIndex + ')[' + marker.position + ']{' + marker.label + '}';
+    },
 
-			return(mesh);
+    _renderCables: () => {
 
-		},
+      return new Promise(function(resolve, reject) {
 
-		_renderCables: function() {
+        let data = Mavis.Data.Construction.cables,
+          deg = Math.PI / 180,
+          results = Mavis.Filter.Data.Results;
 
-			return new Promise(function(resolve, reject) {
+        data.forEach(function(el, i) {
 
-				let 	data = Mavis.Data.Construction.cables,
-						deg = Math.PI / 180;
+          let cableGeometry = new THREE.CylinderGeometry(el.diameter, el.diameter, el.length),
+            cableMaterial = new THREE.MeshBasicMaterial({color: el.color }),
+            cable = new THREE.Mesh(cableGeometry, cableMaterial),
+            cableDiameter = el.diameter,
+            cableLength = el.length,
+            cableName = el,
+            cableIndex = i;
 
-				data.forEach(function(el, i) {
+          cable.position.set(el.x, el.y, el.z);
+          cable.rotation.x = el.rotateX * deg;
+          cable.rotation.y = el.rotateY * deg;
+          cable.rotation.z = el.rotateZ * deg;
+          // cable.name = el.name;
+          cable.name = 'Cable';
 
-					let 	cableGeometry = new THREE.CylinderGeometry(el.diameter, el.diameter, el.length),
-							cableMaterial = new THREE.MeshBasicMaterial({color: el.color }),
-							cable = new THREE.Mesh(cableGeometry, cableMaterial),
-							cableDiameter = el.diameter,
-							cableLength = el.length,
-							cableName = el,
-							cableIndex = i;
+          results.forEach(function(result, n) {
 
-					cable.position.set(el.x, el.y, el.z);
-					cable.rotation.x = el.rotateX * deg;
-					cable.rotation.y = el.rotateY * deg;
-					cable.rotation.z = el.rotateZ * deg;
-					cable.name = el.name;
+            if(result.cable === i){
 
-					let 	warningsAutomatic = Mavis.Data.CableData[i].modules.automatic,
-							warningsDin = Mavis.Data.CableData[i].modules.din,
-							warningsManual = Mavis.Data.CableData[i].modules.manual,
-							color;
+              let mark = Mavis.Model.Construction._generateMarkerMesh(cableDiameter, result.distance, result.color, result.position, cableLength, cableIndex, result.label);
+              cable.add(mark);
+            }
+          });
 
-					warningsAutomatic.forEach(function(warning, i) {
+          Mavis.Model.Bridge.add(cable);
+        });
 
-						if(warning.all.length) {
+        resolve();
+      });
+    },
 
-							color = Mavis.Data.Settings.automatic[i].color;
+    _renderLabels: function() {
 
-							warning.all.forEach(function(marker, i) {
+      function makeText(message, parameters) {
 
-								let mark = Mavis.Model.Construction._generateMarkerMesh(marker, cableIndex, cableDiameter, cableLength, color);
-								cable.add(mark);
-							});
-						}
-					});
+        if(parameters === undefined) parameters = {};
 
-					warningsDin.forEach(function(warning, i) {
+        let fontface = parameters.hasOwnProperty('fontface') ? parameters.fontface : 'din_light',
+          fontsize = parameters.hasOwnProperty('fontsize') ? parameters.fontsize : 15,
+          rotation = parameters.hasOwnProperty('rotation') ? parameters.rotation : 0,
+          borderThickness = parameters.hasOwnProperty('borderThickness') ? parameters.borderThickness : 10,
+          canvas = document.createElement('canvas'),
+          context = canvas.getContext('2d');
 
-						if(warning.all.length) {
+        context.font = 'Bold ' + fontsize + 'px ' + fontface;
+        context.rotate(parameters.rotation * Math.PI/180);
 
-							color = Mavis.Data.Settings.din[i].color;
+        let 	metrics = context.measureText(message),
+          textWidth = metrics.width;
 
-							warning.all.forEach(function(marker, i) {
+        context.fillStyle = 'rgba(0, 0, 0, 1)';
+        context.fillText(message, borderThickness, fontsize + borderThickness);
 
-								let mark = Mavis.Model.Construction._generateMarkerMesh(marker, cableIndex, cableDiameter, cableLength, color);
-								cable.add(mark);
-							});
-						}
-					});
+        let texture = new THREE.Texture(canvas);
 
-					warningsManual.forEach(function(warning, i) {
+        texture.needsUpdate = true;
 
-						if(warning.all.length) {
+        let spriteMaterial = new THREE.SpriteMaterial({ map: texture }),
+          sprite = new THREE.Sprite(spriteMaterial);
 
-							color = Mavis.Data.Settings.manual[i].color;
+        sprite.scale.set(100,50,2.0);
 
-							warning.all.forEach(function(marker, i) {
+        return sprite;
+      }
 
-								let mark = Mavis.Model.Construction._generateMarkerMesh(marker, cableIndex, cableDiameter, cableLength, color);
-								cable.add(mark);
-							});
-						}
-					});
+      function makeLabel(message, parameters) {
 
-					Mavis.Model.Bridge.add(cable);
+        let fontface = parameters.hasOwnProperty('fontface') ? parameters.fontface : 'din_light',
+            fontsize = parameters.hasOwnProperty('fontsize') ? parameters.fontsize : 15,
+            rotation = parameters.hasOwnProperty('rotation') ? parameters.rotation : 0,
+            borderThickness = parameters.hasOwnProperty('borderThickness') ? parameters.borderThickness : 10,
+            canvas = document.createElement('canvas'),
+            context = canvas.getContext('2d');
 
-				});
+        context.font = 'Bold ' + fontsize + 'px ' + fontface;
+        context.rotate(parameters.rotation * Math.PI/180);
 
+        let metrics = context.measureText(message),
+          textWidth = metrics.width;
 
-				resolve();
-			});
-		},
+        context.fillStyle = 'rgba(0, 0, 0, 1)';
+        context.fillText(message, 20, 30);
 
-		_renderLabels: function() {
+        let texture = new THREE.Texture(canvas);
+        texture.needsUpdate = true;
 
-			function makeText(message, parameters) {
+        let spriteMaterial = new THREE.MeshBasicMaterial( {map: texture, side:THREE.DoubleSide } );
+        spriteMaterial.transparent = true;
 
-				if(parameters === undefined) parameters = {};
+        let mesh = new THREE.Mesh(new THREE.PlaneGeometry(50, 40),spriteMaterial);
 
-				let 	fontface = parameters.hasOwnProperty('fontface') ? parameters.fontface : 'din_light',
-						fontsize = parameters.hasOwnProperty('fontsize') ? parameters.fontsize : 15,
-						rotation = parameters.hasOwnProperty('rotation') ? parameters.rotation : 0,
-						borderThickness = parameters.hasOwnProperty('borderThickness') ? parameters.borderThickness : 10,
-						canvas = document.createElement('canvas'),
-						context = canvas.getContext('2d');
+        return mesh;
+      }
 
-				context.font = 'Bold ' + fontsize + 'px ' + fontface;
-				context.rotate(parameters.rotation * Math.PI/180);
+      return new Promise(function(resolve, reject) {
 
-				let 	metrics = context.measureText(message),
-						textWidth = metrics.width;
+        let data = Mavis.Data.Construction.labels;
 
-				context.fillStyle = 'rgba(0, 0, 0, 1)';
-				context.fillText(message, borderThickness, fontsize + borderThickness);
+        data.forEach(function(el) {
 
-				let texture = new THREE.Texture(canvas);
+          var sprite = makeText(el.text, {fontface: 'din_light', fontsize: el.fontsize, rotation: el.rotation});
+          sprite.position.set(el.x, el.y, el.z);
+          Mavis.Model.Labels.add(sprite);
 
-				texture.needsUpdate = true;
+        });
 
-				let 	spriteMaterial = new THREE.SpriteMaterial({ map: texture }),
-						sprite = new THREE.Sprite(spriteMaterial);
+        resolve();
+      });
+    },
 
-				sprite.scale.set(100,50,2.0);
+    _addScenes: function() {
 
-				return sprite;
-			} 
+      return new Promise(function(resolve, reject) {
 
-			function makeLabel(message, parameters) {
+        Mavis.Model.Scene.add(Mavis.Model.View);
+        Mavis.Model.Scene.add(Mavis.Model.Bridge);
+        Mavis.Model.Scene.add(Mavis.Model.Labels);
+        resolve();
+      });
+    },
 
-				let 	fontface = parameters.hasOwnProperty('fontface') ? parameters.fontface : 'din_light',
-						fontsize = parameters.hasOwnProperty('fontsize') ? parameters.fontsize : 15,
-						rotation = parameters.hasOwnProperty('rotation') ? parameters.rotation : 0,
-						borderThickness = parameters.hasOwnProperty('borderThickness') ? parameters.borderThickness : 10,
-						canvas = document.createElement('canvas'),
-						context = canvas.getContext('2d');
+    _init: function() {
 
-				context.font = 'Bold ' + fontsize + 'px ' + fontface;
-				context.rotate(parameters.rotation * Math.PI/180);
+      return new Promise(function(resolve, reject) {
 
-				let 	metrics = context.measureText(message),
-						textWidth = metrics.width;
+        Mavis.Model.Gravity = Math.PI / 2;
+        Mavis.Model.View = new THREE.Object3D();
+        Mavis.Model.Bridge = new THREE.Object3D();
+        Mavis.Model.Labels = new THREE.Object3D();
 
-				context.fillStyle = 'rgba(0, 0, 0, 1)';
-				context.fillText(message, 20, 30);
+        Mavis.Model.Construction._renderFloor()
+          .then(Mavis.Model.Construction._renderRiver())
+          .then(Mavis.Model.Construction._renderSupports())
+          .then(Mavis.Model.Construction._renderPillars())
+          .then(Mavis.Model.Construction._renderDeck())
+          .then(Mavis.Model.Construction._renderCables())
+          .then(Mavis.Model.Construction._renderLabels())
+          .then(Mavis.Model.Construction._addScenes())
+          .then(resolve());
+      });
+    }
+  },
 
-				let texture = new THREE.Texture(canvas);
-				texture.needsUpdate = true;
+  _setRaycaster: () => {
 
-				let spriteMaterial = new THREE.MeshBasicMaterial( {map: texture, side:THREE.DoubleSide } );
-				spriteMaterial.transparent = true;
+    return new Promise(function(resolve, reject) {
 
-				let mesh = new THREE.Mesh(new THREE.PlaneGeometry(50, 40),spriteMaterial);
+      Mavis.Model.Raycaster = new THREE.Raycaster();
 
-				return mesh;
-			}
+      resolve();
+    });
+  },
 
-			return new Promise(function(resolve, reject) {
+  _setRenderer: () => {
 
-				let data = Mavis.Data.Construction.labels;
+    return new Promise(function(resolve, reject) {
 
-				data.forEach(function(el) {
+      Mavis.Model.Renderer = new THREE.WebGLRenderer();
+      Mavis.Model.Renderer.setPixelRatio(window.devicePixelRatio);
+      Mavis.Model.Renderer.setSize(window.innerWidth, window.innerHeight);
+      Mavis.Model.Renderer.setClearColor(0xd3edfa, 1);
 
-					var sprite = makeText(el.text, {fontface: 'din_light', fontsize: el.fontsize, rotation: el.rotation});
-					sprite.position.set(el.x, el.y, el.z);
-					Mavis.Model.Labels.add(sprite);
+      document.getElementById('model').appendChild(Mavis.Model.Renderer.domElement);
 
-				});
+      resolve();
+    });
+  },
 
-				resolve();
-			});
-		},
+  _onMouseInput: event => {
 
-		_updateScene: function() {
+    event.preventDefault();
 
-			Mavis.Model.Scene.remove(Mavis.Model.View);
-			Mavis.Model.Scene.remove(Mavis.Model.Bridge);
-			Mavis.Model.Scene.remove(Mavis.Model.Labels);
+    let modelHeight = document.getElementById('model').clientHeight,
+        modelOffset = window.innerHeight - modelHeight;
 
-			this._init();
-		},
+    Mavis.Model.ClickPosition.x = event.clientX;
+    Mavis.Model.ClickPosition.y = event.clientY;
 
-		addScene: function() {
-			return new Promise(function(resolve, reject) {
+    Mavis.Model.Mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    Mavis.Model.Mouse.y = - ((event.clientY - modelOffset)/ window.innerHeight) * 2 + 1;
+  },
 
-				Mavis.Model.Scene.add(Mavis.Model.View);
-				Mavis.Model.Scene.add(Mavis.Model.Bridge);
-				Mavis.Model.Scene.add(Mavis.Model.Labels);
-				resolve();
-			});
-		},
+  _rendering: () => {
 
-		animate: function() {
-			return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-				function render() {
+      // set Raycaster to listen to mouse and camera
+      Mavis.Model.Raycaster.setFromCamera(Mavis.Model.Mouse, Mavis.Model.Camera);
 
-					Mavis.Model.Animation = requestAnimationFrame(render);
-					Mavis.Model.Renderer.render(Mavis.Model.Scene, Mavis.Model.Camera);
-				}
+      // get intersects
+      let intersects = Mavis.Model.Raycaster.intersectObjects(Mavis.Model.Scene.children, true);
 
-				render();
+      // if there are intersects
+      if (intersects.length > 0) {
 
-				resolve();
-			});
-		},
+        // just a helper
+        let obj = intersects[0].object.name;
 
-		animateEnd: function() {
-			return new Promise(function(resolve, reject) {
+        // check if it is a marker
+        if(obj.indexOf('marker') !== -1 && obj !== Mavis.Model.Intersected) {
 
-				cancelAnimationFrame(Mavis.Model.Animation);
-				resolve();
+          // set the object to jump into else loop
+          Mavis.Model.Intersected = obj;
 
-			});
-		},
+          // do something with the marker
+          Mavis.Model._cableInfo(obj);
+        }
+      }
 
-		_init: function() {
+      Mavis.Model.Renderer.render(Mavis.Model.Scene, Mavis.Model.Camera);
 
-			return new Promise(function(resolve, reject) {
+      resolve();
+    });
+  },
 
-				Mavis.Model.Gravity = Math.PI / 2;
-				Mavis.Model.View = new THREE.Object3D();
-				Mavis.Model.Bridge = new THREE.Object3D();
-				Mavis.Model.Labels = new THREE.Object3D();
+  _animate: () => {
 
-				Mavis.Model.Construction._renderFloor()
-				.then(Mavis.Model.Construction._renderRiver())
-				.then(Mavis.Model.Construction._renderSupports())
-				.then(Mavis.Model.Construction._renderPillars())
-				.then(Mavis.Model.Construction._renderDeck())
-				.then(Mavis.Model.Construction._renderCables())
-				.then(Mavis.Model.Construction._renderLabels())
-				.then(Mavis.Model.Construction.addScene())
-				.then(Mavis.Model.Construction.animate())
-				.then(resolve());
-			});
-		}
-	},
+    requestAnimationFrame(Mavis.Model._animate);
+    Mavis.Model._rendering();
+  },
 
-	Controls: {
+  _animateEnd: function() {
 
-		_orbitConfig: function() {
+    return new Promise(function(resolve, reject) {
 
-			return new Promise(function(resolve, reject) {
+      cancelAnimationFrame(Mavis.Model._animate);
+      resolve();
+    });
+  },
 
-				Mavis.Model.Orbit.minDistance = 10;
-				Mavis.Model.Orbit.maxDistance = 500;
-				Mavis.Model.Orbit.minPolarAngle = 0;
-				Mavis.Model.Orbit.maxPolarAngle = (Math.PI / 2) - 0.1;
-				Mavis.Model.Orbit.enableZoom = true;
+  _setOrbitControls: () => {
 
-				resolve();
-			});
-		},
+    return new Promise(function(resolve, reject) {
 
-		_renderCableInfo: function(cable, position, styles) {
+      Mavis.Model.Orbit = new OrbitControls(Mavis.Model.Camera, Mavis.Model.Renderer.domElement);
 
-			console.log('cable: ' + cable + ', position: ' + position + ', styles: ' + styles);
+      Mavis.Model.Orbit.minDistance = 10;
+      Mavis.Model.Orbit.maxDistance = 500;
+      Mavis.Model.Orbit.minPolarAngle = 0;
+      Mavis.Model.Orbit.maxPolarAngle = (Math.PI / 2) - 0.1;
+      Mavis.Model.Orbit.enableZoom = true;
 
-/*
-						$('#cable_info h3').text(warning);
-						$('#cable_info_cable').text(MAVIS.DATA.OBJECT.BUILD.CABLES[cable].NAME);
-						$('#cable_info_position').text(pos);
-						$('#cable_info button').data('cable', cable).data('position', pos);
-						$('#cable_info').attr('style', styles);
-						$('#cable_info').attr('class', 'show');
-*/
-		},
+      Mavis.Model.Orbit.addEventListener('change', function() {
 
-		_getIntersection: function(mx,my) {
+        let x = (Mavis.Model.Camera.position.x).toFixed(2),
+            y = (Mavis.Model.Camera.position.y).toFixed(2),
+            z = (Mavis.Model.Camera.position.z).toFixed(2);
 
-			const model = document.getElementById('model');
+        Mavis.Model.CameraPosition.x = x;
+        Mavis.Model.CameraPosition.y = y;
+        Mavis.Model.CameraPosition.z = z;
 
-			// get client width and height
-			let 	x = (mx / model.clientWidth) * 2 - 1,
-					y = -(my / model.clientHeight) * 2 + 1;
+        Mavis.Model.Renderer.render(Mavis.Model.Scene, Mavis.Model.Camera);
 
-			Mavis.Model.Vector.set(x, y, 1);
-			Mavis.Model.Vector.sub(Mavis.Model.Camera.position);
-			Mavis.Model.Vector.normalize();
-			Mavis.Model.Raycaster.set(Mavis.Model.Camera.position, Mavis.Model.Vector);
+      });
 
-			let intersects = Mavis.Model.Raycaster.intersectObjects(Mavis.Model.Scene.children, true);
+      resolve();
+    });
+  },
 
-			if (intersects.length) {
+  _cableInfo: obj => {
 
-				let 	target = intersects[0].object,
-						obj = target.name.toString();
+    let cableStart = obj.indexOf('(') + 1,
+        cableEnd = obj.indexOf(')'),
+        cable = Number(obj.substring(cableStart, cableEnd)),
+        positionStart = obj.indexOf('[') + 1,
+        positionEnd = obj.indexOf(']'),
+        position = obj.substring(positionStart, positionEnd),
+        warningStart = obj.indexOf('{') + 1,
+        warningEnd = obj.indexOf('}'),
+        warning = obj.substring(warningStart, warningEnd);
 
-				console.log(target);
-/*
-				if(obj.indexOf('marker') !== -1) {
+    document.getElementById('cableInfoCase').innerHTML = warning;
+    document.getElementById('cableInfoCable').innerHTML = cable;
+    document.getElementById('cableInfoPosition').innerHTML = position;
 
-					console.log(this.intersect);
+    let button = document.getElementById('cableInfoButton');
+    button.setAttribute('data-cable', cable);
+    button.setAttribute('data-position', position);
 
+    let cableInfo = document.getElementById('cableInfo');
+    cableInfo.style.left = (Mavis.Model.ClickPosition.x - 125) + 'px';
+    cableInfo.style.top = (Mavis.Model.ClickPosition.y - 200) + 'px';
+    cableInfo.classList.remove('hidden');
 
-					if(target.id !== this.intersect) {
+  },
 
-						this.intersect = target.id;
+  _hideInfo: event => {
+    event.path[2].setAttribute('class', 'hidden');
+  },
 
-						let 	cableStart = obj.indexOf('(') + 1,
-								cableEnd = obj.indexOf(')'),
-								cable = Number(obj.substring(cableStart, cableEnd)),
-								positionStart = obj.indexOf('[') + 1,
-								positionEnd = obj.indexOf(']'),
-								position = obj.substring(positionStart, positionEnd),
-								warningStart = obj.indexOf('{') + 1,
-								warningEnd = obj.indexOf('}'),
-								warning = obj.substring(warningStart, warningEnd),
-								styles = 'top:' + (my - 180) + 'px; left:' + (mx - 80) + 'px;';
+  _loadVisual: event => {
 
-						Mavis.Model.Controls._renderCableInfo(cable, position, styles);
-					}
+    let data = {};
+    data.cable = Number(event.path[0].getAttribute('data-cable'));
+    data.position = Number(event.path[0].getAttribute('data-position'));
+    event.path[1].setAttribute('class', 'hidden');
 
-				}
-*/
-			}
-		},
+    Mavis.Pages.loadPage('inspection', data);
+  },
 
-		_render: function() {
+  _events: () => {
 
-			Mavis.Model.Renderer.render(Mavis.Model.Scene, Mavis.Model.Camera);
+    return new Promise(function(resolve, reject) {
 
-		},
+      document.getElementById('model').addEventListener('mousedown', Mavis.Model._onMouseInput, false);
+      resolve();
 
-		_events: function() {
+      document.getElementById('cableInfoButton').addEventListener('mousedown', Mavis.Model._loadVisual);
 
-			return new Promise(function(resolve, reject) {
+      document.getElementById('cableInfoClose').addEventListener('mousedown', Mavis.Model._hideInfo);
 
-				Mavis.Model.Orbit.addEventListener('change', Mavis.Model.Controls._render);
+    });
+  },
 
-				const model = document.getElementById('model');
+  init: () => {
 
-				model.addEventListener('mousedown', function(e) {
+    return new Promise(function(resolve, reject) {
 
-					Mavis.Model.Controls._getIntersection(e.clientX, e.clientY);
+      console.log('init MODEL');
 
-				});
-/*
+      Mavis.LoadingScreen.message('initializing 3D Model');
 
-				$('#cable_info button').on('click', function() {
+      document.getElementById('content').setAttribute('data-tab', 'Model');
 
-					var data = {};
-					data.cable = Number($('#cable_info button').data('cable'));
-					data.position = Number($('#cable_info button').data('position'));
-
-					MAVIS.GUI.load('inspection', data);
-
-				});
-*/
-
-				resolve();
-			});
-		},
-
-		_init: function() {
-
-			return new Promise(function(resolve, reject) {
-
-				Mavis.Model.Orbit = new OrbitControls(Mavis.Model.Camera, Mavis.Model.Renderer.domElement);
-				Mavis.Model.Raycaster = new THREE.Raycaster();
-				Mavis.Model.Vector = new THREE.Vector3();
- 				Mavis.Model.Controls._orbitConfig()
- 				.then(Mavis.Model.Controls._events())
- 				.then(resolve());
-
-				resolve();
-			});
-		}
-	},
-
-	init: function() {
-
-		return new Promise(function(resolve, reject) {
-
-			console.log('init MODEL');
-
-			Mavis.LoadingScreen.message('initializing 3D Model');
-
-			document.getElementById('content').setAttribute('data-tab', 'Model');
-
-			Mavis.Model._render()
-				.then(Mavis.Filter.init('Model', 'modelFilter', ['rating', 'marker']))
-				.then(Mavis.Model.Canvas._init())
-				.then(Mavis.Model.Construction._init())
-				.then(Mavis.Model.Controls._init())
-				.then(resolve());
-		});
-	}
+      Mavis.Model._renderDom()
+        .then(Mavis.Filter.init('Model', 'modelFilter', ['rating', 'marker']))
+        .then(Mavis.Model._setMouse())
+        .then(Mavis.Model._setCamera())
+        .then(Mavis.Model._setScene())
+        .then(Mavis.Model._setLight())
+        .then(Mavis.Model.Construction._init())
+        // .then(Mavis.Model._renderAlternateContent())
+        .then(Mavis.Model._setRenderer())
+        .then(Mavis.Model._setRaycaster())
+        .then(Mavis.Model._events())
+        .then(Mavis.Model._animate())
+        .then(Mavis.Model._setOrbitControls())
+        .then(resolve());
+    });
+  }
 };
 
 module.exports = Mavis.Model;
