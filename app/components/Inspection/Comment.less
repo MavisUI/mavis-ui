@@ -30,56 +30,381 @@
 	}
 }
 
+#comment {
+  position: fixed;
+  top: 5.2rem;
+  left: 0;
+  display: inline-block;
+  width: @gridWidth-12;
+  height: calc(100% - 5.21rem);
+  z-index: @foreground;
+  background-color: @grey;
+  .transition400ms();
+
+  &.hidden {
+    -webkit-transform: translateY(100%);
+  }
+
+  #commentBody {
+
+    h2 {
+      margin: 1rem 0 3rem 0;
+    }
+
+    .commentItem {
+      display: inline-block;
+      width: @gridWidth-12;
+      margin-right: @gridMargin;
+
+      &#commentImages,
+      &#commentText {
+        width: @gridWidth-12;
+      }
+
+      &#commentText {
+        margin: 1.5rem 0;
+
+        label {
+          line-height: 3rem;
+        }
+      }
+
+      label {
+        display: inline-block;
+        float: left;
+        font-size: 1.5rem;
+        .fontLight();
+        line-height: 4rem;
+        width: 15rem;
+      }
+
+      select,
+      input {
+        display: inline-block;
+        float: left;
+        -webkit-appearance: none;
+        background: transparent;
+        border: none;
+        color: @blue;
+        display: inline-block;
+        font-size: 1.5rem;
+        line-height: 4rem;
+        margin: 0 0 0 1rem;
+        text-align: left;
+        .fontBold();
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      textarea {
+        -webkit-appearance: none;
+        background-color: @white;
+        border: 1px solid @greyBright;
+        .fontLight();
+        height: 14vh;
+        margin-top: .5rem;
+        width: 70%;
+        padding: 1rem;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      #pictures {
+        display: inline-block;
+        text-align: center;
+        padding: .25rem 0;
+
+        .pictureRow {
+          display: inline-block;
+
+          &:nth-of-type(1) {
+
+            .pictureWindow {
+
+              &:nth-of-type(1) {
+                span {
+                  svg {
+                    #label_1 {
+                      display: block;
+                    }
+
+                    #line_1 {
+                      stroke-width: 1rem;
+                    }
+                  }
+                }
+              }
+
+              &:nth-of-type(2) {
+
+                span {
+                  svg {
+                    #label_2 {
+                      display: block;
+                    }
+
+                    #line_2 {
+                      stroke-width: 1rem;
+                    }
+                  }
+                }
+              }
+
+              &:nth-of-type(3) {
+                span {
+                  svg {
+                    #label_3 {
+                      display: block;
+                    }
+
+                    #line_3 {
+                      stroke-width: 1rem;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          &:nth-of-type(2) {
+
+            .pictureWindow {
+
+              &:nth-of-type(1) {
+                span {
+                  svg {
+                    #label_6 {
+                      display: block;
+                    }
+
+                    #line_6 {
+                      stroke-width: 1rem;
+                    }
+                  }
+                }
+              }
+
+              &:nth-of-type(2) {
+                span {
+                  svg {
+                    #label_5 {
+                      display: block;
+                    }
+
+                    #line_5 {
+                      stroke-width: 1rem;
+                    }
+                  }
+                }
+              }
+
+              &:nth-of-type(3) {
+                span {
+                  svg {
+                    #label_4 {
+                      display: block;
+                    }
+
+                    #line_4 {
+                      stroke-width: 1rem;
+                    }
+                  }
+                }
+
+              }
+            }
+          }
+
+          .pictureWindow {
+            display: inline-block;
+            height: 14vh;
+            width: calc(14vh * 1.333);
+            margin: .5rem .5rem 0 0;
+            background-color: @grey;
+
+            span {
+              background-color: rgba(0,0,0,0.5);
+              display: block;
+              height: 4rem;
+              left: 7px;
+              margin-bottom: -6rem;
+              padding: .5rem;
+              position: relative;
+              top: .5rem;
+              width: 4rem;
+              z-index: 11;
+
+              svg {
+                fill: @white;
+                height: 3rem;
+                left: 0;
+                position: relative;
+                stroke: @white;
+                stroke-width: .1rem;
+                top: 0;
+                width: 3rem;
+
+                #core_1,
+                #core_2,
+                #core_3,
+                #core_4,
+                #core_5,
+                #core_6,
+                #core_7,
+                #core_8,
+                #core_9,
+                #core_10,
+                #core_11,
+                #core_12,
+                #core_13 {
+                  stroke-width: .4rem;
+                }
+
+                #line_1,
+                #line_2,
+                #line_3,
+                #line_4,
+                #line_5,
+                #line_6 {
+                  stroke-width: .4rem;
+                }
+
+                #label_1,
+                #label_2,
+                #label_3,
+                #label_4,
+                #label_5,
+                #label_6 {
+                  display: none;
+                }
+              }
+            }
+
+            .picture {
+              font-size: 1rem;
+              background-position: top center;
+              background-repeat: no-repeat;
+              background-size: contain;
+              border: 2px solid @greyBright;
+              cursor: pointer;
+              display: inline-block;
+              float: left;
+              position: relative;
+              z-index: 10;
+              width: 100%;
+              height: 14vh;
+
+              &:hover {
+                border: 2px solid @green;
+              }
+
+              &.active {
+                border: 2px solid @green;
+                background-color: @green;
+
+                &:after {
+                  display: inline-block;
+                  content: '<div class="icon iconAccept"></div>';
+                  width: 5rem;
+                  height: 5rem;
+
+                  .icon {
+                    display: inline;
+                    font-size: 2rem;
+                    position: relative;
+                    top: .25rem;
+                    margin-right: .5rem;
+                    color: @white;
+                  }
+                }
+              }
+
+            }
+          }
+        }
+      }
+    }
+
+    #commentFunctions {
+
+      display: inline-block;
+      margin-top: 1em;
+      width: @gridWidth-12;
+
+      button {
+        -webkit-appearance: none;
+        border: none;
+        box-shadow: 0 1px 2px @greyDark;
+        color: @white;
+        cursor: pointer;
+        font-size: 1.5rem;
+        line-height: 3rem;
+        .fontBold();
+        margin-right: 1.25%;
+        outline: none;
+        padding: .5rem 1rem 1rem 1rem;
+        width: 15rem;
+
+        .icon {
+          display: inline;
+          font-size: 2rem;
+          position: relative;
+          top: .25rem;
+          margin-right: .5rem;
+        }
+
+        &:active {
+          box-shadow: none;
+          position: relative;
+          top: 2px;
+        }
+
+        &#commentCancel {
+          background-color: @red;
+        }
+
+        &#commentReset,
+        &#commentRemove {
+          background-color: @greyDark;
+        }
+
+        &#commentSave {
+          background-color: @green;
+          margin-right: 0;
+        }
+      }
+
+      &.new {
+
+        #commentReset {
+          display: inline-block;
+        }
+
+        #commentRemove {
+          display: none;
+        }
+      }
+
+      &.overwrite {
+
+        #commentReset {
+          display: none;
+        }
+
+        #commentRemove {
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
+
 /*
 #comments {
-
-	background-color: @white;
-	border-left: 1px solid @blue;
-	display: inline-block;
-	height: 20rem;
-	position: fixed;
-	right: 0;
-	top: 4rem;
-	.transition300ms();
-	width: 60rem;
-	z-index: @midgroundOverlay;
-
-	&.hidden {
-
-		-webkit-transform: translateX(60rem);
-
-		#commentsToggle {
-
-			.icon:nth-of-type(2) {
-				display: none;
-			}
-
-			.icon:nth-of-type(1) {
-				display: block;
-			}
-		}
-	}
-
-	#commentsToggle {
-		background-color: @blue;
-		cursor: pointer;
-		display: inline-block;
-		height: 6rem;
-		position: relative;
-		left: -5rem;
-		padding: 1.5rem 1rem;
-		top: 8rem;
-		width: 5em;
-
-		.icon {
-			color: @white;
-			font-size: 3rem;
-
-			&:nth-of-type(1) {
-				display: none;
-			}
-		}
-	}
 
 	#commentsBody {
 		display: inline-block;
@@ -273,14 +598,7 @@
 			margin-top: .5rem;
 			width: @gridWidth-12;
 
-			textarea {
-				-webkit-appearance: none;
-				background-color: @white;
-				border: 1px solid @greyBright;
-				.fontLight();
-				height: 12rem;
-				width: @gridWidth-12;
-			}
+
 		}
 
 		#commentsFunctions {

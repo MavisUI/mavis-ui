@@ -12,11 +12,11 @@ Mavis.Pages = {
 			});
 		},
 
-		_inspection: (data) => {
+		_inspection: data => {
 
 			return new Promise(function(resolve, reject) {
 
-				Mavis.Inspection.init()
+				Mavis.Inspection.init(data)
 				.then(resolve());
 			});
 		},
@@ -44,6 +44,7 @@ Mavis.Pages = {
 		return new Promise(function(resolve, reject) {
 			const content = document.getElementById('content');
 			content.innerHTML = '';
+      // document.getElementById('comment').classList.add('hidden');
 			resolve();
 		});
 	},
@@ -54,7 +55,7 @@ Mavis.Pages = {
 
 		// if no mod has been passed (which would be an error), load the model screen;
 		if(!mod) mod = 'model';
-		if(!data) data = {};
+		if(!data) data = {cable:0,position:0.00};
 
 		// check if notification is still visible and remove it
 		if(Mavis.Notifications.Status) {

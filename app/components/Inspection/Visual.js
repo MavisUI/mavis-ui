@@ -3,7 +3,6 @@ const Mavis = require('../Global/Global');
 Mavis.Visual = {
 
 	sides: 0,
-	arrPosition: 0,
 	imagePath: undefined,
 	lastImage: null,
 
@@ -235,119 +234,87 @@ Mavis.Visual = {
 		});
 	},
 
-	_setSides: () => {
+  _setSides: () => {
 
-		return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-			Mavis.Visual.sides = Number(Mavis.Data.Construction.meta.cableSides.length);
+      Mavis.Visual.sides = Number(Mavis.Data.Construction.meta.cableSides.length);
 
-			resolve();
-		});
-	},
+      resolve();
+    });
+  },
 
-	_setPath: () => {
+  setPath: cable => {
 
-		return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-			Mavis.Visual.imagePath = "/static/" + Mavis.Data.State.currentObject + "/images/" + Mavis.Filter.Data.Cable + '/';
+      Mavis.Visual.imagePath = "/static/" + Mavis.Data.State.currentObject + "/images/" + cable + '/';
 
-			resolve();
-		});
-	},
+      resolve();
+    });
+  },
 
-	_setLastImage: () => {
+  _setLastImage: () => {
 
-		return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-			Mavis.Visual.lastImage = Mavis.Data.CableData[Mavis.Filter.Data.Cable].trigger.length;
+      Mavis.Visual.lastImage = Mavis.Data.CableData[Mavis.Filter.Data.Cable].trigger.length;
 
-			resolve();
-		});
-	},
+      resolve();
+    });
+  },
 
-	_findImageTrigger: position => {
+  renderImages: n => {
 
-		let _biggerElements = inArray => {
-			return inArray < position;
-		}
+    let pictures = document.querySelectorAll('.picture'),
+        preloadContainer = document.getElementById('preloadContainer');
 
-		let res = Mavis.Data.CableData[Mavis.Filter.Data.Cable].trigger.filter(_biggerElements);
-		return(res.length - 1);
-	},
+    if(n < Mavis.Data.CableData[Mavis.Filter.Data.Cable].imageCount) n++;
+    let nextImage = n + 1;
 
-	_preloadImages: n => {
-		n++;
-		let 	i,
-				container = document.getElementById('preloadContainer');
+    pictures.forEach(function (picture, index) {
 
-		container.innerHTML = '';
+      let backgroundImg = Mavis.Visual.imagePath + index + '/' + n + '.jpg';
 
-		for(i=0; i<Mavis.Visual.sides; i++) {
+      // picture.setAttribute('style', 'background-image: url(\'' + backgroundImg + '\')');
+      picture.innerHTML = '<p>' + backgroundImg + '</p>';
+      /*
 
-			let 	source = Mavis.Visual.imagePath + i + '/' + n + '.jpg',
-					img = new Image();
+            if(nextImage <= Mavis.Data.CableData[Mavis.Filter.Data.Cable].imageCount) {
 
-			img.src = source;
+              let preloadImg = Mavis.Visual.imagePath + index + '/' + nextImage + '.jpg',
+                  img = new Image();
 
-			container.appendChild(img);
-		}
-	},
+              img.src = preloadImg;
 
-	_renderImages: n => {
+              preloadContainer.appendChild(img);
 
-		return new Promise(function(resolve, reject) {
+            }
+      */
+    });
 
-			let pictures = document.querySelectorAll('.picture');
+  },
 
-			pictures.forEach(function(picture, index) {
+  init: data => {
 
-				let backgroundImg = Mavis.Visual.imagePath + index + '/' +  n + '.jpg';
-				picture.setAttribute('style', 'background-image: url(\'' + backgroundImg + '\')');
-			});
+    return new Promise(function(resolve, reject) {
 
-			resolve();
-		});
+      let img = Mavis.Player._getFrame(data.position);
 
-	},
-
-	jump: n => {
-
-		if(n===0) n++;
-
-		if(n >= Mavis.Data.CableData[Mavis.Filter.Data.Cable].trigger[Mavis.Visual.arrPosition]) {
-			Mavis.Visual.arrPosition = n;
-			Mavis.Visual._renderImages(n);
-		}
-	},
-
-	run: function(n) {
-
- 		if(n===0) n++;
-
-		if(n >= Mavis.Data.CableData[Mavis.Filter.Data.Cable].trigger[Mavis.Visual.arrPosition]) {
-
-			Mavis.Visual.arrPosition++;
-
-			Mavis.Visual._renderImages(Mavis.Visual.arrPosition);
-
-	 		if(n < Mavis.Visual.lastImage) {
-	 			Mavis.Visual._preloadImages(Mavis.Visual.arrPosition);
-	 		}
-		}
-	},
-
-	init: () => {
-
-		return new Promise(function(resolve, reject) {
-
-			Mavis.Visual._render()
-			.then(Mavis.Visual._setSides())
-			.then(Mavis.Visual._setPath())
-			.then(Mavis.Visual._setLastImage())
-			.then(Mavis.Visual._renderImages(1))
-			.then(resolve());
-		});
-	}
+      Mavis.Visual._render()
+        .then(Mavis.Visual._setSides())
+        .then(Mavis.Visual.setPath(data.cable))
+        .then(Mavis.Visual._setLastImage())
+        .then(function() {
+          Mavis.Visual.renderImages(img)
+        })
+        .then(resolve());
+    });
+  }
 };
 
 module.exports = Mavis.Visual;
+
+
+
+

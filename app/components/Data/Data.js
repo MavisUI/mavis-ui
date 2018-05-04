@@ -107,7 +107,7 @@ Mavis.Data = {
 
 		let 	arrBiggerElements = array.filter(BiggerThan),
 				nextElement = Math.min.apply(null, arrBiggerElements),
-		   	elementIndex = array.indexOf(nextElement) -1;
+		   	elementIndex = array.indexOf(nextElement);
 
 		return(elementIndex);
 	},

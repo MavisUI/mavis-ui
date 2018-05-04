@@ -2,32 +2,207 @@ const Mavis = require('../Global/Global');
 
 Mavis.Comment = {
 
-	_render: () => {
+	_renderButton: () => {
 
 		return new Promise(function(resolve, reject) {
 
 			const container = document.getElementById('controlsComment'),
-					content = [
-						'<button id="controlsMarkerCreate" class="active">',
-							'<div class="icon iconMarker"></div>',
-						'</button>'
-					];
+            content = [
+              '<button id="controlsMarkerCreate" class="active">',
+                '<div class="icon iconMarker"></div>',
+              '</button>'
+            ];
 
 			container.innerHTML = content.join('');
 			resolve();
 		});
 	},
 
+  _renderModal: () => {
+
+    return new Promise(function(resolve, reject) {
+
+      const container = document.getElementById('comment'),
+            content = [
+              '<div class="inner">',
+                '<div id="commentBody">',
+                  '<h2>Eintrag erstellen/bearbeiten</h2>',
+                  '<div class="commentItem" id="commentsCases">',
+                    '<label>Merkmal: </label>',
+                    '<select id="commentsCasesSelection"></select>',
+                  '</div>',
+                  '<div class="commentItem" id="commentsRating">',
+                    '<label>Schadensklasse: </label>',
+                    '<select id="commentsRatingSelection"></select>',
+                  '</div>',
+                  '<div class="commentItem" id="commentsMeasure">',
+                    '<label id="commentMeasureLabel" for="commentMeasureInput">Anteil (%): </label>',
+                    '<input type="number" id="commentMeasureInput" value="0.00" />',
+                  '</div>',
+                  '<div class="commentItem" id="commentPosition">',
+                    '<label for="commentPosition">Position (m): </label>',
+                    '<input type="number" id="commentPositionInput" value="0.00" />',
+                  '</div>',
+                  '<div class="commentItem" id="commentDistance">',
+                    '<label for="commentDistance">Länge (m): </label>',
+                    '<input type="number" id="commentDistanceInput" value="0.00" />',
+                  '</div>',
+                  '<div class="commentItem" id="commentImages">',
+                    '<label>Betroffene Seiten: </label>',
+                    '<div id="commentImagesContainer"></div>',
+                  '</div>',
+                  '<div class="commentItem" id="commentText">',
+                    '<label for="commentTextInput">Kommentar: </label>',
+                    '<textarea id="commentTextInput"></textarea>',
+                  '</div>',
+                  '<div id="commentFunctions">',
+                    '<button id="commentCancel"><div class="icon iconCancel"></div> Abbrechen</button>',
+                    '<button id="commentReset"><div class="icon iconRefresh"></div> Reset</button>',
+                    '<button id="commentRemove"><div class="icon iconTrash"></div> Löschen</button>',
+                    '<button id="commentSave"><div class="icon iconConfirm"></div> Speichern</button>',
+                  '</div>',
+                '</div>',
+              '</div>'
+            ];
+
+      container.innerHTML = content.join('');
+      resolve();
+    });
+  },
+
+  _cloneImages: () => {
+
+    return new Promise(function(resolve, reject) {
+
+      let images = document.getElementById('pictures'),
+          imagesClone = images.cloneNode(true);
+
+      document.getElementById('commentImagesContainer').appendChild(imagesClone);
+
+      resolve();
+    });
+  },
+
+  _setMarkerOptions: () => {
+
+	  return new Promise(function(resolve, reject) {
+
+      let din = Mavis.Data.Settings.din,
+          manual = Mavis.Data.Settings.manual,
+          counter = 0,
+          options = [];
+
+      din.forEach(function(mod, i) {
+        counter++;
+        let option = '<option value="' + counter + '" data-module-index="' + i + '">' + mod.label + '</option>';
+        options.push(option);
+      });
+
+      manual.forEach(function(mod, i) {
+        counter++;
+        let option = '<option value="' + counter + '" data-module-index="' + i + '">' + mod.label + '</option>';
+        options.push(option);
+      });
+
+      document.getElementById('commentsCasesSelection').innerHTML = options.join('');
+
+	    resolve();
+    });
+  },
+
+  _setRatingOptions: () => {
+
+    return new Promise(function(resolve, reject) {
+
+      let options = [],
+          classes = Mavis.Data.Settings.damageClasses;
+
+      classes.forEach(function(el, i) {
+        let option = '<option value="' + i + '" data-class-index="' + i + '">' + el + '</option>';
+        options.push(option);
+      });
+
+      document.getElementById('commentsRatingSelection').innerHTML = options.join('');
+
+      resolve();
+    });
+  },
+
+  _toggleComment: () => {
+
+	  let container = document.getElementById('comment');
+
+	  if(container.classList.contains('hidden')) {
+	    container.classList.remove('hidden');
+    } else {
+	    container.classList.add('hidden');
+    }
+  },
+
+  _cancel: () => {
+
+    document.getElementById('comment').classList.add('hidden');
+  },
+
+  _reset: () => {
+
+    document.getElementById('comment').classList.add('hidden');
+  },
+
+  _remove: () => {
+
+	  document.getElementById('comment').classList.add('hidden');
+  },
+
+  _save: () => {
+
+	  document.getElementById('comment').classList.add('hidden');
+  },
+
+  _events: () => {
+
+	  let commentButton = document.getElementById('controlsMarkerCreate'),
+        commentCancel = document.getElementById('commentCancel'),
+        commentReset = document.getElementById('commentReset'),
+        commentRemove = document.getElementById('commentRemove'),
+        commentSave = document.getElementById('commentSave'),
+        commentImage = document.querySelectorAll('#commentImagesContainer .picture');
+
+	  commentButton.addEventListener('mousedown', Mavis.Comment._toggleComment);
+    commentCancel.addEventListener('mousedown', Mavis.Comment._cancel);
+    commentReset.addEventListener('mousedown', Mavis.Comment._reset);
+    commentRemove.addEventListener('mousedown', Mavis.Comment._remove);
+    commentSave.addEventListener('mousedown', Mavis.Comment._save);
+
+    commentImage.forEach(function(image, i){
+
+      image.addEventListener('mousedown', function() {
+
+        if(this.classList.contains('active')) {
+          this.classList.remove('active');
+        } else {
+          this.classList.add('active');
+        }
+      });
+
+    });
+
+
+  },
+
 	init: () => {
 
 		return new Promise(function(resolve, reject) {
 
-			Mavis.Comment._render()
+			Mavis.Comment._renderButton()
+      .then(Mavis.Comment._renderModal())
+      .then(Mavis.Comment._cloneImages())
+      .then(Mavis.Comment._setMarkerOptions())
+      .then(Mavis.Comment._setRatingOptions())
+      .then(Mavis.Comment._events())
 			.then(resolve());
 		});
 	}
-
-
 };
 
 module.exports = Mavis.Comment;

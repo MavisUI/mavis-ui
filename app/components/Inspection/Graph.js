@@ -34,7 +34,7 @@ Mavis.Graph = {
 
 		return new Promise(function(resolve, reject) {
 
-			let 	data = Mavis.Filter.Data.Results,
+			let data = Mavis.Filter.Data.Results,
 					chartData = [],
 					cases = [],
 					categories = [],
@@ -42,11 +42,11 @@ Mavis.Graph = {
 
 			data.forEach(function(item, i) {
 
-				let 	start = Number(item.position).toFixed(2),
+				let start = Number(item.position).toFixed(2),
 						dur = Number(item.position + item.distance).toFixed(2);
 
 				if(start === dur) {
-					dur = Number(start) + 0.5;
+					dur = Number(start) + 0.1;
 				}
 
 				var el = {};
@@ -105,10 +105,11 @@ Mavis.Graph = {
 
 							Mavis.Player.pause();
 
-							let 	pos = (e.xAxis[0].value).toFixed(2),
+							let pos = (e.xAxis[0].value).toFixed(2),
 									position = Number(pos);
 
-							Mavis.Player.run(position);
+							Mavis.Player.playerSet(position);
+
 						},
 
 						load: function () {
@@ -125,7 +126,7 @@ Mavis.Graph = {
 								enabled: false
 							}
 						},
-						pointWidth: 15,
+						pointWidth: 10,
 						dataLabels: {
 							enabled: false
 						},
@@ -135,25 +136,26 @@ Mavis.Graph = {
 							events: {
 
 								click: function () {
+                  /*
+                    let 	mod = this.y - 1,
+                          position = this.x;
 
-									let 	mod = this.y - 1,
-											position = this.x;
-/*
-									all = MAVIS.DATA.RESULTS.CABLES[MAVIS.CONTROLS.FILTERS.cable].usergenerated[mod].all.length,
-									comment;
+                    all = MAVIS.DATA.RESULTS.CABLES[MAVIS.CONTROLS.FILTERS.cable].usergenerated[mod].all.length,
+                    comment;
 
-									for(i=0;i<all;i++) {
-										var n = Number(MAVIS.DATA.RESULTS.CABLES[MAVIS.CONTROLS.FILTERS.cable].usergenerated[mod].all[i].position);
+                    for(i=0;i<all;i++) {
+                        var n = Number(MAVIS.DATA.RESULTS.CABLES[MAVIS.CONTROLS.FILTERS.cable].usergenerated[mod].all[i].position);
 
-										if(n === position) {
-											comment = i;
-										}
-									}
-*/
-									Mavis.Player.pause();
-									Mavis.Player.run(position);
+                        if(n === position) {
+                            comment = i;
+                        }
+                    }
 
-									// MAVIS.COMMENTS.load(mod, comment);
+                    Mavis.Player.pause();
+                    Mavis.Player.run(position);
+
+                    // MAVIS.COMMENTS.load(mod, comment);
+                  */
 								}
 							}
 						}
@@ -198,7 +200,7 @@ Mavis.Graph = {
 					type: 'linear',
 					title: '',
 					min: 0,
-					max: Mavis.Data.CableData[Mavis.CableSelection.current].drivenLength,
+					max: Mavis.Data.CableData[Mavis.Filter.Data.Cable].drivenLength,
 					labels: {
 						enabled: true
 					},
@@ -244,10 +246,10 @@ Mavis.Graph = {
 
 	zoom: () => {
 
-		let 	chartContainer = document.getElementById('chartsmarker'),
+		let chartContainer = document.getElementById('chartsmarker'),
 				chart = Highcharts.charts[Highcharts.attr(chartContainer, 'data-highcharts-chart')],
 				position = Number(Mavis.Player.currentPosition),
-				max = Number(Mavis.Data.CableData[Mavis.CableSelection.current].drivenLength),
+				max = Number(Mavis.Data.CableData[Mavis.Filter.Data.Cable].drivenLength),
 				r = (max/Mavis.Graph.currentZoom).toFixed(2),
 				zoomRange = Number(r),
 				h = (zoomRange / 2).toFixed(2),

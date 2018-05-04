@@ -548,12 +548,12 @@ Mavis.Model = {
     return new Promise(function(resolve, reject) {
 
       document.getElementById('model').addEventListener('mousedown', Mavis.Model._onMouseInput, false);
-      resolve();
 
       document.getElementById('cableInfoButton').addEventListener('mousedown', Mavis.Model._loadVisual);
 
       document.getElementById('cableInfoClose').addEventListener('mousedown', Mavis.Model._hideInfo);
 
+      resolve();
     });
   },
 
