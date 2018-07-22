@@ -9,38 +9,37 @@ Mavis.CableSelection = {
 			let options = [];
 
 			Mavis.Data.Construction.cables.forEach(function(cable, i) {
-
-        let option;
-
-				if(i===n) {
-          option = '<option value="' + i + '" data-cable-index="' + i + '" selected>' + cable.name + '</option>';
-        } else {
-          option = '<option value="' + i + '" data-cable-index="' + i + '">' + cable.name + '</option>';
-        }
-
+        let option = '<option value="' + (i + 1) + '" data-cable-index="' + i + '">' + cable.name + '</option>';
 				options.push(option);
-
 			});
 
 			document.getElementById('cableSelection').innerHTML = '<label for="cableSelectionOptions">Seil: </label><select id="cableSelectionOptions" value="' + n +'">' + options.join('') + '</select>';
+			document.getElementById('cableSelectionOptions').selectedIndex = n;
+
 			resolve();
 		});
 	},
 
 	_changeCable: e => {
 
-	  Mavis.Player.pause();
+    Mavis.Player.pause();
 
-	  let cable = Number(e.target.value);
-    Mavis.Filter.Data.Cable = cable;
-    Mavis.Filter.Data.filterData();
+    let n = Number(e.target.value);
 
-    Mavis.Visual.setPath(cable);
+    console.log(n);
+
+    Mavis.Filter.Data.Cable = n;
+
+    Mavis.Visual.setPath((n-1));
     Mavis.Visual.renderImages(0);
 
     Mavis.Player._setMax();
     Mavis.Player.playerSet(0);
 
+    Mavis.Filter.Data.filterData()
+      .then(function() {
+        Mavis.Graph.init();
+      });
 	},
 
 	_events: () => {
@@ -48,7 +47,6 @@ Mavis.CableSelection = {
 		return new Promise(function(resolve, reject) {
 
 			let selection = document.getElementById('cableSelection');
-
 			selection.addEventListener('change', Mavis.CableSelection._changeCable);
 
 			resolve();
@@ -59,9 +57,9 @@ Mavis.CableSelection = {
 
 		return new Promise(function(resolve, reject) {
 
-			Mavis.CableSelection._render(cable)
-			.then(Mavis.CableSelection._events())
-			.then(resolve());
+		  Mavis.CableSelection._render(cable)
+        .then(Mavis.CableSelection._events())
+        .then(resolve());
 		});
 	}
 };

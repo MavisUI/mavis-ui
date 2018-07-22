@@ -34,13 +34,13 @@ Mavis.Dashboards = {
 
 	init: () => {
 
-		return new Promise(function(resolve, reject) {
-			Mavis.Filter.init('Dashboard', 'reportContainerDashboard', ['cable', 'sides', 'rating', 'marker'])
-			.then(Mavis.Dashboards._render())
-			.then(Mavis.Dashboards.initCharts(Mavis.Filter.Data.Results))
-			.then(resolve());
-		});
-	}
+    return new Promise(function (resolve, reject) {
+ 			Mavis.Filter.init('Dashboard', 'reportContainerDashboard', ['cables', 'sides', 'ratings', 'markers'])
+      .then(Mavis.Dashboards._render())
+ 		  .then(Mavis.Dashboards.initCharts(Mavis.Data.Filtered))
+ 			.then(resolve());
+    });
+  }
 };
 
 module.exports = Mavis.Dashboards;

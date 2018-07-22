@@ -2,119 +2,113 @@ const Mavis = require('../Global/Global');
 
 Mavis.Comment = {
 
-	_renderButton: () => {
+  _loaded: {},
 
-		return new Promise(function(resolve, reject) {
+  _renderButton: () => {
 
-			const container = document.getElementById('controlsComment'),
-            content = [
-              '<button id="controlsMarkerCreate" class="active">',
-                '<div class="icon iconMarker"></div>',
-              '</button>'
-            ];
+    return new Promise(function(resolve, reject) {
 
-			container.innerHTML = content.join('');
-			resolve();
-		});
-	},
+      const container = document.getElementById('controlsComment'),
+        content = [
+          '<button id="controlsMarkerCreate" class="active">',
+            '<div class="icon iconChat"></div>',
+          '</button>'
+        ];
+
+      container.innerHTML = content.join('');
+
+      let commentButton = document.getElementById('controlsMarkerCreate');
+      commentButton.addEventListener('mousedown', Mavis.Comment.load);
+
+      resolve();
+    });
+  },
 
   _renderModal: () => {
 
     return new Promise(function(resolve, reject) {
-
       const container = document.getElementById('comment'),
-            content = [
-              '<div class="inner">',
-                '<div id="commentBody">',
-                  '<h2>Eintrag erstellen/bearbeiten</h2>',
-                  '<div class="commentItem" id="commentsCases">',
-                    '<label>Merkmal: </label>',
-                    '<select id="commentsCasesSelection"></select>',
-                  '</div>',
-                  '<div class="commentItem" id="commentsRating">',
-                    '<label>Schadensklasse: </label>',
-                    '<select id="commentsRatingSelection"></select>',
-                  '</div>',
-                  '<div class="commentItem" id="commentsMeasure">',
-                    '<label id="commentMeasureLabel" for="commentMeasureInput">Anteil (%): </label>',
-                    '<input type="number" id="commentMeasureInput" value="0.00" />',
-                  '</div>',
-                  '<div class="commentItem" id="commentPosition">',
-                    '<label for="commentPosition">Position (m): </label>',
-                    '<input type="number" id="commentPositionInput" value="0.00" />',
-                  '</div>',
-                  '<div class="commentItem" id="commentDistance">',
-                    '<label for="commentDistance">Länge (m): </label>',
-                    '<input type="number" id="commentDistanceInput" value="0.00" />',
-                  '</div>',
-                  '<div class="commentItem" id="commentImages">',
-                    '<label>Betroffene Seiten: </label>',
-                    '<div id="commentImagesContainer"></div>',
-                  '</div>',
-                  '<div class="commentItem" id="commentText">',
-                    '<label for="commentTextInput">Kommentar: </label>',
-                    '<textarea id="commentTextInput"></textarea>',
-                  '</div>',
-                  '<div id="commentFunctions">',
-                    '<button id="commentCancel"><div class="icon iconCancel"></div> Abbrechen</button>',
-                    '<button id="commentReset"><div class="icon iconRefresh"></div> Reset</button>',
-                    '<button id="commentRemove"><div class="icon iconTrash"></div> Löschen</button>',
-                    '<button id="commentSave"><div class="icon iconConfirm"></div> Speichern</button>',
-                  '</div>',
-                '</div>',
-              '</div>'
-            ];
+        content = [
+          '<div class="inner">',
+            '<div class="commentItem" id="commentClose">',
+              '<button id="commentCloseButton"><div class="icon iconCancel"></div> schließen</button>',
+            '</div>',
+            '<h2 id="commentHeadline">Eintrag</h2>',
+            '<div class="commentItem" id="commentCases">',
+              '<label>Merkmal</label>',
+              '<select id="commentCasesSelection"></select>',
+            '</div>',
+            '<div class="commentItem" id="commentRating">',
+              '<label>Schadensklasse</label>',
+              '<select id="commentRatingSelection"></select>',
+            '</div>',
+            '<div class="commentItem" id="commentPosition">',
+              '<label for="commentPositionInput">Von (m)</label>',
+              '<input type="number" id="commentPositionInput" value="0.00" min="0" steps="0.1" />',
+            '</div>',
+            '<div class="commentItem" id="commentDistance">',
+              '<label for="commentDistanceInput">Bis (m)</label>',
+              '<input type="number" id="commentDistanceInput" value="0.00" min="0" steps="0.1" />',
+            '</div>',
+            '<div class="commentItem" id="commentFrequency">',
+              '<label for="commentFrequencyInput">Häufigkeit/Strecke</label>',
+              '<input type="number" id="commentFrequencyInput" value="0" min="0" />',
+              '<select id="commentFrequencyInputMetric"></select>',
+            '</div>',
+            '<div class="commentItem" id="commentImages">',
+              '<label>Betroffene Seiten</label>',
+              '<div id="commentImagesContainer"></div>',
+            '</div>',
+            '<div class="commentItem" id="commentText">',
+              '<label for="commentTextInput">Kommentar </label>',
+              '<textarea id="commentTextInput"></textarea>',
+            '</div>',
+            '<div class="commentItem" id="commentFunctions"></div>',
+          '</div>'
+        ];
 
       container.innerHTML = content.join('');
       resolve();
     });
   },
 
-  _cloneImages: () => {
+  _setMarkerOptions: n => {
 
     return new Promise(function(resolve, reject) {
 
-      let images = document.getElementById('pictures'),
-          imagesClone = images.cloneNode(true);
+      console.log(n);
 
-      document.getElementById('commentImagesContainer').appendChild(imagesClone);
+      let selection = document.getElementById('commentCasesSelection'),
+          din = Mavis.Data.Settings.din,
+          manual = Mavis.Data.Settings.manual,
+          counter = 0,
+          options = ['<option value="nn" data-module-index="nn">Schadensmerkmal auswählen</option>'];
+
+      din.forEach(function(mod, i) {
+        let option = '<option value="' + i + '" data-module-index="' + i + '">' + mod.label + '</option>';
+        options.push(option);
+        counter++;
+      });
+
+      manual.forEach(function(mod, i) {
+        let option = '<option value="' + counter + '" data-module-index="' + i + '">' + mod.label + '</option>';
+        options.push(option);
+        counter++;
+      });
+
+      selection.innerHTML = options.join('');
+      selection.selectedIndex = (n-5);
 
       resolve();
     });
   },
 
-  _setMarkerOptions: () => {
-
-	  return new Promise(function(resolve, reject) {
-
-      let din = Mavis.Data.Settings.din,
-          manual = Mavis.Data.Settings.manual,
-          counter = 0,
-          options = [];
-
-      din.forEach(function(mod, i) {
-        counter++;
-        let option = '<option value="' + counter + '" data-module-index="' + i + '">' + mod.label + '</option>';
-        options.push(option);
-      });
-
-      manual.forEach(function(mod, i) {
-        counter++;
-        let option = '<option value="' + counter + '" data-module-index="' + i + '">' + mod.label + '</option>';
-        options.push(option);
-      });
-
-      document.getElementById('commentsCasesSelection').innerHTML = options.join('');
-
-	    resolve();
-    });
-  },
-
-  _setRatingOptions: () => {
+  _setRatingOptions: n => {
 
     return new Promise(function(resolve, reject) {
 
-      let options = [],
+      let selection = document.getElementById('commentRatingSelection'),
+          options = [],
           classes = Mavis.Data.Settings.damageClasses;
 
       classes.forEach(function(el, i) {
@@ -122,32 +116,296 @@ Mavis.Comment = {
         options.push(option);
       });
 
-      document.getElementById('commentsRatingSelection').innerHTML = options.join('');
+      selection.innerHTML = options.join('');
+      selection.selectedIndex = n;
 
       resolve();
     });
   },
 
-  _toggleComment: () => {
+  _setPosition: n => {
 
-	  let container = document.getElementById('comment');
+    return new Promise(function(resolve, reject) {
 
-	  if(container.classList.contains('hidden')) {
-	    container.classList.remove('hidden');
+      document.getElementById('commentPositionInput').value = Number(n).toFixed(2);
+
+      resolve();
+    });
+  },
+
+  _setDistance: (n, m) => {
+
+    return new Promise(function(resolve, reject) {
+
+      document.getElementById('commentDistanceInput').value = (Number(n) + Number(m)).toFixed(2);
+
+      resolve();
+    })
+  },
+
+  _setFrequency: (n, m) => {
+
+    return new Promise(function(resolve, reject) {
+
+      let input = document.getElementById('commentFrequencyInput'),
+          selection = document.getElementById('commentFrequencyInputMetric'),
+          metrics = ['&#37;','m','cm','cm&#178;','cm&#179;','Stück'],
+          i = metrics.indexOf(m),
+          options = [];
+
+      input.value = n;
+
+      metrics.forEach(function(el, i) {
+        let option = '<option value="' + i + '" data-class-index="' + i + '">' + el + '</option>';
+        options.push(option);
+      });
+
+      selection.innerHTML = options.join('');
+      selection.selectedIndex = i;
+
+      resolve();
+    })
+  },
+
+  _setActiveSides: sides => {
+
+    return new Promise(function(resolve, reject) {
+
+      let elements = document.querySelectorAll('.commentImage');
+
+      elements.forEach(function(element, i) {
+
+        if(sides.indexOf(i) > -1) {
+          element.classList.add('active');
+        }
+
+      });
+
+      resolve();
+    });
+  },
+
+  _setImages: (position, sides) => {
+
+    return new Promise(function(resolve, reject) {
+
+      let container = document.getElementById('commentImagesContainer'),
+          l = 6,
+          i = 0,
+          img = Mavis.Player._getFrame(position),
+          items = [];
+
+      for(i=0;i<l;i++) {
+        let backgroundImg = Mavis.Visual.imagePath + i + '/' + img + '.jpg',
+            item = '<div class="commentImage" data-value="' + i + '">' + backgroundImg + '<div class="icon iconCableActive' + i + '"></div> <div class="icon iconConfirm"></div></div>';
+
+        items.push(item);
+      }
+
+      container.innerHTML = items.join('');
+
+      Mavis.Comment._setActiveSides(sides)
+        .then(resolve());
+    });
+  },
+
+  _selectSide: e => {
+
+    if(e.target.classList.contains('active')) {
+      e.target.classList.remove('active');
     } else {
-	    container.classList.add('hidden');
+      e.target.classList.add('active');
     }
   },
 
-  _cancel: () => {
+  _setText: txt => {
 
-    document.getElementById('comment').classList.add('hidden');
+    return new Promise(function(resolve, reject) {
+
+      let input = document.getElementById('commentTextInput');
+      input.value = txt;
+      resolve();
+    });
+  },
+
+  _renderFunctions: status => {
+
+    return new Promise(function(resolve, reject) {
+
+      let container = document.getElementById('commentFunctions'),
+          functions = ['<button id="commentReset" class="ghost"><div class="icon iconRefresh"></div> zurücksetzen</button>'];
+
+      if(status === 'new') {
+        functions.push('<button id="commentCancel"><div class="icon iconCancel"></div> abbrechen</button>');
+      } else {
+        functions.push('<button id="commentRemove"><div class="icon iconTrash"></div> löschen</button>');
+      }
+
+      functions.push('<button id="commentSave" class="active"><div class="icon iconConfirm"></div> speichern</button>');
+
+      container.innerHTML = functions.join('');
+
+      resolve();
+    });
+  },
+
+  _events: () => {
+
+    return new Promise(function(resolve, reject) {
+
+      let commentClose = document.getElementById('commentCloseButton'),
+          commentSides = document.querySelectorAll('.commentImage'),
+          commentReset = document.getElementById('commentReset');
+
+      commentClose.addEventListener('mousedown', Mavis.Comment._toggle);
+
+      commentSides.forEach(function(side, index) {
+        side.addEventListener('mousedown', Mavis.Comment._selectSide);
+      });
+
+      commentReset.addEventListener('mousedown', Mavis.Comment._reset);
+
+      resolve();
+    });
   },
 
   _reset: () => {
-
-    document.getElementById('comment').classList.add('hidden');
+    Mavis.Comment.load(Mavis.Comment._loaded);
   },
+
+  _toggle: () => {
+
+    let container = document.getElementById('comment');
+
+    if(container.classList.contains('hidden')) {
+      container.classList.remove('hidden');
+    } else {
+      container.classList.add('hidden');
+    }
+  },
+
+  load: data => {
+
+    return new Promise(function(resolve, reject) {
+
+      // let id = Mavis.Data.Results.indexOf(data);
+      // console.log(id);
+
+      let headline = document.getElementById('commentHeadline');
+
+      if(!data.label) {
+
+        data = {};
+        data.status = 'new';
+        data.caption = '';
+        data.case = 0;
+        data.distance = 0.1;
+        data.metric = '&#37;';
+        data.position = Mavis.Player.currentPosition;
+        data.rating = 0;
+        data.sides = [];
+        data.value = 0;
+
+        headline.innerText = 'Eintrag erstellen';
+
+      } else {
+
+        headline.innerText = 'Eintrag bearbeiten';
+        data.status = 'old';
+      }
+
+      Mavis.Comment._loaded = data;
+
+      Mavis.Comment._setMarkerOptions(data.case)
+        .then(Mavis.Comment._setRatingOptions(data.rating))
+        .then(Mavis.Comment._setPosition(data.position))
+        .then(Mavis.Comment._setDistance(data.position, data.distance))
+        .then(Mavis.Comment._setFrequency(data.value, data.metric))
+        .then(Mavis.Comment._setImages(data.position, data.sides))
+        .then(Mavis.Comment._setText(data.caption))
+        .then(Mavis.Comment._renderFunctions(data.status))
+        .then(Mavis.Comment._events())
+        .then(function() {
+          let container = document.getElementById('comment');
+          if(container.classList.contains('hidden')) {
+            container.classList.remove('hidden');
+          }
+        })
+        .then(resolve());
+    });
+  },
+
+  init: () => {
+
+    return new Promise(function(resolve, reject) {
+
+      Mavis.Comment._renderButton()
+        .then(Mavis.Comment._renderModal())
+        .then(resolve());
+    });
+  }
+};
+
+module.exports = Mavis.Comment;
+
+
+/*************************** LATER *************************/
+
+/*
+  _getMetricLabel: metric => {
+
+    let metricLabel;
+
+    switch (metric) {
+
+      case '&#37;':
+        metricLabel = 'Anteil';
+        break;
+
+      case 'cm':
+        metricLabel = 'Länge';
+        break;
+
+      case 'm':
+        metricLabel = 'Länge';
+        break;
+
+      case 'cm&#178;':
+        metricLabel = 'Fläche';
+        break;
+
+      case 'cm&#179;':
+        metricLabel = 'Volumen';
+        break;
+
+      case 'Stück':
+        metricLabel = 'Anzahl';
+        break;
+
+      case 'µ':
+        metricLabel = 'Dicke';
+        break;
+
+      case 'Hz':
+        metricLabel = 'Frequenz';
+        break;
+
+      case '°Mohs':
+        metricLabel = 'Härte';
+        break;
+
+      case 'Ri':
+        metricLabel = 'Brüche';
+        break;
+
+      default:
+        metricLabel = 'Länge/Fläche';
+        break;
+    }
+
+    return metricLabel;
+  },
+
 
   _remove: () => {
 
@@ -159,54 +417,9 @@ Mavis.Comment = {
 	  document.getElementById('comment').classList.add('hidden');
   },
 
-  _events: () => {
+*/
 
-	  let commentButton = document.getElementById('controlsMarkerCreate'),
-        commentCancel = document.getElementById('commentCancel'),
-        commentReset = document.getElementById('commentReset'),
-        commentRemove = document.getElementById('commentRemove'),
-        commentSave = document.getElementById('commentSave'),
-        commentImage = document.querySelectorAll('#commentImagesContainer .picture');
-
-	  commentButton.addEventListener('mousedown', Mavis.Comment._toggleComment);
-    commentCancel.addEventListener('mousedown', Mavis.Comment._cancel);
-    commentReset.addEventListener('mousedown', Mavis.Comment._reset);
-    commentRemove.addEventListener('mousedown', Mavis.Comment._remove);
-    commentSave.addEventListener('mousedown', Mavis.Comment._save);
-
-    commentImage.forEach(function(image, i){
-
-      image.addEventListener('mousedown', function() {
-
-        if(this.classList.contains('active')) {
-          this.classList.remove('active');
-        } else {
-          this.classList.add('active');
-        }
-      });
-
-    });
-
-
-  },
-
-	init: () => {
-
-		return new Promise(function(resolve, reject) {
-
-			Mavis.Comment._renderButton()
-      .then(Mavis.Comment._renderModal())
-      .then(Mavis.Comment._cloneImages())
-      .then(Mavis.Comment._setMarkerOptions())
-      .then(Mavis.Comment._setRatingOptions())
-      .then(Mavis.Comment._events())
-			.then(resolve());
-		});
-	}
-};
-
-module.exports = Mavis.Comment;
-
+/********************************** OLD **********************************/
 
 /*
 
@@ -216,274 +429,6 @@ MAVIS.COMMENTS = {
 	current: {
 		module: 0,
 		comment: 0
-	},
-
-	_resize: function() {
-
-		return new Promise(function(resolve, reject) {
-
-			var header = document.getElementsByTagName('header'),
-				controls = document.getElementById('controls'),
-				comments = document.getElementById('comments'),
- 				commentsHeight = (Math.ceil(window.innerHeight - header[0].clientHeight - controls.clientHeight)) + 'px';
-
-			comments.style.height = commentsHeight;
-
-			resolve();
-		});
-	},
-
-	_toggleMenu: function() {
-
-		var comments = document.getElementById('comments'),
-			commentsFunctions = document.getElementById('commentsFunctions');
-
-		if(comments.classList.contains('hidden')) {
-			MAVIS.COMMENTS.erase();
-			comments.classList.remove('hidden');
-		} else {
-			comments.classList.add('hidden');
-			MAVIS.COMMENTS.erase();
-		}
-
-		commentsFunctions.setAttribute('class', 'new');
-	},
-
-	_setPosition: function(n) {
-
-		if(!n) var n = 0;
-
-		var cableLength = MAVIS.DATA.OBJECT.BUILD.CABLES[MAVIS.CONTROLS.FILTERS.cable].LENGTH,
-			maxDistance = cableLength - n,
-			commentPosition = document.getElementById('commentPosition'),
-			commentDistance = document.getElementById('commentDistance');
-
-		commentPosition.setAttribute('value', n);
-		commentPosition.setAttribute('max', cableLength);
-		commentDistance.setAttribute('max', maxDistance);
-	},
-
-	_getPosition: function() {
-
-		var posititonInput = document.getElementById('commentPosition'),
-			pos = Number(posititonInput.value);
-
-		return pos;
-	},
-
-	_setDistance: function(n) {
-
-		if(!n) var n = 0;
-
-		var el = document.getElementById('commentDistance'),
-			x = n.toFixed(2);
-
-		el.value = x;
-	},
-
-	_getDistance: function() {
-
-		var el = document.getElementById('commentDistance');
-		return el.value;
-	},
-
-	_setSides: function(arr) {
-
-		if(!arr) var arr = new Array;
-
-		var container = document.querySelector('#commentCableSides'),
-			sides = MAVIS.DATA.OBJECT.BUILD.CABLES[MAVIS.CONTROLS.FILTERS.cable].SIDES,
-			content = '';
-
-		container.innerHTML = '';
-
-		for(i=1; i<=sides; i++) {
-
-			if(arr.indexOf(i) > -1) {
-				content += '<label>' + i + ': </label><input type="checkbox" data-side="' + i + '" class="commentCableSide" checked>';
-			} else {
-				content += '<label>' + i + ': </label><input type="checkbox" data-side="' + i + '" class="commentCableSide">';
-			}
-
-		}
-
-		container.innerHTML = content;
-	},
-
-	_getSides: function() {
-
-		var checkboxes = document.querySelectorAll('.commentCableSide'),
-			sides = MAVIS.DATA.OBJECT.BUILD.CABLES[MAVIS.CONTROLS.FILTERS.cable].SIDES,
-			arr = new Array;
-
-		for(i=0; i<sides; i++) {
-			if(checkboxes[i].checked) arr.push(i);
-		}
-
-		return arr;
-	},
-
-	_setCase: function (c) {
-
-		if(!c) var c = 0;
-
-		var commentsCasesSelection = document.getElementById('commentsCasesSelection');
-		commentsCasesSelection.innerHTML = '';
-
-		MAVIS.DATA.CONFIG.MODULES.forEach(function(obj, i) {
-
-			if(i > 3) {
-
-				var n = i-4,
-					check;
-
-				if(n === c) {
-					check = 'checked';
-				} else {
-					check = '';
-				}
-
-				var el = '<div class="commentsCasesEntry"><input type="radio" name="usergenerated" value="' + n + '" data-id="' + i + '" ' + check + '/><label>' + MAVIS.DATA.CONFIG.MODULES[i].label + '</label></div>';
-
-				commentsCasesSelection.innerHTML += el;
-			}
-		});
-
-		var cases = document.querySelectorAll('#commentsCasesSelection input'),
-			l = cases.length;
-
-		for(x=0;x<l;x++) {
-			cases[x].addEventListener('change', function(e) {
-
-				var mod = this.getAttribute('data-id'),
-					m = MAVIS.DATA.CONFIG.MODULES[mod].metric;
-
-				MAVIS.COMMENTS._setMetric(m);
-			});
-		}
-	},
-
-	_getCase: function() {
-
-		var cases = document.querySelectorAll('.commentsCasesEntry > input'),
-			n = cases.length,
-			x = 0;
-
-		for(i=0; i<n; i++) {
-			if(cases[i].checked) x = cases[i].getAttribute('data-id');
-		}
-
-		return x;
-	},
-
-	_setValue: function(n) {
-
-		if(!n) var n = 0;
-
-		var x = Number(n),
-			el = document.getElementById('commentsRatingValue');
-
-		el.value = x;
-	},
-
-	_getValue: function() {
-
-		var el = document.getElementById('commentsRatingValue');
-		return el.value;
-	},
-
-	_setMetric: function(n) {
-
-		if(!n) var n = 0;
-
-		var el = document.getElementById('commentsRatingValueMetric');
-		el.innerHTML = MAVIS.DATA.CONFIG.METRICS[n];
-	},
-
-	_setClass: function(n) {
-
-		if(!n) var n = 0;
-
-		var select = document.getElementById('commentsRatingSelect'),
-			classes = MAVIS.DATA.CONFIG.CLASSES,
-			content = '';
-
-		select.innerHTML = '';
-
-		for(i=0; i<classes.length; i++) {
-
-			var selected = '';
-
-			if(i === n) selected = 'selected';
-
-			content += '<option value="' + i + '" ' + selected + '>' + classes[i] + '</option>';
-		}
-
-		select.innerHTML = content;
-	},
-
-	_getClass: function() {
-
-		var options = document.querySelectorAll('#commentsRatingSelect > option'),
-			n = options.length,
-			x = 0;
-
-		for(i=0;i<n;i++) {
-			if(options[i].selected) x = i;
-		}
-
-		return x;
-	},
-
-	_setComment: function(txt) {
-
-		if(!txt) var txt = '';
-
-		var el = document.getElementById('commentsTextarea');
-		el.value = txt;
-	},
-
-	_getComment: function() {
-
-		var el = document.getElementById('commentsTextarea');
-		return el.value;
-	},
-
-	erase: function() {
-		MAVIS.COMMENTS._setPosition(Number(MAVIS.CONTROLS.currentPosition));
-		MAVIS.COMMENTS._setDistance(0);
-		MAVIS.COMMENTS._setSides();
-		MAVIS.COMMENTS._setCase(0);
-		MAVIS.COMMENTS._setValue(0);
-		MAVIS.COMMENTS._setMetric(0);
-		MAVIS.COMMENTS._setClass(0);
-		MAVIS.COMMENTS._setComment('');
-
-		MAVIS.COMMENTS.overwrite = false;
-	},
-
-	load: function(mod, i) {
-
-		var data = MAVIS.DATA.RESULTS.CABLES[MAVIS.CONTROLS.FILTERS.cable].usergenerated[mod].all[i],
-			selectedCase = data.case -4,
-			comments = document.getElementById('comments'),
-			commentsFunctions = document.getElementById('commentsFunctions');
-
-		MAVIS.COMMENTS._setPosition(Number(data.position));
-		MAVIS.COMMENTS._setDistance(data.distance);
-		MAVIS.COMMENTS._setSides(data.sides);
-		MAVIS.COMMENTS._setCase(selectedCase);
-		MAVIS.COMMENTS._setValue(data.value);
-		MAVIS.COMMENTS._setMetric(MAVIS.DATA.CONFIG.MODULES[data.case].metric);
-		MAVIS.COMMENTS._setClass(data.rating);
-		MAVIS.COMMENTS._setComment(data.content);
-
-		MAVIS.COMMENTS.current.module = mod;
-		MAVIS.COMMENTS.current.comment = i;
-		MAVIS.COMMENTS.overwrite = true;
-
-		commentsFunctions.setAttribute('class', 'overwrite');
-		comments.classList.remove('hidden');
 	},
 
 	remove: function() {
@@ -530,65 +475,7 @@ MAVIS.COMMENTS = {
 		MAVIS.CONTROLS.MARKER.init();
 		MAVIS.DATA.write_results();
 		MAVIS.COMMENTS.overwrite = false;
-
 		document.getElementById('comments').classList.add('hidden');
 	},
-
-	_events: function() {
-
-		return new Promise(function(resolve, reject) {
-
-			var btnToggle = document.getElementById('commentsToggle'),
-				btnReset = document.getElementById('commentsReset'),
-				btnSave = document.getElementById('commentsSave'),
-				btnCancel = document.getElementById('commentsCancel'),
-				btnRemove = document.getElementById('commentsRemove');
-
-			btnToggle.addEventListener('click', function(e) {
-				MAVIS.COMMENTS._toggleMenu();
-				MAVIS.COMMENTS.overwrite = false;
-			});
-
-			btnReset.addEventListener('click', function(e) {
-				MAVIS.COMMENTS.erase();
-			});
-
-			btnSave.addEventListener('click', function(e) {
-				MAVIS.COMMENTS.save();
-			});
-
-			btnCancel.addEventListener('click', function(e) {
-				MAVIS.COMMENTS.erase();
-				MAVIS.COMMENTS._toggleMenu();
-			});
-
-			btnRemove.addEventListener('click', function(e) {
-				MAVIS.COMMENTS.remove();
-			});
-
-			resolve();
-		});
-	},
-
-	init: function() {
-
-		return new Promise(function(resolve, reject) {
-
-			console.log('init COMMENTS');
-
-			MAVIS.COMMENTS._resize()
-			.then(MAVIS.COMMENTS._setPosition())
-			.then(MAVIS.COMMENTS._setDistance())
-			.then(MAVIS.COMMENTS._setSides())
-			.then(MAVIS.COMMENTS._setCase())
-			.then(MAVIS.COMMENTS._setValue())
-			.then(MAVIS.COMMENTS._setMetric())
-			.then(MAVIS.COMMENTS._setClass())
-			.then(MAVIS.COMMENTS._setComment())
-			.then(MAVIS.COMMENTS._events())
-			.then(resolve());
-		});
-	}
-};
 
 */

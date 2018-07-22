@@ -118,7 +118,7 @@ Mavis.Download = {
 
 		let data = [];
 
-		Mavis.Filter.Data.Results.forEach(function(result, i) {
+		Mavis.Data.Filtered.forEach(function(result, i) {
 
 			let item = {};
 			item.id = (i + 1);
@@ -130,7 +130,7 @@ Mavis.Download = {
 			item.distance = result.distance;
 			item.value = result.value;
 
-			let 	images = [],
+			let images = [],
 					imageData = Mavis.Download._getImages(result, i);
 
 			// console.log(imageData);
@@ -298,7 +298,7 @@ Mavis.Download = {
 
 		return new Promise(function(resolve, reject) {
 
-			let 	xlsButton = document.getElementById('downloadXls'),
+			let xlsButton = document.getElementById('downloadXls'),
 					csvButton = document.getElementById('downloadCsv'),
 					imgButton = document.getElementById('downloadImages');
 

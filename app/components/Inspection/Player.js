@@ -59,7 +59,7 @@ Mavis.Player = {
 
     return new Promise(function(resolve, reject) {
 
-      let max = Number(Mavis.Data.CableData[Mavis.Filter.Data.Cable].drivenLength),
+      let max = Number(Mavis.Data.CableData[Mavis.Data.Filter.Cable].drivenLength),
           el = document.getElementById('playerPosition');
 
       // set input to max value so user can't enter a position higher than possible
@@ -77,9 +77,9 @@ Mavis.Player = {
 
     let _biggerElements = inArray => {
       return inArray < position;
-    }
+    };
 
-    let res = Mavis.Data.CableData[Mavis.Filter.Data.Cable].trigger.filter(_biggerElements),
+    let res = Mavis.Data.CableData[Mavis.Data.Filter.Cable].trigger.filter(_biggerElements),
         n = res.length;
 
     if(n < 0) n = 0;
@@ -217,7 +217,7 @@ Mavis.Player = {
         // pause player
         Mavis.Player.pause();
 
-        Mavis.Player.playerSet(Mavis.Data.CableData[Mavis.Filter.Data.Cable].drivenLength);
+        Mavis.Player.playerSet(Mavis.Data.CableData[Mavis.Data.Filter.Cable].drivenLength);
 
       });
 
@@ -232,7 +232,7 @@ Mavis.Player = {
         let previousFrame = Mavis.Player.currentFrame - 1;
 
         if(previousFrame >= 0) {
-          let position = Number(Mavis.Data.CableData[Mavis.Filter.Data.Cable].trigger[previousFrame]);
+          let position = Number(Mavis.Data.CableData[Mavis.Data.Filter.Cable].trigger[previousFrame]);
           Mavis.Player.playerSet(position);
         }
       });
@@ -247,8 +247,8 @@ Mavis.Player = {
 
         let nextFrame = Mavis.Player.currentFrame + 1;
 
-        if(nextFrame <= Mavis.Data.CableData[Mavis.Filter.Data.Cable].imageCount) {
-          let position = Mavis.Data.CableData[Mavis.Filter.Data.Cable].trigger[nextFrame];
+        if(nextFrame <= Mavis.Data.CableData[Mavis.Data.Filter.Cable].imageCount) {
+          let position = Mavis.Data.CableData[Mavis.Data.Filter.Cable].trigger[nextFrame];
           Mavis.Player.playerSet(position);
         }
       });

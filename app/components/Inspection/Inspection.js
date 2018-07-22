@@ -31,6 +31,16 @@ Mavis.Inspection = {
 		});
 	},
 
+  _setFilterCable: cable => {
+
+	  return new Promise(function(resolve, reject) {
+
+      Mavis.Data.Filter.Cable = cable;
+
+	    resolve();
+    });
+  },
+
 	init: data => {
 
 		return new Promise(function(resolve, reject) {
@@ -39,15 +49,17 @@ Mavis.Inspection = {
 
 			document.getElementById('content').setAttribute('data-tab', 'Inspection');
 
-			Mavis.Inspection._render()
-			.then(CableSelection.init(data.cable))
+      Mavis.Inspection._render()
+      .then(Mavis.Filter.init('Inspection', 'cableSelection', ['cable']))
+      .then(Mavis.Filter.init('Inspection', 'inspectionFilter', ['sides', 'ratings', 'markers']))
+      .then(Mavis.Inspection._setFilterCable(data.cable))
+      .then(Mavis.Data.Filter.filterData())
       .then(Visual.init(data))
-      .then(Mavis.Filter.init('Inspection', 'inspectionFilter', ['sides', 'rating', 'marker']))
-			.then(Graph.init())
+      .then(Graph.init(data.cable))
       .then(Player.init(data))
       .then(Comment.init())
-			.then(resolve());
-		});
+      .then(resolve());
+    });
 	}
 };
 

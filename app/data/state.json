@@ -1,5 +1,6 @@
 {
 	"objects": ["Rheinkniebrücke"],
 	"currentObject": 0,
-	"currentCable": 0
+	"cable": 0,
+  "position": 0
 }

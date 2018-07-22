@@ -238,7 +238,7 @@ Mavis.Model = {
 
         let data = Mavis.Data.Construction.cables,
           deg = Math.PI / 180,
-          results = Mavis.Filter.Data.Results;
+          results = Mavis.Data.Filtered;
 
         data.forEach(function(el, i) {
 
@@ -289,8 +289,8 @@ Mavis.Model = {
         context.font = 'Bold ' + fontsize + 'px ' + fontface;
         context.rotate(parameters.rotation * Math.PI/180);
 
-        let 	metrics = context.measureText(message),
-          textWidth = metrics.width;
+        let metrics = context.measureText(message),
+            textWidth = metrics.width;
 
         context.fillStyle = 'rgba(0, 0, 0, 1)';
         context.fillText(message, borderThickness, fontsize + borderThickness);
@@ -320,7 +320,7 @@ Mavis.Model = {
         context.rotate(parameters.rotation * Math.PI/180);
 
         let metrics = context.measureText(message),
-          textWidth = metrics.width;
+            textWidth = metrics.width;
 
         context.fillStyle = 'rgba(0, 0, 0, 1)';
         context.fillText(message, 20, 30);
@@ -373,14 +373,14 @@ Mavis.Model = {
         Mavis.Model.Labels = new THREE.Object3D();
 
         Mavis.Model.Construction._renderFloor()
-          .then(Mavis.Model.Construction._renderRiver())
-          .then(Mavis.Model.Construction._renderSupports())
-          .then(Mavis.Model.Construction._renderPillars())
-          .then(Mavis.Model.Construction._renderDeck())
-          .then(Mavis.Model.Construction._renderCables())
-          .then(Mavis.Model.Construction._renderLabels())
-          .then(Mavis.Model.Construction._addScenes())
-          .then(resolve());
+        .then(Mavis.Model.Construction._renderRiver())
+        .then(Mavis.Model.Construction._renderSupports())
+        .then(Mavis.Model.Construction._renderPillars())
+        .then(Mavis.Model.Construction._renderDeck())
+        .then(Mavis.Model.Construction._renderCables())
+        .then(Mavis.Model.Construction._renderLabels())
+        .then(Mavis.Model.Construction._addScenes())
+        .then(resolve());
       });
     }
   },
@@ -557,6 +557,24 @@ Mavis.Model = {
     });
   },
 
+  rerender: () => {
+
+    Mavis.Model._animateEnd();
+    document.getElementById('model').innerHTML = '';
+
+    Mavis.Model._setMouse()
+    .then(Mavis.Model._setCamera())
+    .then(Mavis.Model._setScene())
+    .then(Mavis.Model._setLight())
+    .then(Mavis.Model.Construction._init())
+    .then(Mavis.Model._setRenderer())
+    .then(Mavis.Model._setRaycaster())
+    .then(Mavis.Model._events())
+    .then(Mavis.Model._animate())
+    .then(Mavis.Model._setOrbitControls());
+
+  },
+
   init: () => {
 
     return new Promise(function(resolve, reject) {
@@ -568,19 +586,18 @@ Mavis.Model = {
       document.getElementById('content').setAttribute('data-tab', 'Model');
 
       Mavis.Model._renderDom()
-        .then(Mavis.Filter.init('Model', 'modelFilter', ['rating', 'marker']))
-        .then(Mavis.Model._setMouse())
-        .then(Mavis.Model._setCamera())
-        .then(Mavis.Model._setScene())
-        .then(Mavis.Model._setLight())
-        .then(Mavis.Model.Construction._init())
-        // .then(Mavis.Model._renderAlternateContent())
-        .then(Mavis.Model._setRenderer())
-        .then(Mavis.Model._setRaycaster())
-        .then(Mavis.Model._events())
-        .then(Mavis.Model._animate())
-        .then(Mavis.Model._setOrbitControls())
-        .then(resolve());
+      .then(Mavis.Filter.init('Model', 'modelFilter', ['ratings', 'markers']))
+      .then(Mavis.Model._setMouse())
+      .then(Mavis.Model._setCamera())
+      .then(Mavis.Model._setScene())
+      .then(Mavis.Model._setLight())
+      .then(Mavis.Model.Construction._init())
+      .then(Mavis.Model._setRenderer())
+      .then(Mavis.Model._setRaycaster())
+      .then(Mavis.Model._events())
+      .then(Mavis.Model._animate())
+      .then(Mavis.Model._setOrbitControls())
+      .then(resolve());
     });
   }
 };

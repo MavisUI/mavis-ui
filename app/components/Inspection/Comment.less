@@ -1,339 +1,235 @@
 @import '../Global/Vars.less';
 
 #controlsComment {
-	display: inline-block;
-	float: left;
-	width: @gridWidth-2;
-	text-align: right;
-	margin-top: 1rem;
-	margin-left: 2%;
+  display: inline-block;
+  float: left;
+  width: @gridWidth-2;
+  text-align: right;
+  margin-top: 1rem;
+  margin-left: 2%;
 
-	#controlsMarkerCreate {
-		height: 5rem;
-		width: 5rem;
-		-webkit-appearance: none;
-		border-radius: 2.5rem;
-		background-color: @green;
-		border: none;
-		outline: none;
-		cursor: pointer;
-		.transition200ms();
+  #controlsMarkerCreate {
+    height: 5rem;
+    width: 5rem;
+    -webkit-appearance: none;
+    border-radius: 2.5rem;
+    background-color: @green;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    .transition200ms();
 
-		.icon {
-			color: @white;
-			font-size: 2.5rem;
-		}
+    .icon {
+      color: @white;
+      font-size: 2.5rem;
+    }
 
-		&:active {
-			box-shadow: 0 1px 2px @greyDark inset;
-		}
-	}
+    &:active {
+      box-shadow: 0 1px 2px @greyDark inset;
+    }
+  }
 }
 
 #comment {
+  display: inline-block;
+  height: calc(100% - 5.21rem);
+  width: @gridWidth-12;
   position: fixed;
   top: 5.2rem;
   left: 0;
-  display: inline-block;
-  width: @gridWidth-12;
-  height: calc(100% - 5.21rem);
   z-index: @foreground;
-  background-color: @grey;
+  .backgroundBlueGradient;
   .transition400ms();
 
-  &.hidden {
+  &.hidden  {
     -webkit-transform: translateY(100%);
   }
 
-  #commentBody {
+  h2 {
+    width: @gridWidth-12;
+    margin: 4rem 0 2rem 0;
+    text-align: center;
+    color: @white;
+    font-size: 2rem;
+    .fontBold;
+  }
 
-    h2 {
-      margin: 1rem 0 3rem 0;
-    }
+  .commentItem {
+    display: inline-block;
+    margin-top: 3rem;
 
-    .commentItem {
+    label {
       display: inline-block;
       width: @gridWidth-12;
-      margin-right: @gridMargin;
+      line-height: 4rem;
+      font-size: 1.5rem;
+      color: @white;
+      .fontLight();
+    }
 
-      &#commentImages,
-      &#commentText {
-        width: @gridWidth-12;
+    select,
+    input {
+      display: inline-block;
+      width: @gridWidth-12;
+      margin: 0;
+      -webkit-appearance: none;
+      background: transparent;
+      border: none;
+      color: @white;
+      font-size: 2rem;
+      text-align: left;
+      .fontBold();
+
+      &:focus {
+        outline: none;
       }
 
-      &#commentText {
-        margin: 1.5rem 0;
-
-        label {
-          line-height: 3rem;
-        }
+      &#commentFrequencyInput {
+        display: inline;
+        width: 5rem;
       }
 
-      label {
-        display: inline-block;
-        float: left;
+      &#commentFrequencyInputMetric {
+        display: inline;
+        width: 5rem;
+      }
+    }
+
+    textarea {
+      width: @gridWidth-12;
+      height: 14vh;
+      margin-top: .5rem;
+      -webkit-appearance: none;
+      font-size: 2rem;
+      background-color: @white;
+      border: none;
+      .fontLight();
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &#commentClose {
+      width: @gridWidth-12;
+      margin-top: 1rem;
+      text-align: right;
+
+      #commentCloseButton {
+        color: @white;
+        .fontBold();
         font-size: 1.5rem;
-        .fontLight();
-        line-height: 4rem;
-        width: 15rem;
-      }
-
-      select,
-      input {
-        display: inline-block;
-        float: left;
         -webkit-appearance: none;
         background: transparent;
         border: none;
-        color: @blue;
-        display: inline-block;
-        font-size: 1.5rem;
-        line-height: 4rem;
-        margin: 0 0 0 1rem;
-        text-align: left;
-        .fontBold();
+        cursor: pointer;
+        outline: none;
 
-        &:focus {
-          outline: none;
-        }
-      }
-
-      textarea {
-        -webkit-appearance: none;
-        background-color: @white;
-        border: 1px solid @greyBright;
-        .fontLight();
-        height: 14vh;
-        margin-top: .5rem;
-        width: 70%;
-        padding: 1rem;
-
-        &:focus {
-          outline: none;
-        }
-      }
-
-      #pictures {
-        display: inline-block;
-        text-align: center;
-        padding: .25rem 0;
-
-        .pictureRow {
+        .icon {
           display: inline-block;
+          position: relative;
+          top: 0.75rem;
+          color: #FFFFFF;
+          font-size: 3rem;
+        }
+      }
+    }
 
-          &:nth-of-type(1) {
+    &#commentCases {
+      width: @gridWidth-4;
+      margin-left: @gridWidth-3;
+      margin-right: @gridMargin;
+    }
 
-            .pictureWindow {
+    &#commentRating {
+      width: @gridWidth-2;
+      margin-right: @gridWidth-3;
+    }
 
-              &:nth-of-type(1) {
-                span {
-                  svg {
-                    #label_1 {
-                      display: block;
-                    }
+    &#commentPosition {
+      width: @gridWidth-2;
+      margin-left: @gridWidth-3;
+      margin-right: @gridMargin;
+    }
 
-                    #line_1 {
-                      stroke-width: 1rem;
-                    }
-                  }
-                }
-              }
+    &#commentDistance {
+      width: @gridWidth-2;
+      margin-right: @gridMargin;
+    }
 
-              &:nth-of-type(2) {
+    &#commentImages {
+      width: @gridWidth-6;
+      margin-left: @gridWidth-3;
+      margin-right: @gridWidth-3;
+    }
 
-                span {
-                  svg {
-                    #label_2 {
-                      display: block;
-                    }
+    #commentImagesContainer {
+      display: grid;
+      grid-template-columns: 12vh 12vh 12vh 12vh 12vh 12vh;
+      grid-template-rows: calc(12vh * 0.666);
+      grid-column-gap: @gridMargin;
+      justify-items: stretch;
+      align-items: stretch;
+      justify-content: strech;
+      width: @gridWidth-12;
 
-                    #line_2 {
-                      stroke-width: 1rem;
-                    }
-                  }
-                }
-              }
+      .commentImage {
+        background-color: @white;
+        border: 2px solid @white;
+        cursor: pointer;
 
-              &:nth-of-type(3) {
-                span {
-                  svg {
-                    #label_3 {
-                      display: block;
-                    }
+        .icon {
+          color: @black;
+          display: inline;
+          font-size: 3rem;
+          position: relative;
+          top: 0.2rem;
+          left: -10rem;
+          background-color: rgba(255, 255, 255, 0.7);
+          padding: .25rem;
 
-                    #line_3 {
-                      stroke-width: 1rem;
-                    }
-                  }
-                }
-              }
-            }
+          &.iconConfirm {
+            display: none;
+          }
+        }
+
+        &.active {
+          border-color: @green;
+
+          .icon {
+            top: 0.2rem;
           }
 
-          &:nth-of-type(2) {
-
-            .pictureWindow {
-
-              &:nth-of-type(1) {
-                span {
-                  svg {
-                    #label_6 {
-                      display: block;
-                    }
-
-                    #line_6 {
-                      stroke-width: 1rem;
-                    }
-                  }
-                }
-              }
-
-              &:nth-of-type(2) {
-                span {
-                  svg {
-                    #label_5 {
-                      display: block;
-                    }
-
-                    #line_5 {
-                      stroke-width: 1rem;
-                    }
-                  }
-                }
-              }
-
-              &:nth-of-type(3) {
-                span {
-                  svg {
-                    #label_4 {
-                      display: block;
-                    }
-
-                    #line_4 {
-                      stroke-width: 1rem;
-                    }
-                  }
-                }
-
-              }
-            }
-          }
-
-          .pictureWindow {
-            display: inline-block;
-            height: 14vh;
-            width: calc(14vh * 1.333);
-            margin: .5rem .5rem 0 0;
-            background-color: @grey;
-
-            span {
-              background-color: rgba(0,0,0,0.5);
-              display: block;
-              height: 4rem;
-              left: 7px;
-              margin-bottom: -6rem;
-              padding: .5rem;
-              position: relative;
-              top: .5rem;
-              width: 4rem;
-              z-index: 11;
-
-              svg {
-                fill: @white;
-                height: 3rem;
-                left: 0;
-                position: relative;
-                stroke: @white;
-                stroke-width: .1rem;
-                top: 0;
-                width: 3rem;
-
-                #core_1,
-                #core_2,
-                #core_3,
-                #core_4,
-                #core_5,
-                #core_6,
-                #core_7,
-                #core_8,
-                #core_9,
-                #core_10,
-                #core_11,
-                #core_12,
-                #core_13 {
-                  stroke-width: .4rem;
-                }
-
-                #line_1,
-                #line_2,
-                #line_3,
-                #line_4,
-                #line_5,
-                #line_6 {
-                  stroke-width: .4rem;
-                }
-
-                #label_1,
-                #label_2,
-                #label_3,
-                #label_4,
-                #label_5,
-                #label_6 {
-                  display: none;
-                }
-              }
-            }
-
-            .picture {
-              font-size: 1rem;
-              background-position: top center;
-              background-repeat: no-repeat;
-              background-size: contain;
-              border: 2px solid @greyBright;
-              cursor: pointer;
-              display: inline-block;
-              float: left;
-              position: relative;
-              z-index: 10;
-              width: 100%;
-              height: 14vh;
-
-              &:hover {
-                border: 2px solid @green;
-              }
-
-              &.active {
-                border: 2px solid @green;
-                background-color: @green;
-
-                &:after {
-                  display: inline-block;
-                  content: '<div class="icon iconAccept"></div>';
-                  width: 5rem;
-                  height: 5rem;
-
-                  .icon {
-                    display: inline;
-                    font-size: 2rem;
-                    position: relative;
-                    top: .25rem;
-                    margin-right: .5rem;
-                    color: @white;
-                  }
-                }
-              }
-
-            }
+          .iconConfirm {
+            display: inline;
+            position: relative;
+            top: -1.5rem;
+            left: 3.5rem;
+            color: @green;
+            font-size: 4rem;
           }
         }
       }
     }
 
-    #commentFunctions {
+    &#commentText {
+      width: @gridWidth-6;
+      margin-left: @gridWidth-3;
+      margin-right: @gridWidth-3;
 
+      #commentTextInput {
+        padding: .5rem;
+        font-size: 1.5rem;
+      }
+    }
+
+    &#commentFunctions {
       display: inline-block;
-      margin-top: 1em;
-      width: @gridWidth-12;
+      width: @gridWidth-6;
+      margin-left: @gridWidth-3;
+      margin-right: @gridWidth-3;
+      margin-top: 3em;
+      text-align: center;
 
       button {
         -webkit-appearance: none;
@@ -349,6 +245,13 @@
         padding: .5rem 1rem 1rem 1rem;
         width: 15rem;
 
+        &.ghost {
+          border: 1px solid @greyDark;
+          background-color: @white;
+          color: @black;
+          box-shadow: none;
+        }
+
         .icon {
           display: inline;
           font-size: 2rem;
@@ -363,315 +266,32 @@
           top: 2px;
         }
 
+        &#commentReset {
+          background: transparent;
+          border: 1px solid @white;
+          color: @white;
+
+          .icon {
+            color: @white;
+          }
+        }
+
         &#commentCancel {
+          border: 1px solid @red;
           background-color: @red;
         }
 
-        &#commentReset,
         &#commentRemove {
+          border: 1px solid @greyDark;
           background-color: @greyDark;
         }
 
         &#commentSave {
+          border: 1px solid @green;
           background-color: @green;
           margin-right: 0;
-        }
-      }
-
-      &.new {
-
-        #commentReset {
-          display: inline-block;
-        }
-
-        #commentRemove {
-          display: none;
-        }
-      }
-
-      &.overwrite {
-
-        #commentReset {
-          display: none;
-        }
-
-        #commentRemove {
-          display: inline-block;
         }
       }
     }
   }
 }
-
-/*
-#comments {
-
-	#commentsBody {
-		display: inline-block;
-		left: 0;
-		padding: 2rem;
-		position: relative;
-		top: -8rem;
-		width: @gridWidth-12;
-
-		h1 {
-			font-size: 1.8rem;
-			margin: 1rem 0;
-		}
-
-		h2 {
-			font-size: 1.5rem;
-			margin: 1rem 0;
-			.fontBold();
-		}
-
-		p {
-			font-size: 1.5rem;
-			margin: .5rem 0;
-
-			span {
-				.fontBold();
-			}
-		}
-
-		#commentPositions {
-
-			p {
-				width: @gridWidth-6;
-				float: left;
-
-				span {
-					display: inline-block;
-					width: 6rem;
-					text-align: right;
-				}
-
-				input {
-					width: 10rem;
-					border: none;
-					.fontBold();
-					font-size: 1.5rem;
-					color: @blue;
-					text-align: right;
-				}
-			}
-		}
-
-		#commentCableview {
-			display: inline-block;
-			float: left;
-			margin-bottom: .5rem;
-			margin-right: 2%;
-			margin-top: .5rem;
-			width: @gridWidth-12;
-
-			#commentCableSides {
-
-				label {
-					position: relative;
-					top: -.75rem;
-					margin: 0 1rem;
-					font-size: 1.5rem;
-
-					&:first-of-type {
-						margin-left: 0;
-					}
-				}
-
-				input {
-					-webkit-appearance: none;
-					height: 2.5rem;
-					width: 2.5rem;
-					margin: 1rem 0 0 0;
-					border: 1px solid @greyBright;
-					cursor: pointer;
-					outline: none;
-
-					&:checked {
-						// background-image: url(../img/accept.svg);
-						background-size: 90% auto;
-						background-position: center;
-					}
-				}
-			}
-		}
-
-		#commentsCases {
-			display: inline-block;
-			float: left;
-			width: @gridWidth-12;
-			margin-bottom: 1rem;
-
-			p {
-				padding-bottom: .5rem;
-			}
-
-			#commentsCasesSelection {
-				height: 26rem;
-				overflow: scroll;
-				padding: .5rem;
-				border: 1px solid @greyBright;
-
-				&::-webkit-scrollbar {
-					width: 0 !important
-				}
-
-				.commentsCasesEntry {
-					display: inline-block;
-					height: 3rem;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					width: 31.5rem;
-
-
-					input[type="radio"] {
-						-webkit-appearance: none;
-						background-color: @white;
-						border: 1px solid @greyDark;
-						border-radius: 1.5rem;
-						float: left;
-						height: 1.5rem;
-						margin: 0 1rem .5rem 0;
-						outline: none;
-						padding: 1rem;
-						width: 1.5rem;
-
-						&:checked {
-							box-shadow: 0 0 0 2px @white inset;
-							background-color: @blue;
-						}
-					}
-
-					label {
-						display: inline-block;
-						float: left;
-						.fontLight();
-						font-size: 1.5rem;
-						height: 3rem;
-						line-height: 1.8rem;
-						padding: .1rem;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						white-space: nowrap;
-						width: 25rem;
-					}
-				}
-			}
-		}
-
-		#commentsRating {
-			display: inline-block;
-			float: left;
-			margin-bottom: .5rem;
-			margin-right: 2%;
-			margin-top: .5rem;
-			width: @gridWidth-12;
-
-			p {
-				display: inline-block;
-				width: @gridWidth-6;
-
-				#commentsRatingValue {
-					width: 10rem;
-					border: none;
-					.fontBold();
-					font-size: 1.5rem;
-					color: @blue;
-					text-align: right;
-				}
-
-				select {
-					-webkit-appearance: none;
-					background: transparent;
-					border: none;
-					color: @blue;
-					display: inline-block;
-					font-size: 1.5rem;
-					.fontBold();
-					padding: 0;
-				}
-			}
-		}
-
-		#commentsText {
-			display: inline-block;
-			margin-top: .5rem;
-			width: @gridWidth-12;
-
-
-		}
-
-		#commentsFunctions {
-
-			display: inline-block;
-			margin-top: 1em;
-			width: @gridWidth-12;
-
-			button {
-				-webkit-appearance: none;
-				border: none;
-				box-shadow: 0 1px 2px @greyDark;
-				color: @white;
-				cursor: pointer;
-				font-size: 1.5rem;
-				line-height: 3rem;
-				.fontBold();
-				margin-right: 1.25%;
-				outline: none;
-				padding: .5rem 1rem 1rem 1rem;
-				width: @gridWidth-4;
-
-				.icon {
-					display: inline;
-					font-size: 2rem;
-					position: relative;
-					top: .25rem;
-					margin-right: .5rem;
-				}
-
-				&:active {
-					box-shadow: none;
-					position: relative;
-					top: 2px;
-				}
-
-				&#commentsCancel {
-					background-color: @red;
-				}
-
-				&#commentsReset,
-				&#commentsRemove {
-					background-color: @greyDark;
-				}
-
-				&#commentsSave {
-					background-color: @green;
-					margin-right: 0;
-				}
-			}
-
-			&.new {
-
-				#commentsReset {
-					display: inline-block;
-				}
-
-				#commentsRemove {
-					display: none;
-				}
-			}
-
-			&.overwrite {
-
-				#commentsReset {
-					display: none;
-				}
-
-				#commentsRemove {
-					display: inline-block;
-				}
-			}
-		}
-	}
-}
-*/

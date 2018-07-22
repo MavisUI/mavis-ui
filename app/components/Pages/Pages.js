@@ -55,7 +55,11 @@ Mavis.Pages = {
 
 		// if no mod has been passed (which would be an error), load the model screen;
 		if(!mod) mod = 'model';
-		if(!data) data = {cable:0,position:0.00};
+		if(!data) {
+		  data = {};
+		  data.cable = 0;
+		  data.position = 0;
+    }
 
 		// check if notification is still visible and remove it
 		if(Mavis.Notifications.Status) {

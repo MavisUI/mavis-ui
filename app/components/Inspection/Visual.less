@@ -123,77 +123,28 @@
 				margin: .5rem;
 				background-color: @grey;
 
-				span {
-					background-color: rgba(0,0,0,0.5);
-					display: block;
-					height: 6rem;
-					left: 7px;
-					margin-bottom: -6rem;
-					padding: .5rem;
-					position: relative;
-					top: .5rem;
-					width: 6rem;
-					z-index: 11;
-
-					svg {
-						fill: @white;
-						height: 5rem;
-						left: 0;
-						position: relative;
-						stroke: @white;
-						stroke-width: .1rem;
-						top: 0;
-						width: 5rem;
-
-						#core_1,
-						#core_2,
-						#core_3,
-						#core_4,
-						#core_5,
-						#core_6,
-						#core_7,
-						#core_8,
-						#core_9,
-						#core_10,
-						#core_11,
-						#core_12,
-						#core_13 {
-							stroke-width: .4rem;
-						}
-
-						#line_1,
-						#line_2,
-						#line_3,
-						#line_4,
-						#line_5,
-						#line_6 {
-							stroke-width: .4rem;
-						}
-
-						#label_1,
-						#label_2,
-						#label_3,
-						#label_4,
-						#label_5,
-						#label_6 {
-							display: none;
-						}
-					}
-				}
-
-				.picture {
+        .picture {
           font-size: 2rem;
-					background-position: top center;
-					background-repeat: no-repeat;
-					background-size: contain;
-					border: 5px solid @greyBright;
-					cursor: pointer;
-					display: inline-block;
-					float: left;
-					position: relative;
-					z-index: 10;
-					width: 100%;
-					height: 27vh;
+          background-position: top center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          border: 5px solid @greyBright;
+          cursor: pointer;
+          display: inline-block;
+          float: left;
+          position: relative;
+          z-index: 10;
+          width: 100%;
+          height: 27vh;
+          text-align: left;
+
+          .icon {
+            display: inline;
+            padding: .3rem;
+            background-color: @blackAlpha;
+            font-size: 5rem;
+            color: @white;
+          }
 				}
 			}
 		}

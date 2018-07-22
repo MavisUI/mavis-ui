@@ -36,7 +36,7 @@ Mavis.List = {
 
 	_renderModel: (arr) => {
 
-		let 	classes = 'model ',
+		let classes = 'model ',
 				modelSVG = [
 					'<?xml version="1.0" encoding="UTF-8"?>',
 					'<svg viewBox="0 0 428 369" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">',
@@ -92,8 +92,6 @@ Mavis.List = {
 					data.cable = this.getAttribute('data-cable');
 					data.position = this.getAttribute('data-position');
 
-					console.log(data);
-
 					Mavis.Pages.loadPage('inspection', data);
 				});
 			});
@@ -104,41 +102,41 @@ Mavis.List = {
 
 	renderItems: (data) => {
 
-		return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
 
-			let 	container = document.getElementById('listBody'),
-					list = [];
+      let container = document.getElementById('listBody'),
+          list = [];
 
-			container.innerHTML = '';
+      container.innerHTML = '';
 
-			data.forEach(function(item, i) {
+      data.forEach(function (item, i) {
 
-				let 	itemLabel = '<div class="item itemLabel"><div class="colorBar" style="background-color: ' + item.color + ';"></div>' + item.label + '</div>',
-						itemCable = '<div class="item itemCable">' + Mavis.Data.Construction.cables[item.cable].name + '</div>',
-						itemPosition = '<div class="item itemPosition">' + item.position + ' m</div>',
-						itemSides = '<div class="item itemSides">' + Mavis.List._renderModel(item.sides) + '</div>',
-						itemRating = '<div class="item itemRating">SK ' + item.rating + '</div>',
-						itemValue = '<div class="item itemValue">' + item.value + ' ' + item.metric + '</div>',
-						itemLink = '<div class="item itemLink"><a class="loadVisual" data-cable="' + item.cable + '" data-position="' + item.position + '">Zur Seilprüfungsansicht</a></div>',
+        let itemLabel = '<div class="item itemLabel"><div class="colorBar" style="background-color: ' + item.color + ';"></div>' + item.label + '</div>',
+            itemCable = '<div class="item itemCable">' + Mavis.Data.Construction.cables[item.cable].name + '</div>',
+            itemPosition = '<div class="item itemPosition">' + item.position + ' m</div>',
+            itemSides = '<div class="item itemSides">' + Mavis.List._renderModel(item.sides) + '</div>',
+            itemRating = '<div class="item itemRating">SK ' + item.rating + '</div>',
+            itemValue = '<div class="item itemValue">' + item.value + ' ' + item.metric + '</div>',
+            itemLink = '<div class="item itemLink"><a class="loadVisual" data-cable="' + item.cable + '" data-position="' + item.position + '">Zur Seilprüfungsansicht</a></div>',
+            li = '<li class="result">' + itemLabel + itemCable + itemPosition + itemSides + itemRating + itemValue + itemLink + '</li>';
 
-						li = '<li class="result">' + itemLabel + itemCable + itemPosition + itemSides + itemRating + itemValue + itemLink +'</li>';
+        list.push(li);
+      });
 
-				list.push(li);
-			});
+      container.innerHTML = list.join('');
 
-			container.innerHTML = list.join('');
+      Mavis.List._events()
+      .then(resolve());
 
-			Mavis.List._events()
-			.then(resolve());
-		});
+    });
 	},
 
 	init: () => {
 
 		return new Promise(function(resolve, reject) {
-			Mavis.Filter.init('List', 'reportContainerList', ['sort','cable', 'sides', 'rating', 'marker'])
+			Mavis.Filter.init('List', 'reportContainerList', ['sort','cables', 'sides', 'ratings', 'markers'])
 			.then(Mavis.List._renderDom())
-			.then(Mavis.List.renderItems(Mavis.Data.Results))
+			.then(Mavis.List.renderItems(Mavis.Data.Filtered))
 			.then(resolve());
 		});
 	},
