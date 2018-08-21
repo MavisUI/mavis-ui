@@ -1,7 +1,104 @@
 const Mavis = require('../Global/Global');
+const Datastore = require('nedb-promises');
 
 Mavis.Data = {
 
+  Stores: {},
+  Metrics: [],
+  State: {
+    userName: null,
+    userRole: null,
+    bridges: [],
+    activeBridge: null,
+    activeCable: null,
+    activePosition: null
+  },
+
+  _loadDB: (folder, name) => {
+    return new Promise((resolve, reject) => {
+      let DataPath;
+      if(folder === '') {
+        DataPath = Mavis.AppPath + '/assets/data/' + name + '.db';
+        Mavis.Data.Stores[name] = Datastore.create(DataPath);
+        Mavis.Data.Stores[name].load()
+          .then(resolve(name + ' data loaded'));
+      } else {
+        DataPath = Mavis.AppPath + '/assets/data/' + folder + '/' + name + '.db';
+        Mavis.Data.Stores[name] = Datastore.create(DataPath);
+        Mavis.Data.Stores[name].load()
+          .then(resolve(name + ' data loaded'));
+      }
+    });
+  },
+
+  loadState: () => {
+    return new Promise((resolve, reject) => {
+      Mavis.Data._loadDB('','appstate')
+        .then(() => {
+          Mavis.Data.Stores['appstate'].find({})
+            .then((docs) => {
+              Mavis.Data.State.userName = docs[0].userName;
+              Mavis.Data.State.userRole = docs[0].userRole;
+              Mavis.Data.State.bridges = docs[0].bridges;
+              Mavis.Data.State.activeBridge = docs[0].activeBridge;
+              Mavis.Data.State.activeCable = docs[0].activeCable;
+              Mavis.Data.State.activePosition = docs[0].activePosition;
+            })
+            .then(() => {
+              resolve('user data loaded');
+            });
+        });
+    });
+  },
+
+  loadBridge: bridge => {
+    return new Promise((resolve, reject) => {
+      if(Mavis.Data.State.bridges.indexOf(bridge) >= 0) {
+        Promise.all([
+          Mavis.Data._loadDB(bridge,'classes'),
+          Mavis.Data._loadDB(bridge, 'metrics'),
+          Mavis.Data._loadDB(bridge,'modules'),
+          Mavis.Data._loadDB(bridge, 'construction'),
+          Mavis.Data._loadDB(bridge, 'results')
+        ]).then(() => {
+          resolve('init Data');
+        });
+      } else {
+        resolve('no user access to this bridge');
+      }
+    });
+  },
+
+  loadMetrics: () => {
+    return new Promise((resolve, reject) => {
+      Mavis.Data.Stores['metrics'].find({})
+        .sort({id: 1})
+        .then(res => {
+          Mavis.Data.Metrics = res;
+          resolve();
+        });
+    });
+  },
+
+	init: () => {
+		return new Promise((resolve, reject) => {
+      Mavis.Data.loadState()
+        .then(async () => {
+          await Mavis.Data.loadBridge(Mavis.Data.State.activeBridge)
+            .then(async (res) => {
+              await Mavis.Data.loadMetrics();
+              console.log(res);
+              resolve();
+            });
+        });
+    });
+	}
+};
+
+module.exports = Mavis.Data;
+
+
+/*
 	State: {},
 	Settings: {},
 	Construction: {},
@@ -244,45 +341,11 @@ Mavis.Data = {
     }
   },
 
-	_loadState: () => {
 
-		return new Promise(function(resolve, reject) {
 
-			let state = Mavis.Global.fs.readFileSync(Mavis.AppPath + '/data/state.json');
-			Mavis.Data.State = JSON.parse(state);
-			resolve();
-		});
-	},
 
-	_loadSettings: () => {
 
-		return new Promise(function(resolve, reject) {
 
-			let settings = Mavis.Global.fs.readFileSync(Mavis.AppPath + '/data/' + Mavis.Data.State.currentObject + '/settings.json');
-			Mavis.Data.Settings = JSON.parse(settings);
-			resolve();
-		});
-	},
-
-	_loadConstruction: () => {
-
-		return new Promise(function(resolve, reject) {
-
-			let construction = Mavis.Global.fs.readFileSync(Mavis.AppPath + '/data/' + Mavis.Data.State.currentObject + '/construction.json');
-			Mavis.Data.Construction = JSON.parse(construction);
-			resolve();
-		});
-	},
-
-	_loadCableData: () => {
-
-		return new Promise(function(resolve, reject) {
-
-			let cableData = Mavis.Global.fs.readFileSync(Mavis.AppPath + '/data/' + Mavis.Data.State.currentObject + '/cableData.json');
-			Mavis.Data.CableData = JSON.parse(cableData);
-			resolve();
-		});
-	},
 
 	writeState: () => {
 
@@ -384,22 +447,4 @@ Mavis.Data = {
 			resolve();
 		});
 	},
-
-	init: () => {
-
-		return new Promise(function(resolve, reject) {
-
-			console.log('init Data');
-
-			Mavis.Data._loadState()
-			.then(Mavis.Data._loadSettings())
-			.then(Mavis.Data._loadConstruction())
-			.then(Mavis.Data._loadCableData())
-			.then(Mavis.Data.collectResults())
-      .then(Mavis.Data.Filter.filterData())
-			.then(resolve());
-		});
-	}
-};
-
-module.exports = Mavis.Data;
+*/

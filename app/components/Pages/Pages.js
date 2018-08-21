@@ -6,34 +6,28 @@ Mavis.Pages = {
 
 		_model: () => {
 
-			return new Promise(function(resolve, reject) {
+			return new Promise((resolve, reject) => {
 				Mavis.Model.init()
 				.then(resolve());
 			});
 		},
 
 		_inspection: data => {
-
-			return new Promise(function(resolve, reject) {
-
+			return new Promise((resolve, reject) => {
 				Mavis.Inspection.init(data)
 				.then(resolve());
 			});
 		},
 
 		_report: () => {
-
-			return new Promise(function(resolve, reject) {
-
+			return new Promise((resolve, reject) => {
 				Mavis.Report.init()
 				.then(resolve());
 			});
 		},
 
 		_settings: () => {
-
-			return new Promise(function(resolve, reject) {
-
+			return new Promise((resolve, reject) => {
 				Mavis.Settings.init()
 				.then(resolve());
 			});
@@ -41,7 +35,7 @@ Mavis.Pages = {
 	},
 
 	clearPage: () => {
-		return new Promise(function(resolve, reject) {
+		return new Promise((resolve, reject) => {
 			const content = document.getElementById('content');
 			content.innerHTML = '';
       // document.getElementById('comment').classList.add('hidden');
@@ -50,7 +44,6 @@ Mavis.Pages = {
 	},
 
 	loadPage: (mod, data) => {
-
 		const app = document.getElementById('app');
 
 		// if no mod has been passed (which would be an error), load the model screen;
@@ -67,9 +60,9 @@ Mavis.Pages = {
 			Mavis.Notifications.noted();
 		}
 
-		Mavis.LoadingScreen.toggle('show')
-		.then(Mavis.Pages.clearPage())
-		.then(function() {
+		Mavis.LoadingScreen.toggle('show');
+		Mavis.Pages.clearPage()
+		.then(() => {
 
 			let title = '';
 
@@ -108,7 +101,6 @@ Mavis.Pages = {
 			}
 
 			Mavis.Header.updateTitle(title);
-
 		})
 		.then(Mavis.LoadingScreen.toggle());
 	}

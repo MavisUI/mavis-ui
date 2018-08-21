@@ -74,6 +74,7 @@
     "flexi-color-picker": "^1.0.1",
     "highcharts": "^6.0.7",
     "nedb": "^1.8.0",
+    "nedb-promises": "^3.0.1",
     "three": "^0.91.0",
     "three-orbit-controls": "^82.1.0",
     "three-projector-renderer": "^1.0.1"

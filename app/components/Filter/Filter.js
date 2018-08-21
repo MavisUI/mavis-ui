@@ -2,6 +2,34 @@ const Mavis = require('../Global/Global');
 
 Mavis.Filter = {
 
+  Criteria: {},
+  Order: {},
+  Data: [],
+
+  _render: (filterContainer, containerId) => {
+    return new Promise((resolve, reject) => {
+      filterContainer.innerHTML = '<div id="' + containerId + '"></div>';
+      resolve();
+    });
+  },
+
+  _loadData: () => {
+    return new Promise((resolve, reject) => {
+
+      // console.log(Mavis.Filter.Criteria);
+
+      Mavis.Data.Stores['results']
+        .find(Mavis.Filter.Criteria)
+        .sort(Mavis.Filter.Order)
+        .then(results => {
+
+          // console.log(results);
+          Mavis.Filter.Data = results;
+          resolve();
+        });
+    });
+  },
+
   _getCallback: mod => {
 
     let fn;
@@ -17,12 +45,125 @@ Mavis.Filter = {
         fn = Mavis.Graph.init;
         break;
       case 'Model':
-        fn = Mavis.Model.rerender;
+        fn = Mavis.Model.render;
         break;
     }
 
     return fn;
   },
+
+  Rating: {
+
+    _render: (container, mod, conf) => {
+      return new Promise((resolve, reject) => {
+
+        let id = 'filterRating' + mod,
+          filterElement = document.createElement('div'),
+          options = [];
+
+        // classes = Mavis.Data.Settings.damageClasses,
+        Mavis.Data.Stores['classes']
+          .find({})
+          .sort({id: 1})
+          .then(classes => {
+
+            if(conf) options = ['<option value="all" selected>Alle Schadensklassen</option>'];
+
+            classes.forEach(el => {
+              let option = '<option value="' + el.id + '">' + el.name + '</option>';
+              options.push(option);
+            });
+
+            let content = '<label for="' + id + '">Schadensklasse: </label><select id="' + id + '">' + options.join('') + '</select>';
+
+            filterElement.setAttribute('class', 'filter');
+            filterElement.innerHTML = content;
+
+            document.getElementById(container).appendChild(filterElement);
+            document.getElementById(id).addEventListener('change', Mavis.Filter.Rating._events);
+            resolve();
+          });
+      });
+    },
+
+    _events: e => {
+      let n = e.target.value;
+
+      if(n === 'all') {
+        delete Mavis.Filter.Criteria.rating;
+      } else {
+        Mavis.Filter.Criteria.rating = Number(n);
+      }
+
+      Mavis.Filter._loadData()
+        .then(() => {
+          let mod = document.getElementById('content').getAttribute('data-tab'),
+              fn = Mavis.Filter._getCallback(mod);
+          fn(Mavis.Data.Filtered);
+        });
+    }
+  },
+
+  Marker: {
+
+    _render: (container, mod, conf) => {
+      return new Promise((resolve, reject) => {
+
+        let id = 'filterMarker' + mod,
+            filterElement = document.createElement('div'),
+            options = [];
+
+        if(conf) options = ['<option value="all">Alle Schadensfälle</option>'];
+
+        Mavis.Data.Stores['modules']
+          .find({active: true})
+          .sort({name: 1})
+          .then(modules => {
+
+            modules.forEach(module => {
+              let option = '<option value="' + module.label + '">' + module.label + '</option>';
+              options.push(option);
+            });
+
+            let content = '<label for="' + id + '">Schadensfall: </label><select id="' + id + '">' + options.join('') + '</select>';
+
+            filterElement.setAttribute('class', 'filter');
+            filterElement.innerHTML = content;
+
+            document.getElementById(container).appendChild(filterElement);
+            document.getElementById(id).addEventListener('change', Mavis.Filter.Marker._events);
+
+            resolve();
+          });
+      });
+    },
+
+    _events: e => {
+
+      let n = e.target.value;
+
+      if(n === 'all') {
+        delete Mavis.Filter.Criteria.label;
+      } else {
+        Mavis.Filter.Criteria.label = n;
+      }
+
+      Mavis.Filter._loadData()
+        .then(() => {
+          let mod = document.getElementById('content').getAttribute('data-tab'),
+              fn = Mavis.Filter._getCallback(mod);
+          fn(Mavis.Data.Filtered);
+        });
+    }
+  },
+
+
+
+
+
+/*
+
+
 
   Sort: {
 
@@ -151,136 +292,47 @@ Mavis.Filter = {
     }
   },
 
-  Rating: {
 
-    _render: (container, mod, conf) => {
 
-      let id = 'filterRating' + mod,
-          filterElement = document.createElement('div'),
-          classes = Mavis.Data.Settings.damageClasses,
-          options = [];
 
-      if(conf) options = ['<option value="all">Alle Schadensklassen</option>'];
-
-      classes.forEach(function(el, i) {
-        let option = '<option value="' + (i+1) + '" data-class-index="' + i + '">' + el + '</option>';
-        options.push(option);
-      });
-
-      let content = '<label for="' + id + '">Schadensklasse: </label><select id="' + id + '">' + options.join('') + '</select>';
-
-      filterElement.setAttribute('class', 'filter');
-      filterElement.innerHTML = content;
-
-      document.getElementById(container).appendChild(filterElement);
-      document.getElementById(id).addEventListener('change', Mavis.Filter.Rating._events);
-    },
-
-    _events: e => {
-
-      let n = e.target.value,
-          mod = document.getElementById('content').getAttribute('data-tab'),
-          fn = Mavis.Filter._getCallback(mod);
-
-      if(n === 'all') {
-        Mavis.Data.Filter.Rating = undefined;
-      } else {
-        Mavis.Data.Filter.Rating = Number(n);
-      }
-
-      Mavis.Data.Filter.filterData()
-      .then(function() {
-        fn(Mavis.Data.Filtered);
-      });
-    }
-  },
-
-  Marker: {
-
-    _render: (container, mod, conf) => {
-
-      let id = 'filterMarker' + mod,
-          filterElement = document.createElement('div'),
-          automatic = Mavis.Data.Settings.automatic,
-          din = Mavis.Data.Settings.din,
-          manual = Mavis.Data.Settings.manual,
-          counter = 0,
-          options = [];
-
-      if(conf) options = ['<option value="all">Alle Schadensfälle</option>'];
-
-      automatic.forEach(function(mod, i) {
-        counter++;
-        let option = '<option value="' + counter + '" data-module-index="' + i + '">' + mod.label + '</option>';
-        options.push(option);
-      });
-
-      din.forEach(function(mod, i) {
-        counter++;
-        let option = '<option value="' + counter + '" data-module-index="' + i + '">' + mod.label + '</option>';
-        options.push(option);
-      });
-
-      manual.forEach(function(mod, i) {
-        counter++;
-        let option = '<option value="' + counter + '" data-module-index="' + i + '">' + mod.label + '</option>';
-        options.push(option);
-      });
-
-      let content = '<label for="' + id + '">Schadensfall: </label><select id="' + id + '">' + options.join('') + '</select>';
-
-      filterElement.setAttribute('class', 'filter');
-      filterElement.innerHTML = content;
-
-      document.getElementById(container).appendChild(filterElement);
-      document.getElementById(id).addEventListener('change', Mavis.Filter.Marker._events);
-    },
-
-    _events: e => {
-
-      let n = e.target.value,
-          mod = document.getElementById('content').getAttribute('data-tab'),
-          fn = Mavis.Filter._getCallback(mod);
-
-      if(n === 'all') {
-        Mavis.Data.Filter.Marker = undefined;
-      } else {
-        Mavis.Data.Filter.Marker = Number(n);
-      }
-
-      Mavis.Data.Filter.filterData()
-      .then(function() {
-        fn(Mavis.Data.Filtered);
-      });
-    }
-  },
+*/
 
 	init: (mod, container, filters) => {
+		return new Promise((resolve, reject) => {
 
-		return new Promise(function(resolve, reject) {
+		  async function initFilter() {
 
-			let filterContainer = document.getElementById(container),
-					containerId = container + 'Filter';
+        let filterContainer = document.getElementById(container),
+            containerId = container + 'Filter';
 
-			filterContainer.innerHTML = '<div id="' + containerId + '"></div>';
+        await Mavis.Filter._render(filterContainer, containerId);
 
-			if(filters.indexOf('sort') >= 0) Mavis.Filter.Sort._render(containerId, mod);
-      if(filters.indexOf('cable') >= 0) Mavis.Filter.Cable._render(containerId, mod);
-      if(filters.indexOf('cables') >= 0) Mavis.Filter.Cable._render(containerId, mod, true);
-      if(filters.indexOf('side') >= 0) Mavis.Filter.Sides._render(containerId, mod);
-      if(filters.indexOf('sides') >= 0) Mavis.Filter.Sides._render(containerId, mod, true);
-			if(filters.indexOf('rating') >= 0) Mavis.Filter.Rating._render(containerId, mod);
-      if(filters.indexOf('ratings') >= 0) Mavis.Filter.Rating._render(containerId, mod, true);
-			if(filters.indexOf('marker') >= 0) Mavis.Filter.Marker._render(containerId, mod);
-      if(filters.indexOf('markers') >= 0) Mavis.Filter.Marker._render(containerId, mod, true);
+        if(filters.indexOf('rating') >= 0) Mavis.Filter.Rating._render(containerId, mod, false);
+        if(filters.indexOf('ratings') >= 0) Mavis.Filter.Rating._render(containerId, mod, true);
+        if(filters.indexOf('marker') >= 0) Mavis.Filter.Marker._render(containerId, mod, false);
+        if(filters.indexOf('markers') >= 0) Mavis.Filter.Marker._render(containerId, mod, true);
 
-      Mavis.Data.Filter.Cable = undefined;
-      Mavis.Data.Filter.Rating = undefined;
-      Mavis.Data.Filter.Marker = undefined;
-      Mavis.Data.Filter.Sides = undefined;
-			Mavis.Data.Filtered = Mavis.Data.Results;
+        await Mavis.Filter._loadData();
+		    resolve();
+      }
 
-			resolve();
+      initFilter();
+
+
+//			if(filters.indexOf('sort') >= 0) Mavis.Filter.Sort._render(containerId, mod);
+//      if(filters.indexOf('cable') >= 0) Mavis.Filter.Cable._render(containerId, mod);
+//      if(filters.indexOf('cables') >= 0) Mavis.Filter.Cable._render(containerId, mod, true);
+//      if(filters.indexOf('side') >= 0) Mavis.Filter.Sides._render(containerId, mod);
+//      if(filters.indexOf('sides') >= 0) Mavis.Filter.Sides._render(containerId, mod, true);
+//
+//
+
+//      Mavis.Data.Filter.Cable = undefined;
+//      Mavis.Data.Filter.Rating = undefined;
+//      Mavis.Data.Filter.Marker = undefined;
+//      Mavis.Data.Filter.Sides = undefined;
+//			Mavis.Data.Filtered = Mavis.Data.Results;
+
 		});
 	},
 };

@@ -20,10 +20,13 @@ Mavis.Inspection = require('./components/Inspection/Inspection');
 Mavis.Model = require('./components/Model/3DModel');
 Mavis.Settings = require('./components/Settings/Settings');
 
-// app init
-Mavis.LoadingScreen.init()
-  .then(Mavis.Global.init())
-  .then(Mavis.Data.init())
-  .then(Mavis.Header.init())
-  .then(Mavis.MainMenu.init())
-  .then(Mavis.Pages.loadPage('inspection'));
+async function init() {
+  await Mavis.LoadingScreen.init();
+  await Mavis.Global.init();
+  await Mavis.Data.init();
+  await Mavis.Header.init();
+  await Mavis.MainMenu.init();
+  await Mavis.Pages.loadPage('model');
+}
+
+init();

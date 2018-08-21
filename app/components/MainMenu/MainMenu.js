@@ -8,12 +8,9 @@ Mavis.MainMenu = {
           menuState = menu.getAttribute('class');
 
 		if(state) {
-
 		  menu.setAttribute('class', state);
 			Mavis.Header.toggleHeaderIcon('');
-
 		} else {
-
 			if(menuState === 'hidden') {
 				menu.classList.remove('hidden');
 				Mavis.Header.toggleHeaderIcon('open');
@@ -25,26 +22,18 @@ Mavis.MainMenu = {
 	},
 
 	_events: () => {
-
-		return new Promise(function(resolve, reject)  {
-
+		return new Promise((resolve, reject) => {
 			document.getElementById('mainMenuClose').addEventListener('click', function(e) {
-
 				Mavis.MainMenu.toggleMainMenu('hidden');
-
 			});
 
 			var mainMenuLinks = document.querySelectorAll('#mainMenuLinks a'),
 				i;
 
 			for(i=0;i<mainMenuLinks.length;i++) {
-
 				mainMenuLinks[i].addEventListener('click', function(e) {
-
-					let 	text = this.innerHTML,
+					let text = this.innerHTML,
 							mod = this.getAttribute('data-href');
-
-
 
 					// check if there is any unsafed data
 					// if(MAVIS.SETTINGS.PENDING === true) {
@@ -62,19 +51,17 @@ Mavis.MainMenu = {
 					// }
 				});
 			}
-
 			resolve();
 		});
 	},
 
 	init: () => {
-
-		return new Promise(function(resolve, reject)  {
-
-			console.log('init MainMenu');
-
+		return new Promise((resolve, reject) => {
 			Mavis.MainMenu._events()
-			.then(resolve());
+			.then(() => {
+        console.log('init MainMenu');
+        resolve();
+      });
 		});
 	}
 };

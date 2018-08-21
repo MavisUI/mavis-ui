@@ -1,4 +1,4 @@
-const path = require("path")
+const path = require('path');
 const Mavis = Mavis || {};
 
 Mavis.AppPath = path.join(process.cwd(), "..", "app")
@@ -10,63 +10,30 @@ Mavis.Global = {
 	path: null,
 	paletteBlue: ['#02070C', '#08213C', '#0C3461', '#104784', '#25578F', '#3B689A', '#4A6E96', '#5179A5', '#6085AD', '#6689B0', '#718CAA', '#7C9ABB', '#87A3C1', '#92ABC7', '#99ABBF', '#A8BCD2', '#AFC2D6', '#BDCCDD', '#C0C9D3', '#D3DDE8', '#D7E0EA', '#E9EEF3'],
 
-	_getPath: function() {
+	_getFileSystem: () => {
+    // fn to get instance of filesystem
+    const fs = require('fs');
 
-		return new Promise(function(resolve, reject) {
-
-			// fn to get instance of filesystem
-			const path = require('path');
-
-			// make filesystem available in var
-			Mavis.Global.path = path;
-
-			resolve();
-		});
+    // make filesystem available in var
+    Mavis.Global.fs = fs;
 	},
 
-	_getFileSystem: function() {
+	_getNwGui: () => {
+    // fn to get gui
+    const gui = require('nw.gui');
 
-		return new Promise(function(resolve, reject) {
-
-			// fn to get instance of filesystem
-			const fs = require('fs');
-
-			// make filesystem available in var
-			Mavis.Global.fs = fs;
-
-			resolve();
-		});
+    // make gui available in var
+    Mavis.Global.gui = gui;
 	},
 
-	_getNwGui: function() {
-
-		return new Promise(function(resolve, reject) {
-
-			// fn to get gui
-			const gui = require('nw.gui');
-
-			// make gui available in var
-			Mavis.Global.gui = gui;
-
-			resolve();
-		});
+	_getArchiver: () => {
+	  const archiver = require('archiver');
+    Mavis.Global.archiver = archiver;
 	},
 
-	_getArchiver: function() {
+	_tabsActivate: (container, position, width, module) => {
 
-		return new Promise(function(resolve, reject) {
-
-			const archiver = require('archiver');
-
-			Mavis.Global.archiver = archiver;
-
-			resolve();
-		});
-	},
-
-	_tabsActivate: function(container, position, width, module) {
-
-		let 	tabs = container.querySelectorAll('.tab'),
+		let tabs = container.querySelectorAll('.tab'),
 				tabLine = container.querySelector('.tabsLine'),
 				tabBodies = container.querySelectorAll('.tabBody'),
 				distance = (position * width) + 'rem',
@@ -88,10 +55,10 @@ Mavis.Global = {
 		document.getElementById('content').setAttribute('data-tab', module);
 	},
 
-	tabs: function(id, labels, modules, width) {
+	tabs: (id, labels, modules, width) => {
 
 		// get parent for tabs
-		let 	container = document.getElementById(id),
+		let container = document.getElementById(id),
 				n = labels.length;
 
 		// calc lineWidth
@@ -156,17 +123,11 @@ Mavis.Global = {
 		container.appendChild(tabsBody);
 	},
 
-	init: function() {
-
-		return new Promise(function(resolve, reject) {
-
-			console.log('init Global');
-
-			Mavis.Global._getFileSystem()
-			.then(Mavis.Global._getNwGui())
-			.then(Mavis.Global._getArchiver())
-			.then(resolve());
-		});
+	init: () => {
+			Mavis.Global._getFileSystem();
+			Mavis.Global._getNwGui();
+			Mavis.Global._getArchiver();
+      console.log('init Global');
 	}
 };
 

@@ -2,48 +2,34 @@ const Mavis = require('../Global/Global');
 
 Mavis.LoadingScreen = {
 
-	toggle: function(state) {
+	toggle: state => {
+    const loadingScreen = document.getElementById('loading'),
+          spinner = document.getElementById('spinnerElement');
 
-		return new Promise(function(resolve, reject) {
-
-			const loadingScreen = document.getElementById('loading'),
-					spinner = document.getElementById('spinnerElement');
-
-			if(state === 'show') {
-				loadingScreen.classList.remove('hidden');
-				spinner.classList.add('spinning');
-			} else {
-				setTimeout(function() {
-					loadingScreen.classList.add('hidden');
-					spinner.classList.remove('spinning');
-				}, 1000);
-			}
-
-			resolve();
-		});
+    if(state === 'show') {
+      loadingScreen.classList.remove('hidden');
+      spinner.classList.add('spinning');
+    } else {
+      setTimeout(() => {
+        loadingScreen.classList.add('hidden');
+        spinner.classList.remove('spinning');
+      }, 1000);
+    }
 	},
 
-	message: function(txt) {
-
-		return new Promise(function(resolve, reject) {
-
-			setTimeout(function() {
-				const statusText = document.getElementById('statusText');
-				statusText.innerHTML = txt;
-				resolve();
-			}, 100);
-		});
+	message: txt => {
+    setTimeout(() => {
+      const statusText = document.getElementById('statusText');
+      statusText.innerHTML = txt;
+    }, 100);
 	},
 
-	init: function() {
-
-		return new Promise(function(resolve, reject) {
-
-			console.log('init LoadingScreen');
-
-			Mavis.LoadingScreen.message('Loading Application')
-			.then(resolve());
-		});
+	init: () => {
+	  return new Promise((resolve, reject) => {
+	    console.log('init LoadingScreen');
+      Mavis.LoadingScreen.message('Loading Application');
+      resolve();
+    });
 	}
 };
 

@@ -2,17 +2,14 @@ const Mavis = require('../Global/Global');
 
 Mavis.Header = {
 
-	updateTitle: function(txt) {
+	updateTitle: txt => {
 		document.getElementById('pageTitle').innerHTML = txt;
 	},
 
-	toggleHeaderIcon: function(state) {
-
-		document.getElementById('navIcon').setAttribute('class', state);
-
-		var title = document.getElementById('pageTitle'),
+	toggleHeaderIcon: state => {
+	  document.getElementById('navIcon').setAttribute('class', state);
+		let title = document.getElementById('pageTitle'),
 			menu = document.getElementById('menuTitle');
-
 		if(state === 'open') {
 			title.setAttribute('class', 'hidden');
 			menu.setAttribute('class', '');
@@ -22,32 +19,24 @@ Mavis.Header = {
 		}
 	},
 
-	_events: function() {
-
-		return new Promise(function(resolve, reject) {
-
-			// click on header menu link
+	_events: () => {
+	  return new Promise((resolve, reject) => {
 			document.getElementById('mainMenuToggle').addEventListener('click', function(e) {
-
-				Mavis.MainMenu.toggleMainMenu();
-
+			  Mavis.MainMenu.toggleMainMenu();
 			});
-
 			resolve();
 		});
 	},
 
-	init: function() {
-
-		return new Promise(function(resolve, reject)  {
-
-			console.log('init Header');
-
-			Mavis.LoadingScreen.message('initializing Header');
-
-			Mavis.Header._events()
-			.then(resolve());
-
+	init: () => {
+	  return new Promise((resolve, reject) => {
+	    Promise.all([
+        Mavis.LoadingScreen.message('initializing Header'),
+        Mavis.Header._events()
+      ]).then(() => {
+        console.log('init Header');
+        resolve();
+      });
 		});
 	}
 };
