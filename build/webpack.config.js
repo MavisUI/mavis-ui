@@ -19,6 +19,7 @@ const cssLoader = ExtractCssPlugin.extract(['css-loader','autoprefixer-loader'])
 const lessLoader = ExtractCssPlugin.extract(['css-loader','autoprefixer-loader', 'less-loader']);
 
 const path = require("path");
+const ASSET_PATH = process.env.ASSET_PATH || '/';
 
 var htmlPlugin = new HtmlWebpackPlugin({filename: 'index.html', template: resolve(`${PATH_CONFIG.MAIN}/index.html`), inject: true, title: DEFAULT_CONFIG.TITLE});
 
@@ -29,6 +30,7 @@ module.exports = {
   },
   output: {
     path: resolve(PATH_CONFIG.OUTPUT),
+    publicPath: ASSET_PATH,
     filename: '[name].js',
     chunkFilename: '[hash].js'
   },
@@ -48,6 +50,9 @@ module.exports = {
     }),
     new webpack.ProvidePlugin({
       ColorPicker: "flexi-color-picker"
+    }),
+    new webpack.DefinePlugin({
+      'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH)
     }),
     htmlPlugin,
     ExtractCssPlugin

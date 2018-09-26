@@ -52,6 +52,18 @@ Mavis.Notifications = {
     "headline": "Daten werden gelöscht!",
     "notetext": "Wenn Sie das Löschen des Falls bestätigen, werden alle Einträge die Sie zu diesem Fall in der visuellen Inspektion gegebenenfalls bereits eingegeben haben ebenfalls gelöscht. Der OK-Button entfernt nur diese Nachricht, das Löschen bestätigen Sie über das Häkchen am Feld.",
     "buttontext": "OK"
+  },{
+    "id": 8,
+    "notetype": "warning",
+    "headline": "Merkmal auswählen!",
+    "notetext": "Bitte wählen Sie den passendes Merkmal (Schadensfall).",
+    "buttontext": "OK"
+  },{
+    "id": 9,
+    "notetype": "warning",
+    "headline": "Betroffene Seiten wählen!",
+    "notetext": "Bitte wählen Sie die betroffenen Seiten per Klick auf das jeweilige Bild aus.",
+    "buttontext": "OK"
   }],
 
   noted: function () {

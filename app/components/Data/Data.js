@@ -9,10 +9,11 @@ Mavis.Data = {
     userName: null,
     userRole: null,
     bridges: [],
-    activeBridge: null,
-    activeCable: null,
-    activePosition: null
+    activeBridge: 'rheinknie',
+    activeCable: 'all',
+    activePosition: 0.00
   },
+  CableData: [],
 
   _loadDB: (folder, name) => {
     return new Promise((resolve, reject) => {
@@ -80,7 +81,31 @@ Mavis.Data = {
     });
   },
 
+  loadCableData: () => {
+    return new Promise((resolve, reject) => {
+      Mavis.Data.Stores['construction']
+        .find({})
+        .then(construction => {
+          Mavis.Data.CableData = construction[0].cables;
+          resolve();
+        });
+    });
+  },
+
 	init: () => {
+    return new Promise((resolve, reject) => {
+      async function initialze() {
+        await Mavis.Data.loadState();
+        await Mavis.Data.loadBridge(Mavis.Data.State.activeBridge);
+        await Mavis.Data.loadMetrics();
+        await Mavis.Data.loadCableData();
+        resolve();
+      }
+
+      initialze();
+    });
+
+/*
 		return new Promise((resolve, reject) => {
       Mavis.Data.loadState()
         .then(async () => {
@@ -92,6 +117,7 @@ Mavis.Data = {
             });
         });
     });
+*/
 	}
 };
 

@@ -2,11 +2,9 @@ const Mavis = require('../Global/Global');
 
 Mavis.List = {
 
-	_renderDom: () => {
-
-		return new Promise(function(resolve, reject) {
-
-			let 	container = document.getElementById('reportContainerList'),
+	_render: () => {
+		return new Promise((resolve, reject) => {
+			let container = document.getElementById('reportContainerList'),
 					list = document.createElement('div'),
 					listElements = [
 						'<div id="listHeader">',
@@ -20,22 +18,16 @@ Mavis.List = {
 						'</div>',
 						'<ul id="listBody"></ul>',
 						'<div id="reportDownload">',
-							'<button id="downloadXls">als .XLS speichern</button>',
-							'<button id="downloadCsv">als .CSV speichern</button>',
-							'<button id="downloadImages">Bilder speichern</button>',
 						'</div>'
 					];
-
 			list.setAttribute('id', 'list');
 			list.innerHTML = listElements.join('');
-
 			container.appendChild(list);
 			resolve();
 		});
 	},
 
-	_renderModel: (arr) => {
-
+	_renderModel: arr => {
 		let classes = 'model ',
 				modelSVG = [
 					'<?xml version="1.0" encoding="UTF-8"?>',
@@ -67,79 +59,83 @@ Mavis.List = {
 						'<path d="M405.5,284.5 L347.5,184.5" id="line6" class="line" transform="translate(376.500000, 234.500000) scale(1, -1) translate(-376.500000, -234.500000) "></path>',
 					'</svg>'
 				];
-
 		if(arr.indexOf(1) > -1) classes += 'one ';
 		if(arr.indexOf(2) > -1) classes += 'two ';
 		if(arr.indexOf(3) > -1) classes += 'three ';
 		if(arr.indexOf(4) > -1) classes += 'four ';
 		if(arr.indexOf(5) > -1) classes += 'five ';
 		if(arr.indexOf(6) > -1) classes += 'six ';
-
 		return('<div class=" ' + classes + '">' + modelSVG.join('') + '</div>');
 	},
 
-	_events: () => {
+  _getCableNames: () => {
+    return new Promise((resolve, reject) => {
+      Mavis.Data.Stores['construction']
+        .find({})
+        .then(construction => {
+          for(const cable of construction[0].cables) {
+            Mavis.List.Cables.push(cable.name);
+          }
+          resolve();
+        });
+    });
+  },
 
-		return new Promise(function(resolve,reject) {
-
-			let links = document.querySelectorAll('.loadVisual');
-
-			links.forEach(function(link, i) {
-
-				link.addEventListener('click', function() {
-
-					let data = {};
-					data.cable = this.getAttribute('data-cable');
-					data.position = this.getAttribute('data-position');
-
-					Mavis.Pages.loadPage('inspection', data);
-				});
-			});
-
-			resolve();
-		});
-	},
-
-	renderItems: (data) => {
-
-    return new Promise(function (resolve, reject) {
-
+	renderItems: () => {
+    return new Promise((resolve, reject) => {
       let container = document.getElementById('listBody'),
-          list = [];
-
+          list = [],
+          data = Mavis.Filter.Data;
       container.innerHTML = '';
-
-      data.forEach(function (item, i) {
-
+      data.forEach(item => {
         let itemLabel = '<div class="item itemLabel"><div class="colorBar" style="background-color: ' + item.color + ';"></div>' + item.label + '</div>',
-            itemCable = '<div class="item itemCable">' + Mavis.Data.Construction.cables[item.cable].name + '</div>',
+            itemCable = '<div class="item itemCable">' + Mavis.List.Cables[item.cable] + '</div>',
             itemPosition = '<div class="item itemPosition">' + item.position + ' m</div>',
             itemSides = '<div class="item itemSides">' + Mavis.List._renderModel(item.sides) + '</div>',
             itemRating = '<div class="item itemRating">SK ' + item.rating + '</div>',
             itemValue = '<div class="item itemValue">' + item.value + ' ' + item.metric + '</div>',
             itemLink = '<div class="item itemLink"><a class="loadVisual" data-cable="' + item.cable + '" data-position="' + item.position + '">Zur Seilprüfungsansicht</a></div>',
             li = '<li class="result">' + itemLabel + itemCable + itemPosition + itemSides + itemRating + itemValue + itemLink + '</li>';
-
         list.push(li);
       });
-
       container.innerHTML = list.join('');
-
       Mavis.List._events()
-      .then(resolve());
-
+        .then(resolve());
     });
 	},
 
-	init: () => {
+  _events: () => {
+    return new Promise((resolve,reject) => {
 
-		return new Promise(function(resolve, reject) {
-			Mavis.Filter.init('List', 'reportContainerList', ['sort','cables', 'sides', 'ratings', 'markers'])
-			.then(Mavis.List._renderDom())
-			.then(Mavis.List.renderItems(Mavis.Data.Filtered))
-			.then(resolve());
-		});
-	},
+      let links = document.querySelectorAll('.loadVisual');
+
+      links.forEach((link, i) => {
+
+        link.addEventListener('click', function() {
+          let data = {};
+          data.cable = Number(this.getAttribute('data-cable'));
+          data.position = Number(this.getAttribute('data-position'));
+          Mavis.Pages.loadPage('inspection', data);
+        });
+      });
+
+      resolve();
+    });
+  },
+
+	init: () => {
+    return new Promise((resolve, reject) => {
+      Mavis.List.Cables = new Array();
+      async function initialize() {
+        await Mavis.List._getCableNames();
+        await Mavis.Filter.init('List', 'reportContainerList', ['sort', 'cables', 'sides', 'ratings', 'markers']);
+        await Mavis.List._render();
+        await Mavis.List.renderItems();
+        resolve();
+      }
+      initialize();
+    });
+  }
 };
 
 module.exports = Mavis.List;

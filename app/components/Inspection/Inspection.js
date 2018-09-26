@@ -8,9 +8,7 @@ const Graph = require('./Graph');
 Mavis.Inspection = {
 
 	_render: () => {
-
-		return new Promise(function(resolve, reject) {
-
+		return new Promise((resolve, reject) => {
 			const container = document.getElementById('content'),
 					content = [
 						'<div class="inner">',
@@ -25,40 +23,45 @@ Mavis.Inspection = {
 						'</div>',
 						'<aside id="comments" class="hidden"></aside>'
 					];
-
 			container.innerHTML = content.join('');
 			resolve();
 		});
 	},
 
   _setFilterCable: cable => {
-
-	  return new Promise(function(resolve, reject) {
-
-      Mavis.Data.Filter.Cable = cable;
-
+	  return new Promise((resolve, reject) => {
+      Mavis.Filter.Criteria.cable = cable;
 	    resolve();
     });
   },
 
+  _filter: data => {
+	  async function filterInspection() {
+      await Visual.filter(data);
+      await Graph.filter();
+      await Player.filter(data);
+      await Comment.init();
+    }
+    filterInspection();
+  },
+
 	init: data => {
-
-		return new Promise(function(resolve, reject) {
-
-			console.log('init Inspection ');
-
-			document.getElementById('content').setAttribute('data-tab', 'Inspection');
-
-      Mavis.Inspection._render()
-      .then(Mavis.Filter.init('Inspection', 'cableSelection', ['cable']))
-      .then(Mavis.Filter.init('Inspection', 'inspectionFilter', ['sides', 'ratings', 'markers']))
-      .then(Mavis.Inspection._setFilterCable(data.cable))
-      .then(Mavis.Data.Filter.filterData())
-      .then(Visual.init(data))
-      .then(Graph.init(data.cable))
-      .then(Player.init(data))
-      .then(Comment.init())
-      .then(resolve());
+		return new Promise((resolve, reject) => {
+			async function initialize() {
+			  document.getElementById('content').setAttribute('data-tab', 'inspection');
+			  await Mavis.Inspection._render();
+        await Mavis.Filter.init('Inspection', 'cableSelection', ['cable']);
+        await Mavis.Filter.init('Inspection', 'inspectionFilter', ['sides', 'ratings', 'markers']);
+        await Mavis.Inspection._setFilterCable(data.cable);
+        await Mavis.Filter._loadData();
+        await Visual.init(data);
+        await Graph.init();
+        await Player.init(data);
+        await Comment.init();
+        console.log('init Inspection ');
+        resolve();
+      }
+      initialize();
     });
 	}
 };

@@ -1,6 +1,21 @@
 # Project specific #
 ###################
-app/data/0/images/
+app/data/rheinknie/0
+app/data/rheinknie/1
+app/data/rheinknie/2
+app/data/rheinknie/3
+app/data/rheinknie/4
+app/data/rheinknie/5
+app/data/rheinknie/6
+app/data/rheinknie/7
+app/data/rheinknie/8
+app/data/rheinknie/9
+app/data/rheinknie/10
+app/data/rheinknie/11
+app/data/rheinknie/12
+app/data/rheinknie/13
+app/data/rheinknie/14
+app/data/rheinknie/15
 node_modules/*
 
 # Compiled source #

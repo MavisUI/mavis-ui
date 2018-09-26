@@ -7,9 +7,7 @@ Mavis.Visual = {
 	lastImage: null,
 
 	_render: () => {
-
-		return new Promise(function(resolve, reject) {
-
+		return new Promise((resolve, reject) => {
 			const container = document.getElementById('visual'),
 					content = [
 						'<div id="pictures">',
@@ -66,42 +64,34 @@ Mavis.Visual = {
 		});
 	},
 
-  _setSides: () => {
-
-    return new Promise(function(resolve, reject) {
-
-      Mavis.Visual.sides = Number(Mavis.Data.Construction.meta.cableSides.length);
-
+  _setSides: cable => {
+    return new Promise((resolve, reject) => {
+      Mavis.Visual.sides = Number(Mavis.Data.CableData[cable].sides);
       resolve();
     });
   },
 
-  setPath: cable => {
-
-    return new Promise(function(resolve, reject) {
-
-      Mavis.Visual.imagePath = "/static/" + Mavis.Data.State.currentObject + "/images/" + cable + '/';
-
+  _setPath: cable => {
+    return new Promise((resolve, reject) => {
+      Mavis.Visual.imagePath = '/data/' + Mavis.Data.State.activeBridge + '/' + cable + '/';
       resolve();
     });
   },
 
-  _setLastImage: () => {
-
-    return new Promise(function(resolve, reject) {
-
-      Mavis.Visual.lastImage = Mavis.Data.CableData[Mavis.Data.Filter.Cable].trigger.length;
-
+  _setLastImage: cable => {
+    return new Promise((resolve, reject) => {
+      Mavis.Visual.lastImage = Mavis.Data.CableData[cable].trigger.length;
       resolve();
     });
   },
 
-  renderImages: n => {
+  renderImages: (cable, n) => {
 
     let pictures = document.querySelectorAll('.picture'),
         preloadContainer = document.getElementById('preloadContainer');
+    if(!cable) cable = 0;
 
-    if(n < Mavis.Data.CableData[Mavis.Data.Filter.Cable].imageCount) n++;
+    if(n < Mavis.Data.CableData[cable].imageCount) n++;
     let nextImage = n + 1;
 
     pictures.forEach(function (picture, index) {
@@ -114,7 +104,7 @@ Mavis.Visual = {
       // picture.setAttribute('style', 'background-image: url(\'' + backgroundImg + '\')');
       picture.appendChild(placehold);
 
-      /*
+/*
             if(nextImage <= Mavis.Data.CableData[Mavis.Filter.Data.Cable].imageCount) {
 
               let preloadImg = Mavis.Visual.imagePath + index + '/' + nextImage + '.jpg',
@@ -127,23 +117,32 @@ Mavis.Visual = {
             }
       */
     });
+  },
 
+  filter: data => {
+    let img = Mavis.Player._getFrame(data.cable, data.position);
+    async function initialize() {
+      await Mavis.Visual._setSides(data.cable);
+      await Mavis.Visual._setPath(data.cable);
+      await Mavis.Visual._setLastImage(data.cable);
+      Mavis.Visual.renderImages(data.cable, img);
+    }
+    initialize();
   },
 
   init: data => {
+    return new Promise((resolve, reject) => {
+      let img = Mavis.Player._getFrame(data.cable, data.position);
+      async function initialize() {
+        await Mavis.Visual._render();
+        await Mavis.Visual._setSides(data.cable);
+        await Mavis.Visual._setPath(data.cable);
+        await Mavis.Visual._setLastImage(data.cable);
+        Mavis.Visual.renderImages(data.cable, img);
+        resolve();
+      }
 
-    return new Promise(function(resolve, reject) {
-
-      let img = Mavis.Player._getFrame(data.position);
-
-      Mavis.Visual._render()
-        .then(Mavis.Visual._setSides())
-        .then(Mavis.Visual.setPath(data.cable))
-        .then(Mavis.Visual._setLastImage())
-        .then(function() {
-          Mavis.Visual.renderImages(img)
-        })
-        .then(resolve());
+      initialize();
     });
   }
 };

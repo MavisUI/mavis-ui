@@ -5,22 +5,29 @@ const Highcharts = require('highcharts');
 Mavis.DashboardSidesAffected = {
 
 	_render: () => {
-
-		return new Promise(function(resolve, reject) {
-
+		return new Promise((resolve, reject) => {
 			let el = document.createElement('div');
 			el.setAttribute('class', 'reportDashboardChart');
 			el.innerHTML = '<div id="dashboardSidesAffected"></div>';
-
 			document.getElementById('reportDashboard').appendChild(el);
-
 			resolve();
 		});
 	},
 
-	_countSides: results => {
+  _loadSides: () => {
+    return new Promise((resolve, reject) => {
+      Mavis.Data.Stores['construction']
+        .find({})
+        .then(docs => {
+          Mavis.DashboardSidesAffected.Sides = docs[0].meta.cableSides;
+          resolve();
 
-		let 	data = [],
+        });
+    });
+  },
+
+	_countSides: results => {
+		let data = [],
 				sides = {
 					0: 0,
 					1: 0,
@@ -32,7 +39,6 @@ Mavis.DashboardSidesAffected = {
 				i;
 
 		results.forEach(function(item, i) {
-
 			if(item.sides.length > 0) {
 				item.sides.forEach(function(side, i) {
 					let n = side-1;
@@ -42,9 +48,8 @@ Mavis.DashboardSidesAffected = {
 		});
 
 		for(i=0;i<6;i++) {
-
 			let obj = {};
-			obj.name = Mavis.Data.Construction.meta.cableSides[i];
+			obj.name = Mavis.DashboardSidesAffected.Sides[i];
 			obj.color = Mavis.Global.paletteBlue[i];
 			obj.y = sides[i];
 			data.push(obj);
@@ -53,28 +58,26 @@ Mavis.DashboardSidesAffected = {
 		return data;
 	},
 
-	_renderChart: results => {
-
-		return new Promise(function(resolve, reject) {
-
-			let 	container = 'dashboardSidesAffected',
+	_renderChart: () => {
+		return new Promise((resolve, reject) => {
+			let results = Mavis.Filter.Data,
+          container = 'dashboardSidesAffected',
 					label = 'Schadensfälle nach Seilseite',
 					data = Mavis.DashboardSidesAffected._countSides(results),
-					axisCategories = ['Oben-Links', 'Oben', 'Oben-Rechts', 'Unten-Links', 'Unten', 'Unten-Rechts'];
-
+					axisCategories = ['OL', 'O', 'OR', 'UL', 'U', 'UR'];
 			Mavis.Graphs.barChart(container, label, data, axisCategories);
-
 			resolve();
 		});
 	},
 
-	init: results => {
+	init: () => {
+		return new Promise((resolve, reject) => {
 
-		return new Promise(function(resolve, reject) {
-
+		  Mavis.DashboardSidesAffected.Sides = new Array();
 			Mavis.DashboardSidesAffected._render()
-			.then(Mavis.DashboardSidesAffected._renderChart(results))
-			.then(resolve());
+        .then(Mavis.DashboardSidesAffected._loadSides())
+  			.then(Mavis.DashboardSidesAffected._renderChart())
+	  		.then(resolve());
 		});
 	}
 };

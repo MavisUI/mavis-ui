@@ -47,7 +47,7 @@ Mavis.Pages = {
 		const app = document.getElementById('app');
 
 		// if no mod has been passed (which would be an error), load the model screen;
-		if(!mod) mod = 'model';
+		if(!mod) mod = 'report';
 		if(!data) {
 		  data = {};
 		  data.cable = 0;

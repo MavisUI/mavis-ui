@@ -3,6 +3,13 @@ const Mavis = Mavis || {};
 
 Mavis.AppPath = path.join(process.cwd(), "..", "app")
 
+Array.prototype.forEachAsync = async function(callback){
+  for(let x of this){
+    let i = this.indexOf(x);
+    await callback(x, i);
+  }
+};
+
 Mavis.Global = {
 
 	fs: null,
@@ -97,7 +104,7 @@ Mavis.Global = {
 			// generate tabBodies
 			tabBody.setAttribute('id', id + modules[i]);
 			tabBody.setAttribute('class', 'tabBody');
-			if(i!=0) tabBody.style.display = 'none';
+			if(i!==0) tabBody.style.display = 'none';
 
 			// create eventListener for Tabs
 			tab.addEventListener('click', function(e) {

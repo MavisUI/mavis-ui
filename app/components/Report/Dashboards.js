@@ -5,40 +5,55 @@ const DashboardSidesAffected = require('./DashboardSidesAffected');
 
 Mavis.Dashboards = {
 
-	_render: () => {
+  Data: [],
 
-		return new Promise(function(resolve, reject) {
-
+  _render: () => {
+		return new Promise((resolve, reject) => {
 			const container = document.getElementById('reportContainerDashboard'),
-					element = document.createElement('div');
-
+					  element = document.createElement('div');
 			element.setAttribute('id', 'reportDashboard');
 			container.appendChild(element);
 			resolve();
 		});
 	},
 
-	initCharts: results => {
+  _assembleData: () => {
+    return new Promise((resolve, reject) => {
+      Mavis.Data.Stores['results']
+        .find(Mavis.Filter.Criteria)
+        .sort(Mavis.Filter.Order)
+        .then(results => {
+          Mavis.Dashboards.Data = results;
+          resolve();
+        });
+    });
+  },
 
-		return new Promise(function(resolve, reject) {
-
-			document.getElementById('reportDashboard').innerHTML = '';
-
-			Mavis.DashboardMarkerCount.init(results)
-			.then(Mavis.DashboardRatingsCount.init(results))
-			.then(Mavis.DashboardSidesAffected.init(results))
-			.then(resolve());
-
+  initCharts: () => {
+		return new Promise((resolve, reject) => {
+		  document.getElementById('reportDashboard').innerHTML = '';
+      async function initializeCharts() {
+        await Mavis.Dashboards._assembleData();
+        await Mavis.DashboardMarkerCount.init();
+        await Mavis.DashboardRatingsCount.init();
+        await Mavis.DashboardSidesAffected.init();
+        resolve();
+      }
+      initializeCharts();
 		});
 	},
 
 	init: () => {
+    return new Promise((resolve, reject) => {
+      async function initialize() {
+        await Mavis.Filter.init('Dashboard', 'reportContainerDashboard', ['cables', 'sides', 'ratings', 'markers']);
+        await Mavis.Dashboards._render();
+        await Mavis.Dashboards.initCharts();
+        console.log('Dashboards done');
+        resolve();
+      }
 
-    return new Promise(function (resolve, reject) {
- 			Mavis.Filter.init('Dashboard', 'reportContainerDashboard', ['cables', 'sides', 'ratings', 'markers'])
-      .then(Mavis.Dashboards._render())
- 		  .then(Mavis.Dashboards.initCharts(Mavis.Data.Filtered))
- 			.then(resolve());
+      initialize();
     });
   }
 };

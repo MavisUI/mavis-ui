@@ -8,9 +8,7 @@ Mavis.Graph = {
 	currentZoom: 1,
 
 	_render: () => {
-
-		return new Promise(function(resolve, reject) {
-
+		return new Promise((resolve, reject) => {
 			const container = document.getElementById('graph'),
 					content = [
 						'<div id="chart">',
@@ -31,32 +29,28 @@ Mavis.Graph = {
 	},
 
 	_getData: () => {
-
-		return new Promise(function(resolve, reject) {
-
-			let data = Mavis.Data.Filtered,
+		return new Promise((resolve, reject) => {
+			let data = Mavis.Filter.Data,
 					chartData = [],
 					cases = [],
 					categories = [],
 					returnData = {};
 
 			data.forEach(function(item, i) {
-
 				let start = Number(item.position).toFixed(2),
 						dur = Number(item.position + item.distance).toFixed(2);
-
 				if(start === dur) {
 					dur = Number(start) + 0.3;
 				}
-
-				var el = {};
+				let el = {};
+				el.id = item._id;
 				el.cable = item.cable;
 				el.caption = item.caption;
 				el.case = item.case;
         el.color = item.color;
         el.distance = item.distance;
         el.images = item.images;
-        el.label = item.label,
+        el.label = item.label;
 				el.metric = item.metric;
         el.rating = item.rating;
         el.sides = item.sides;
@@ -65,42 +59,27 @@ Mavis.Graph = {
 				el.x2 = Number(dur);
 				el.y = item.case;
 				el.partialFill = 1;
-
 				if(cases.indexOf(item.case) < 0) {
 					cases.push(item.case);
 				}
-
 				if(categories.indexOf(item.label) < 0) {
 					categories.push(item.label);
 				}
-
 				chartData.push(el);
-
 			});
-
 			chartData.forEach(function(element, index) {
-
 				element.y = cases.indexOf(element.y);
-
 			});
-
 			returnData.data = chartData;
 			returnData.categories = categories;
-
 			resolve(returnData);
-
 		});
 	},
 
 	_renderGraph: data => {
-
-		return new Promise(function(resolve, reject) {
-
-			// clear container
+		return new Promise((resolve, reject) => {
 			document.getElementById('chartsmarker').innerHTML = '';
-
 			Highcharts.chart('chartsmarker', {
-
 				chart: {
 					type: 'xrange',
 					height: 220,
@@ -110,24 +89,17 @@ Mavis.Graph = {
 					panning: true,
 					panKey: 'shift',
 					events:{
-
 						click: function(e) {
-
 							Mavis.Player.pause();
-
 							let pos = (e.xAxis[0].value).toFixed(2),
 									position = Number(pos);
-
-							Mavis.Player.playerSet(position);
-
+							Mavis.Player.playerSet(Mavis.Filter.Criteria.cable, position);
 						},
-
 						load: function () {
 							Mavis.Graph.plotLine(0)
 						}
 					}
 				},
-
 				series: [
 					{
 						data: data.data,
@@ -142,12 +114,10 @@ Mavis.Graph = {
 						},
 						cursor: 'pointer',
 						point: {
-
 							events: {
-
 								click: function () {
-
 								  let commentData = {};
+                  commentData.id = this.id;
 								  commentData.cable = this.cable;
                   commentData.caption = this.caption;
                   commentData.case = this.case;
@@ -159,29 +129,24 @@ Mavis.Graph = {
                   commentData.value = this.value;
                   commentData.position = this.x;
                   commentData.sides = this.sides;
-
                   Mavis.Comment.load(commentData);
 								}
 							}
 						}
 					}
 				],
-
 				credits: {
 					enabled: false
 				},
-
 				title: {
 					text: ''
 				},
-
 				legend: {
 					enabled: false,
 					title: {
 						text: ''
 					}
 				},
-
 				tooltip: {
 					headerFormat: '<p>Position: <b>{point.key}</b> m</p><br />',
 					pointFormat: '<p>Merkmal: <b>{point.label}</b></p>',
@@ -196,16 +161,14 @@ Mavis.Graph = {
 						fontFamily:"\"din_light\""
 					}
 				},
-
 				data: {
 					decimalPoint: ','
 				},
-
 				xAxis: {
 					type: 'linear',
 					title: '',
 					min: 0,
-					max: Mavis.Data.CableData[Mavis.Data.Filter.Cable].drivenLength,
+					max: Mavis.Data.CableData[Mavis.Filter.Criteria.cable].drivenLength,
 					labels: {
 						enabled: true
 					},
@@ -213,7 +176,6 @@ Mavis.Graph = {
 						text: ''
 					}
 				},
-
 				yAxis: {
 					categories: data.categories,
 					reversed: true,
@@ -226,20 +188,16 @@ Mavis.Graph = {
 					}
 				}
 			});
-
 			resolve();
 		});
 	},
 
 	plotLine: n => {
-
-		var 	el = 'chartsmarker',
+		var el = 'chartsmarker',
 				lineId = 'chartsmarkerPlotLine',
 				chartContainer = document.getElementById(el),
 				chart = Highcharts.charts[Highcharts.attr(chartContainer, 'data-highcharts-chart')];
-
 		chart.xAxis[0].removePlotLine(lineId);
-
 		chart.xAxis[0].addPlotLine({
 			value: n,
 			color: '#000000',
@@ -250,18 +208,16 @@ Mavis.Graph = {
 	},
 
 	zoom: () => {
-
 		let chartContainer = document.getElementById('chartsmarker'),
 				chart = Highcharts.charts[Highcharts.attr(chartContainer, 'data-highcharts-chart')],
 				position = Number(Mavis.Player.currentPosition),
-				max = Number(Mavis.Data.CableData[Mavis.Data.Filter.Cable].drivenLength),
+				max = Number(Mavis.Data.CableData[Mavis.Filter.Criteria.cable].drivenLength),
 				r = (max/Mavis.Graph.currentZoom).toFixed(2),
 				zoomRange = Number(r),
 				h = (zoomRange / 2).toFixed(2),
 				halfRange = Number(h),
 				endBuffer = max - zoomRange,
 				zoomStart, zoomEnd;
-
 		if(position < halfRange) {
 			zoomStart = 0;
 			zoomEnd = zoomRange;
@@ -272,58 +228,55 @@ Mavis.Graph = {
 			zoomStart = position - halfRange;
 			zoomEnd = position + halfRange;
 		}
-
 		chart.xAxis[0].setExtremes(zoomStart, zoomEnd);
 	},
 
-  repaintGraph: () => {
+  _zoomIn: e => {
+    if(Mavis.Graph.currentZoom < 100) {
+      Mavis.Graph.currentZoom += 10;
+      Mavis.Graph.zoom();
+    }
+  },
 
-    // Mavis.Graph._renderGraph(data);
+  _zoomOut: e => {
+    if(Mavis.Graph.currentZoom > 1) {
+      Mavis.Graph.currentZoom -= 10;
+      Mavis.Graph.zoom();
+    }
+  },
 
+  _zoomReset: e => {
+    Mavis.Graph.currentZoom = 1;
+    Mavis.Graph.zoom();
   },
 
 	_events: () => {
-
-		return new Promise(function(resolve,reject) {
-
-			const zoomIn = document.getElementById('markerZoomIn'),
-					zoomOut = document.getElementById('markerZoomOut'),
-					zoomReset = document.getElementById('markerZoomReset');
-
-			zoomIn.addEventListener('click', function(e) {
-				if(Mavis.Graph.currentZoom < 100) {
-					Mavis.Graph.currentZoom += 10;
-					Mavis.Graph.zoom();
-				}
-			});
-
-			zoomOut.addEventListener('click', function(e) {
-				if(Mavis.Graph.currentZoom > 1) {
-					Mavis.Graph.currentZoom -= 10;
-					Mavis.Graph.zoom();
-				}
-			});
-
-			zoomReset.addEventListener('click', function(e) {
-				Mavis.Graph.currentZoom = 1;
-				Mavis.Graph.zoom();
-			});
-
+		return new Promise((resolve,reject) => {
+      document.getElementById('markerZoomIn').addEventListener('click', Mavis.Graph._zoomIn);
+      document.getElementById('markerZoomOut').addEventListener('click', Mavis.Graph._zoomOut);
+      document.getElementById('markerZoomReset').addEventListener('click', Mavis.Graph._zoomReset);
 			resolve();
 		});
 	},
 
-	init: cable => {
+  filter: () => {
+    async function initialize() {
+      let data = await Mavis.Graph._getData();
+      await Mavis.Graph._renderGraph(data);
+    }
+    initialize();
+  },
 
-		return new Promise(function(resolve, reject) {
-
-			let data = Mavis.Graph._getData()
-			.then(function(data) {
-				Mavis.Graph._render()
-				.then(Mavis.Graph._renderGraph(data))
-				.then(Mavis.Graph._events())
-				.then(resolve());
-			});
+	init: () => {
+		return new Promise((resolve, reject) => {
+      async function initialize() {
+        let data = await Mavis.Graph._getData();
+        await Mavis.Graph._render();
+        await Mavis.Graph._renderGraph(data);
+        await Mavis.Graph._events();
+        resolve();
+      }
+      initialize();
 		});
 	}
 };

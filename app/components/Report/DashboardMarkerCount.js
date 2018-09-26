@@ -1,91 +1,102 @@
 const Mavis = require('../Global/Global');
-const Graphs = require('./Graphs');
-const Highcharts = require('highcharts');
 
 Mavis.DashboardMarkerCount = {
 
-	_render: () => {
+  _render: () => {
+    return new Promise((resolve, reject) => {
+      let el = document.createElement('div');
+      el.setAttribute('class', 'reportDashboardChart');
+      el.innerHTML = '<div id="dashboardMarkerCount"></div>';
+      document.getElementById('reportDashboard').appendChild(el);
+      resolve();
+    });
+  },
 
-		return new Promise(function(resolve, reject) {
+  _getModules: () => {
+    return new Promise((resolve, reject) => {
+      let dataFilter = {};
+      if(Mavis.Filter.Criteria.label) dataFilter.label = Mavis.Filter.Criteria.label;
+      Mavis.Data.Stores['modules']
+        .find(dataFilter)
+        .then(modules => {
+          modules.forEach((mod, i) => {
+            let obj = {};
+            obj.label = mod.label;
+            obj.color = Mavis.Global.paletteBlue[i];
+            obj.y = 0;
+            Mavis.DashboardMarkerCount.Modules.push(obj);
+          });
+          resolve();
+        });
+    });
+  },
 
-			let el = document.createElement('div');
-			el.setAttribute('class', 'reportDashboardChart');
-			el.innerHTML = '<div id="dashboardMarkerCount"></div>';
+  _countResults: () => {
+    return new Promise((resolve, reject) => {
+      async function count(result) {
+        return new Promise((resolve, reject) => {
+          for (const module of Mavis.DashboardMarkerCount.Modules) {
+            if(module.label === result.label) module.y++;
+          }
+          resolve();
+        });
+      }
+      async function processModules(results) {
+        for (const result of results) {
+          await count(result);
+        }
+        resolve();
+      }
+      processModules(Mavis.Filter.Data);
+    });
+  },
 
-			document.getElementById('reportDashboard').appendChild(el);
+  _filterNoResults: () => {
+    return new Promise((resolve, reject) => {
+      let _dataFilter = data => {
+        return data.y > 0;
+      };
+      Mavis.DashboardMarkerCount.Modules = Mavis.DashboardMarkerCount.Modules.filter(_dataFilter);
+      resolve();
+    });
+  },
 
-			resolve();
-		});
-	},
+  _getCategories: () => {
+    return new Promise((resolve, reject) => {
+      for(const module of Mavis.DashboardMarkerCount.Modules) {
+        Mavis.DashboardMarkerCount.Categories.push(module.label);
+      }
+      resolve();
+    });
+  },
 
-	_getData: results => {
+  _renderChart: () => {
+    return new Promise((resolve, reject) => {
+      let container = 'dashboardMarkerCount',
+        label = 'Schadensfälle nach Merkmal',
+        data = Mavis.DashboardMarkerCount.Modules,
+        axisCategories = Mavis.DashboardMarkerCount.Categories;
+      Mavis.Graphs.barChart(container, label, data, axisCategories);
+      resolve();
+    });
+  },
 
-		const modules = ['automatic','din','manual'];
-		let data = [];
-
-		// create data containers with info
-		modules.forEach(function(module, i) {
-
-			Mavis.Data.Settings[module].forEach(function(mod, i) {
-				let obj = {};
-				obj.name = mod.label;
-				obj.color = Mavis.Global.paletteBlue[i];
-				obj.y = 0;
-				data.push(obj);
-			});
-		});
-
-		// fill counter from data
-		results.forEach(function(item, i) {
-			let n = item.case - 1;
-			data[n].y++;
-		});
-
-		// filter out all items without data
-		let _dataFilter = data => {
-			return data.y > 0;
-		}
-
-		let chartData = data.filter(_dataFilter);
-
-		return chartData;
-	},
-
-	_getCategories: (data) => {
-
-		let categories = [];
-
-		data.forEach(function(item, i) {
-			categories.push(item.name);
-		});
-
-		return categories;
-	},
-
-	_renderChart: results => {
-
-		return new Promise(function(resolve, reject) {
-
-			let 	container = 'dashboardMarkerCount',
-					label = 'Schadensfälle nach Merkmal',
-					data = Mavis.DashboardMarkerCount._getData(results),
-					axisCategories = Mavis.DashboardMarkerCount._getCategories(data);
-
-			Mavis.Graphs.barChart(container, label, data, axisCategories);
-
-			resolve();
-		});
-	},
-
-	init: results => {
-
-		return new Promise(function(resolve, reject) {
-
-			Mavis.DashboardMarkerCount._render()
-			.then(Mavis.DashboardMarkerCount._renderChart(results))
-			.then(resolve());
-		});
-	}
+  init: () => {
+    return new Promise((resolve, reject) => {
+      Mavis.DashboardMarkerCount.Modules = new Array();
+      Mavis.DashboardMarkerCount.Categories = new Array();
+      async function initialize() {
+        await Mavis.DashboardMarkerCount._render();
+        await Mavis.DashboardMarkerCount._getModules();
+        await Mavis.DashboardMarkerCount._countResults();
+        await Mavis.DashboardMarkerCount._filterNoResults();
+        await Mavis.DashboardMarkerCount._getCategories();
+        await Mavis.DashboardMarkerCount._renderChart();
+        resolve();
+      }
+      initialize();
+    });
+  }
 };
 
 module.exports = Mavis.DashboardMarkerCount;
