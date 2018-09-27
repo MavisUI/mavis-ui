@@ -3,7 +3,7 @@
 #settings {
 	display: inline-block;
 	position: relative;
-	top: 1rem;
+	top: 4rem;
 	width: @gridWidth-12;
 
 	#settingsTabs {
@@ -166,7 +166,6 @@
 					width: @gridWidth-1;
 
 					.color {
-						border: none;
 						border-radius: 1.5rem;
 						border: 1px solid @greyBright;
 						display: inline-block;
@@ -247,8 +246,8 @@
 				height: 13.5rem;
 				position: relative;
 				float: right;
-				left: 1.25rem;
-				top: -17.5rem;
+				left: 2.5rem;
+				top: -17rem;
 				z-index: @foregroundOverlay;
 				margin-bottom: -17rem;
 				padding: .5rem;
@@ -425,14 +424,73 @@
 	}
 }
 
+#settingsResetManual,
+#settingsSaveManual {
+  -webkit-appearance: none;
+  box-shadow: 0 1px 2px @greyDark;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 3rem;
+  .fontBold();
+  outline: none;
+  padding: .5rem 1rem 1rem 1rem;
+  width: 15rem;
+
+  .icon {
+    display: inline;
+    font-size: 2rem;
+    position: relative;
+    top: .25rem;
+    margin-right: .5rem;
+  }
+
+  &:active {
+    box-shadow: none;
+    position: relative;
+    top: 2px;
+  }
+}
+
+#settingsResetManual {
+  margin-right: 1.25%;
+  border: 1px solid @grey;
+  background-color: @white;
+  color: @grey;
+
+  &.active {
+    border: 1px solid @grey;
+    color: @black;
+  }
+//  box-shadow: none;
+}
+
+#settingsSaveManual{
+  border: none;
+  color: @white;
+
+  &.active {
+    background-color: @green;
+  }
+}
+
+
+/*
 .settingsSave {
 	display: inline-block;
 	.buttons();
-  margin: 0 1rem .5rem .1rem;
+  margin: 0 0 .5rem .1rem;
 }
 
 .settingsReset {
   display: inline-block;
   .buttons();
-  margin: 0 0 .5rem .1rem;
+  margin: 0 1rem .5rem .1rem;
 }
+
+.ghost {
+  border: 1px solid @greyDark;
+  background-color: @white;
+  color: @black;
+  box-shadow: none;
+}
+*/

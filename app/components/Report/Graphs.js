@@ -3,6 +3,22 @@ const Highcharts = require('highcharts');
 
 Mavis.Graphs = {
 
+  blank: (id, title)  => {
+
+    let container = document.getElementById(id),
+        content =[
+          '<div class="reportDashboardNoResults">',
+            '<div class="row">',
+              '<h5>' + title +'</h5>',
+            '</div>',
+            '<div class="row">',
+              '<label>Zu diesen Filtereinstellungen <br /> liegen keine Schadensfälle vor.</label>',
+            '</div>',
+          '</div>'
+        ];
+    container.innerHTML = content.join('');
+  },
+
 	pieChart: (container, label, data, axisCategories) => {
 
 		Highcharts.chart(container, {

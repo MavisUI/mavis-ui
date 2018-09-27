@@ -26,9 +26,37 @@
 			.fontLight();
 		}
 	}
-
 	.reportDashboardChart > div {
 		display: inline-block;
 		width: @gridWidth-12;
 	}
+
+  .reportDashboardNoResults {
+    display: table;
+    height: 300px;
+    width: @gridWidth-12;
+    margin-right: 2%;
+    text-align: center;
+
+    .row {
+      display: table-row;
+      width: @gridWidth-12;
+
+      h5 {
+        display: table-cell;
+        width: @gridWidth-12;
+        font-size: 1.5rem;
+        .fontLight();
+        vertical-align: bottom;
+      }
+
+      label {
+        display: table-cell;
+        width: @gridWidth-12;
+        font-size: 2rem;
+        .fontLight();
+        vertical-align: top;
+      }
+    }
+  }
 }

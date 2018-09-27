@@ -30,8 +30,8 @@ Mavis.Settings = {
     return new Promise((resolve, reject) => {
       let container = document.getElementById('settingsContainer');
       container.innerHTML = '';
-      let modules = ['Procedures','Manual','Presets','Users'],
-          labels = ['Verfahren', 'Custom', 'Presets', 'User'];
+      let modules = ['Manual', 'Presets', 'Procedures', 'Users'],
+          labels = ['Custom', 'Presets', 'Verfahren', 'User'];
       Mavis.Global.tabs('settingsContainer', labels, modules, 12);
       resolve();
     });
@@ -88,7 +88,7 @@ Mavis.Settings = {
   init: () => {
 
     return new Promise((resolve, reject) => {
-      document.getElementById('content').setAttribute('data-tab', 'Marker');
+      document.getElementById('content').setAttribute('data-tab', 'Manual');
       Promise.all([
         Mavis.Settings._renderView(),
         Mavis.Settings._renderTabs(),

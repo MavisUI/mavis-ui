@@ -76,7 +76,13 @@ Mavis.DashboardMarkerCount = {
         label = 'Schadensfälle nach Merkmal',
         data = Mavis.DashboardMarkerCount.Modules,
         axisCategories = Mavis.DashboardMarkerCount.Categories;
-      Mavis.Graphs.barChart(container, label, data, axisCategories);
+
+      if(data.length > 0) {
+        Mavis.Graphs.barChart(container, label, data, axisCategories);
+      } else {
+        Mavis.Graphs.blank(container, 'Schadensfälle nach Merkmal');
+      }
+
       resolve();
     });
   },
