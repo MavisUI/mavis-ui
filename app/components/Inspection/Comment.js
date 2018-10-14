@@ -121,7 +121,10 @@ Mavis.Comment = {
 
   _setDistance: (n, m) => {
     return new Promise((resolve, reject) => {
-      document.getElementById('commentDistanceInput').value = (Number(n) + Number(m)).toFixed(2);
+      let position = Number(n),
+          distance = Number(m),
+          val = position + distance;
+      document.getElementById('commentDistanceInput').value = val;
       resolve();
     })
   },
@@ -177,17 +180,26 @@ Mavis.Comment = {
 
   _setImages: (position, sides) => {
     return new Promise((resolve, reject) => {
+
       let container = document.getElementById('commentImagesContainer'),
           l = 6,
           i,
-          img = Mavis.Player._getFrame(Mavis.Filter.Criteria.cable, position),
+          n = Mavis.Player._getFrame(Mavis.Filter.Criteria.cable, position);
+
+      n++;
+
+      let img = Mavis.Visual._formatFileName(n),
           items = [];
+
       for(i=0;i<l;i++) {
-        let backgroundImg = Mavis.Visual.imagePath + i + '/' + img + '.jpg',
-            item = '<div class="commentImage" data-value="' + i + '" data-img="' + backgroundImg + '">' + backgroundImg + '<div class="icon iconCableActive' + i + '"></div> <div class="icon iconConfirm"></div></div>';
+        let backgroundImg = Mavis.Visual.imagePath + i + '/' + img,
+            item = '<div class="commentImage" data-value="' + i + '" data-img="' + backgroundImg + '" style="background-image: url(' + backgroundImg + ')"><div class="icon iconCableActive' + i + '"></div> <div class="icon iconConfirm"></div></div>';
         items.push(item);
       }
+
+      container.innerHTML = '';
       container.innerHTML = items.join('');
+
       Mavis.Comment._setActiveSides(sides)
         .then(resolve());
     });
@@ -350,14 +362,7 @@ Mavis.Comment = {
   },
 
   _insert: doc => {
-    return new Promise((resolve, reject) => {
-      Mavis.Data.Stores['results']
-        .insert(doc)
-        .then((err, res) => {
-          if (err) throw err;
-          resolve();
-        });
-    });
+    Mavis.Data.Stores['results'].insert(doc);
   },
 
   _save: e => {
@@ -370,9 +375,8 @@ Mavis.Comment = {
     data.position = Mavis.Player.currentPosition;
 
     if (state === 'new') {
-
       async function insert() {
-        await Mavis.Comment._insert(doc);
+        Mavis.Comment._insert(doc);
         await Mavis.Filter._loadData();
         Mavis.Inspection._filter(data);
         Mavis.Comment._toggle();
@@ -386,21 +390,7 @@ Mavis.Comment = {
   },
 
   _remove: id => {
-    return new Promise((resolve, reject) => {
-      Mavis.Data.Stores['results']
-        .remove({_id: id}, function (err, numRemoved) {
-          if(err) throw err;
-          console.log(numRemoved);
-          resolve();
-      });
-/*
-        .remove({_id: id})
-        .exec()
-        .then((err, res) => {
-          resolve();
-        });
-*/
-    });
+      Mavis.Data.Stores['results'].remove({_id: id});
   },
 
   _delete: e => {
@@ -411,7 +401,7 @@ Mavis.Comment = {
     data.position = Mavis.Player.currentPosition;
 
     async function del() {
-      await Mavis.Comment._remove(id);
+      Mavis.Comment._remove(id);
       await Mavis.Filter._loadData();
       Mavis.Inspection._filter(data);
       Mavis.Comment._toggle();
@@ -469,13 +459,12 @@ Mavis.Comment = {
     });
   },
 
-
-
   init: () => {
     return new Promise((resolve, reject) => {
       async function initialize() {
         await Mavis.Comment._renderButton();
         await Mavis.Comment._renderModal();
+        console.log('comment init again');
         resolve();
       }
       initialize();

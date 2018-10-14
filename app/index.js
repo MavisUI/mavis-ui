@@ -26,7 +26,7 @@ async function init() {
   await Mavis.Data.init();
   await Mavis.Header.init();
   await Mavis.MainMenu.init();
-  await Mavis.Pages.loadPage('settings');
+  await Mavis.Pages.loadPage('report');
 }
 
 init();

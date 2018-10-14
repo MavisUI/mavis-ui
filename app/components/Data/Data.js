@@ -19,12 +19,12 @@ Mavis.Data = {
     return new Promise((resolve, reject) => {
       let DataPath;
       if(folder === '') {
-        DataPath = Mavis.AppPath + '/assets/data/' + name + '.db';
+        DataPath = Mavis.AppPath + '/data/' + name + '.db';
         Mavis.Data.Stores[name] = Datastore.create(DataPath);
         Mavis.Data.Stores[name].load()
           .then(resolve(name + ' data loaded'));
       } else {
-        DataPath = Mavis.AppPath + '/assets/data/' + folder + '/' + name + '.db';
+        DataPath = Mavis.AppPath + '/data/' + folder + '/' + name + '.db';
         Mavis.Data.Stores[name] = Datastore.create(DataPath);
         Mavis.Data.Stores[name].load()
           .then(resolve(name + ' data loaded'));

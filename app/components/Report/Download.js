@@ -1,7 +1,5 @@
 const Mavis = require('../Global/Global');
-
 import exportFromJSON from 'export-from-json';
-
 
 Mavis.Download = {
 
@@ -48,124 +46,10 @@ Mavis.Download = {
   },
 
   _saveImages: e => {
-/*
+
     Mavis.LoadingScreen.toggle('show');
     Mavis.Download._data();
-
-    // require modules
-    let fs = require('fs');
-    let archiver = require('archiver');
-
-    // create a file to stream archive data to.
-    let output = fs.createWriteStream(Mavis.AppPath + '/example.zip');
-    let archive = archiver('zip', {
-      zlib: { level: 9 } // Sets the compression level.
-    });
-
-    // listen for all archive data to be written
-    // 'close' event is fired only when a file descriptor is involved
-    output.on('close', function() {
-      Mavis.LoadingScreen.toggle('hide');
-
-      console.log(archive.pointer() + ' total bytes');
-      console.log('archiver has been finalized and the output file descriptor has closed.');
-    });
-
-    // This event is fired when the data source is drained no matter what was the data source.
-    // It is not part of this library but rather from the NodeJS Stream API.
-    // @see: https://nodejs.org/api/stream.html#stream_event_end
-    output.on('end', function() {
-      Mavis.LoadingScreen.toggle('hide');
-      console.log('Data has been drained');
-    });
-
-    // good practice to catch warnings (ie stat failures and other non-blocking errors)
-    archive.on('warning', function(err) {
-      Mavis.LoadingScreen.toggle('hide');
-      if (err.code === 'ENOENT') {
-        // log warning
-      } else {
-        // throw error
-        throw err;
-      }
-    });
-
-    // good practice to catch this error explicitly
-    archive.on('error', function(err) {
-      Mavis.LoadingScreen.toggle('hide');
-      throw err;
-    });
-
-    // pipe archive data to the file
-    archive.pipe(output);
-
-    // append a file from stream
-    console.log(Mavis.AppPath + '/data/rheinknie/0/0/0001.jpg');
-    let file1 = Mavis.AppPath + '/data/rheinknie/0/0/0001.jpg';
-    archive.append(fs.createReadStream(file1), { name: 'image.jpg' });
-
-    // append a file from string
-//    archive.append('string cheese!', { name: 'file2.txt' });
-
-    // append a file from buffer
-//    var buffer3 = Buffer.from('buff it!');
-//    archive.append(buffer3, { name: 'file3.txt' });
-
-    // append a file
-//    archive.file(file1, { name: 'iamge.jpg' });
-
-    // append files from a sub-directory and naming it `new-subdir` within the archive
-//    archive.directory('subdir/', 'new-subdir');
-
-// append files from a sub-directory, putting its contents at the root of archive
-//    archive.directory('subdir/', false);
-
-// append files from a glob pattern
-//    archive.glob('subdir/*.txt');
-
-// finalize the archive (ie we are done appending files but streams have to finish yet)
-// 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
-    archive.finalize();
     Mavis.LoadingScreen.toggle('hide');
-
-
-
-    let __dirname = process.cwd();
-    const archive = Mavis.Global.archiver('zip');
-    const output = Mavis.Global.fs.createWriteStream(__dirname + '/tmp/bilder.zip');
-
-    output.on('close', function() {
-//      document.getElementById('updating').style.display = 'none';
-      Mavis.LoadingScreen.toggle('hide');
-      link = document.createElement("a");
-      link.href = 'tmp/bilder.zip';
-      link.download = 'bilder.zip';
-      link.style = "visibility:hidden";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    });
-
-    archive.on('error', function(err) {
-      Mavis.LoadingScreen.toggle('hide');
-      console.log(err);
-      throw err;
-    });
-
-    archive.pipe(output);
-
-    for(const result of Mavis.Download.Data) {
-      for(const image of result.images) {
-        // data.push(Mavis.AppPath + '/data' + image);
-        let file = Mavis.AppPath + '/data' + image;
-        archive.append(Mavis.Global.fs.createReadStream(file), { name: file});
-        console.log(file);
-      }
-    }
-
-    archive.finalize();
-
-*/
   },
 
   _events: () => {
@@ -175,15 +59,14 @@ Mavis.Download = {
       for (const button of documentDownloads) {
         button.addEventListener('click', Mavis.Download._saveDocument);
       }
-
       document.getElementById('downloadImages').addEventListener('click', Mavis.Download._saveImages);
-
       resolve();
     });
   },
 
   init: () => {
     return new Promise((resolve, reject) => {
+
       async function initialize() {
         await Mavis.Download._render();
         await Mavis.Download._events();
@@ -196,6 +79,31 @@ Mavis.Download = {
 
 module.exports = Mavis.Download;
 
+/*
+  _updateImg: (id, img) => {
+    Mavis.Data.Stores['results']
+      .update({_id: id}, {$set: {images: img}});
+  },
+
+  _fixImages: () => {
+    Mavis.Data.Stores['results']
+      .find({})
+      .then(results => {
+        results.forEach(result => {
+          let images = [];
+          result.sides.forEach(side => {
+            let x = Number(side) -1;
+            let n = Mavis.Player._getFrame(result.cable, result.position);
+            n++;
+            let img = Mavis.Visual._formatFileName(n),
+                path = '/data/' + Mavis.Data.State.activeBridge + '/' + result.cable + '/' + x + '/' + img;
+                images.push(path);
+          });
+          Mavis.Download._updateImg(result._id, images);
+        });
+      });
+  },
+*/
 
 /*
 

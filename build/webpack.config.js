@@ -14,6 +14,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
+
 const ExtractCssPlugin = new ExtractTextPlugin('styles.css');
 const cssLoader = ExtractCssPlugin.extract(['css-loader','autoprefixer-loader']);
 const lessLoader = ExtractCssPlugin.extract(['css-loader','autoprefixer-loader', 'less-loader']);
@@ -54,6 +55,9 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH)
     }),
+    new CopyWebpackPlugin([
+      {from:'app/data',to:'data'}
+    ]),
     htmlPlugin,
     ExtractCssPlugin
   ],

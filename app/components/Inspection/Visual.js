@@ -85,37 +85,47 @@ Mavis.Visual = {
     });
   },
 
+  _formatFileName: num => {
+	  let filenumber = num.toString(),
+        filenameLength = filenumber.length,
+        filename;
+    if(filenameLength === 4) {
+      filename = filenumber + '.jpg';
+    } else if(filenameLength === 3) {
+      filename = '0' + filenumber + '.jpg';
+    } else if(filenameLength === 2) {
+      filename = '00' + filenumber + '.jpg';
+    } else if(filenameLength === 1) {
+      filename = '000' + filenumber + '.jpg';
+    }
+    return filename;
+  },
+
   renderImages: (cable, n) => {
 
     let pictures = document.querySelectorAll('.picture'),
         preloadContainer = document.getElementById('preloadContainer');
-    if(!cable) cable = 0;
+
+    preloadContainer.innerHTML = '';
+
+    if(!cable) cable = Mavis.Filter.Criteria.cable;
 
     if(n < Mavis.Data.CableData[cable].imageCount) n++;
     let nextImage = n + 1;
 
+    let img = Mavis.Visual._formatFileName(n);
+    let imgNext = Mavis.Visual._formatFileName(nextImage);
+
     pictures.forEach(function (picture, index) {
+      let backgroundImg = Mavis.Visual.imagePath + index + '/' + img;
+      picture.style.backgroundImage = 'url(' + backgroundImg + ')';
 
-      let backgroundImg = Mavis.Visual.imagePath + index + '/' + n + '.jpg';
-
-      let placehold = document.createElement('p');
-      placehold.innerText = backgroundImg;
-
-      // picture.setAttribute('style', 'background-image: url(\'' + backgroundImg + '\')');
-      picture.appendChild(placehold);
-
-/*
-            if(nextImage <= Mavis.Data.CableData[Mavis.Filter.Data.Cable].imageCount) {
-
-              let preloadImg = Mavis.Visual.imagePath + index + '/' + nextImage + '.jpg',
-                  img = new Image();
-
-              img.src = preloadImg;
-
-              preloadContainer.appendChild(img);
-
-            }
-      */
+      if(nextImage <= Mavis.Data.CableData[Mavis.Filter.Criteria.cable].imageCount) {
+        let preloadImg = Mavis.Visual.imagePath + index + '/' + imgNext,
+            img = new Image();
+        img.src = preloadImg;
+        preloadContainer.appendChild(img);
+      }
     });
   },
 

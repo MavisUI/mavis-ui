@@ -33,10 +33,10 @@ Mavis.Global = {
     Mavis.Global.gui = gui;
 	},
 
-	_getArchiver: () => {
+  _getArchiver: () => {
 	  const archiver = require('archiver');
-    Mavis.Global.archiver = archiver;
-	},
+	  Mavis.Global.archiver = archiver;
+  },
 
 	_tabsActivate: (container, position, width, module) => {
 
