@@ -26,7 +26,7 @@ Mavis.Filter = {
   },
 
   _getCallback: mod => {
-    let fn;
+    let fn = () => {};
     switch (mod) {
       case 'Dashboard':
         fn = Mavis.Dashboards.initCharts;
