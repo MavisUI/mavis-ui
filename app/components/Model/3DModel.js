@@ -372,7 +372,7 @@ Mavis.Model = {
         let obj = intersects[0].object.name;
 
         // check if it is a marker
-        if(obj.indexOf('marker') !== -1 && obj !== Mavis.Model.Intersected) {
+        if(obj && obj.indexOf('marker') !== -1 && obj !== Mavis.Model.Intersected) {
 
           // set the object to jump into else loop
           Mavis.Model.Intersected = obj;
