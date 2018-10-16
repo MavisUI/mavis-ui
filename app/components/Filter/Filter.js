@@ -27,17 +27,17 @@ Mavis.Filter = {
 
   _getCallback: mod => {
     let fn = () => {};
-    switch (mod) {
-      case 'Dashboard':
+    switch (mod.toLowerCase()) {
+      case 'dashboard':
         fn = Mavis.Dashboards.initCharts;
         break;
-      case 'List':
+      case 'list':
         fn = Mavis.List.renderItems;
         break;
-      case 'Inspection':
+      case 'inspection':
         fn = Mavis.Inspection._filter;
         break;
-      case 'Model':
+      case 'model':
         fn = Mavis.Model.render;
         break;
     }
