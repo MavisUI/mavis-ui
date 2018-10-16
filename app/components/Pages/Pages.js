@@ -60,6 +60,10 @@ Mavis.Pages = {
 			Mavis.Notifications.noted();
 		}
 
+		// reset filter criteria if page changes.
+    console.log('reset criteria');
+		Mavis.Filter.Criteria = {};
+
 		Mavis.LoadingScreen.toggle('show');
 		Mavis.Pages.clearPage()
 		.then(() => {
