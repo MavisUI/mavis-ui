@@ -23,9 +23,10 @@ Mavis.Procedures = {
       // get container
       let container = document.getElementById('settingsContainerProcedures'),
           content = [
+
             '<div id="settingsProcedures"></div>',
-            '<button id="settingsSaveProcedures" class="settingsSave">Einstellungen speichern</button>',
-            '<button id="settingsResetProcedures" class="settingsReset">Einstellungen zurücksetzen</button>'
+            '<button id="settingsResetProcedures" class="settingsReset">Einstellungen zurücksetzen</button>',
+            '<button id="settingsSaveProcedures" class="settingsSave">Einstellungen speichern</button>'
           ];
 
       container.innerHTML = content.join('');
