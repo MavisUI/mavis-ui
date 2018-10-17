@@ -50,7 +50,7 @@ Mavis.Download = {
 
   _saveImages: e => {
     let totalImages = [],
-      baseImagePath = [process.cwd(), '..', 'app'].join('/'),
+      appPath = Mavis.AppPath,
       zip = new JsZip(),
 
       fileName =  Mavis.Data.State.activeBridge + '-bilder.zip',
@@ -64,9 +64,9 @@ Mavis.Download = {
 
     totalImages = totalImages
       .filter((imagePath, index, self) => self.indexOf(imagePath) === index)
-      .filter(imagePath => Mavis.Global.fs.existsSync(baseImagePath + imagePath))
+      .filter(imagePath => Mavis.Global.fs.existsSync(appPath + imagePath))
       .map(imagePath => {
-        let imageData = Mavis.Global.fs.readFileSync(baseImagePath + imagePath),
+        let imageData = Mavis.Global.fs.readFileSync(appPath + imagePath),
           // we strip the leading and duplicate "/" if there are any.
           trimmedImagePath = imagePath.split('/').filter(v => v).join('/');
         zip.file(trimmedImagePath, imageData);
