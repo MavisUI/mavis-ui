@@ -1,5 +1,7 @@
 const Mavis = require('../Global/Global');
+const path = require('path');
 import exportFromJSON from 'export-from-json';
+import JsZip from 'jszip';
 
 Mavis.Download = {
 
@@ -21,6 +23,7 @@ Mavis.Download = {
   },
 
   _data: () => {
+    Mavis.Download.Data = [];
     Mavis.Filter.Data.forEach(function(result, i) {
       let item = {};
       item.id = (i + 1);
@@ -46,10 +49,39 @@ Mavis.Download = {
   },
 
   _saveImages: e => {
+    let totalImages = [],
+      baseImagePath = [process.cwd(), '..', 'app'].join('/'),
+      zip = new JsZip(),
+
+      fileName =  Mavis.Data.State.activeBridge + '-bilder.zip',
+      // we create a temp file because it the amount of images can exceed the 500 mb blob limit of the browser
+      tempFile = './' + fileName;
 
     Mavis.LoadingScreen.toggle('show');
     Mavis.Download._data();
-    Mavis.LoadingScreen.toggle('hide');
+
+    Mavis.Download.Data.map(entry => totalImages = totalImages.concat(entry.images));
+
+    totalImages = totalImages
+      .filter((imagePath, index, self) => self.indexOf(imagePath) === index)
+      .filter(imagePath => Mavis.Global.fs.existsSync(baseImagePath + imagePath))
+      .map(imagePath => {
+        let imageData = Mavis.Global.fs.readFileSync(baseImagePath + imagePath),
+          // we strip the leading and duplicate "/" if there are any.
+          trimmedImagePath = imagePath.split('/').filter(v => v).join('/');
+        zip.file(trimmedImagePath, imageData);
+      });
+
+    zip.generateNodeStream({streamFiles: true, type: 'nodebuffer'})
+      .pipe(Mavis.Global.fs.createWriteStream(tempFile))
+      .on('finish', () => {
+        Mavis.LoadingScreen.toggle('hide');
+        Mavis.Download.downloadFile('file://' + path.resolve(tempFile), fileName);
+      })
+      .on('error', () => {
+        Mavis.LoadingScreen.toggle('hide');
+      });
+
   },
 
   _events: () => {
@@ -74,6 +106,16 @@ Mavis.Download = {
       }
       initialize();
     });
+  },
+
+  downloadFile: (url, fileName) => {
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.setAttribute('download', fileName);
+    anchor.setAttribute('style', 'visibility:hidden');
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
   }
 };
 
