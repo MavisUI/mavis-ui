@@ -1,3 +1,4 @@
+
 {
   "name": "mavis2",
   "version": "4.0.1",
@@ -6,8 +7,10 @@
   "scripts": {
     "start": "node build/server.js",
     "dev": "node build/server.js",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "package": "build --tasks win-x64 --mirror https://dl.nwjs.io/ dist"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://PBoue@bitbucket.org/PBoue/mavis-nwjs-webpack.git"
@@ -54,6 +57,7 @@
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
     "node-sass": "^4.9.2",
+    "nwjs-builder-phoenix": "^1.14.8",
     "ora": "^1.2.0",
     "proxy-middleware": "^0.15.0",
     "q": "^1.5.0",
