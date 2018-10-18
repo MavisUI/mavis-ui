@@ -18,17 +18,17 @@ export default class Header extends React.Component {
                     <div className="left">
                         <nav id="mainMenuToggle" onClick={this.handleNavIconClick}>
                             <div id="navIcon" className={iconCss}>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
+                                <span/>
+                                <span/>
+                                <span/>
+                                <span/>
                             </div>
                             <div id="pageTitle" className={pageTitleCss}>{store.pageTitle}</div>
                             <div id="menuTitle" className={menuTitleCss}>Menü</div>
                         </nav>
                     </div>
                     <div className="center">
-                        <div className="icon iconLogo"></div>
+                        <div className="icon iconLogo"/>
                         </div>
                         <div className="right">
                         <button id="getHelp">? Hilfe</button>
