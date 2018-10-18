@@ -1,7 +1,7 @@
 const path = require('path');
 const Mavis = Mavis || {};
 
-Mavis.AppPath = path.join(process.cwd(), "..", "app")
+Mavis.AppPath = process.env.NODE_ENV === 'development' ? path.join(process.cwd(), "..", "app") : process.cwd();
 
 Array.prototype.forEachAsync = async function(callback){
   for(let x of this){
