@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 export default class Tabs extends React.Component {
 
@@ -10,15 +11,24 @@ export default class Tabs extends React.Component {
     };
 
     render() {
-        let {children} = {... this.props},
-            {selectedIndex} = {... this.state};
+        let {children} = {...this.props},
+            {selectedIndex} = {...this.state};
         return (
             <div className="tabs">
                 <div className="tabs__header">
-                    {(children || []).map((c, i) => <a key={i} className="tab__header__item" onClick={() => this.onClickTab(i)}>{c.props.title}</a>)}
+                    {(children || []).map((c, i) => {
+                        let css = classNames({tab__header__item: true,  active: i === selectedIndex});
+                        return (
+                            <a key={i}
+                               className={css}
+                               onClick={() => this.onClickTab(i)}>
+                                {c.props.title}
+                            </a>
+                        );
+                    })}
                 </div>
                 <div className="tabs__content">
-                    {(children || []).filter((c, i) => selectedIndex === i)}
+                    {(children || []).filter((c, i) => i === selectedIndex)}
                 </div>
             </div>
         )

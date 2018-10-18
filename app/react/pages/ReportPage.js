@@ -16,7 +16,6 @@ export class ReportPage extends React.Component {
                         Liste
                     </Tab>
                 </Tabs>
-                Report Page
             </div>
         )
     }

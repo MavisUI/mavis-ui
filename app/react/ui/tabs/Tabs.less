@@ -1,0 +1,35 @@
+.tabs {
+    float: none;
+}
+
+.tab {
+    float: none;
+}
+
+.tab__header__item {
+    padding-right: 20px;
+    cursor: pointer;
+    display: inline-block;
+    .fontLight();
+    font-size: 1.5rem;
+    float: left;
+    line-height: 2rem;
+    color: @blue;
+    .transition300ms();
+
+    &.active {
+        color: @blue;
+
+        &:hover {
+            color: @blue;
+        }
+    }
+
+    &:hover {
+        color: @blueBright;
+    }
+}
+
+.tabs__content {
+    clear: both;
+}
