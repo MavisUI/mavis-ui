@@ -17,6 +17,9 @@ app/data/rheinknie/14
 app/data/rheinknie/15
 node_modules/*
 
+packages/
+
+
 # Compiled source #
 ###################
 *.com
