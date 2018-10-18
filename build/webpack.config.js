@@ -15,9 +15,12 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 
-const ExtractCssPlugin = new ExtractTextPlugin('styles.css');
+const ExtractCssPlugin = new ExtractTextPlugin({filename: 'styles.css', disable: process.env.NODE_ENV === 'development'});
 const cssLoader = ExtractCssPlugin.extract(['css-loader','autoprefixer-loader']);
-const lessLoader = ExtractCssPlugin.extract(['css-loader','autoprefixer-loader', 'less-loader']);
+const lessLoader = ExtractCssPlugin.extract({
+    fallback: 'style-loader',
+    use: ['css-loader','autoprefixer-loader','less-loader']
+});
 
 const path = require("path");
 const ASSET_PATH = process.env.ASSET_PATH || '/';
@@ -102,7 +105,7 @@ module.exports = {
         loader: cssLoader
       }, {
         test: /\.less$/,
-        loader: lessLoader
+        loader: ['css-hot-loader'].concat(lessLoader)
       }, {
         test: /\.json$/,
         loader: 'json-loader'
