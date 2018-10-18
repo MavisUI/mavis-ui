@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 export class SettingsPage extends React.Component {
     render() {
         return (
-            <div>Settings Page</div>
+            <div id="settings">Settings Page</div>
         )
     }
 }

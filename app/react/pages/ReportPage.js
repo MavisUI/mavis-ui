@@ -1,11 +1,23 @@
 import React from 'react';
 import {observer} from 'mobx-react';
+import Tabs from '../ui/tabs/Tabs';
+import Tab from '../ui/tabs/Tab';
 
 @observer
 export class ReportPage extends React.Component {
     render() {
         return (
-            <div>Report Page</div>
+            <div>
+                <Tabs>
+                    <Tab title="Dashboard">
+                        Dashboard
+                    </Tab>
+                    <Tab title="Liste">
+                        Liste
+                    </Tab>
+                </Tabs>
+                Report Page
+            </div>
         )
     }
 }
