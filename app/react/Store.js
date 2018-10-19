@@ -6,8 +6,8 @@ const Datastore = require( 'nedb-promises');
 export default class Store {
     appPath = process.env.NODE_ENV === 'development' ? path.join(process.cwd(), "..", "app") : process.cwd();
 
-    @observable currentPage = 'report';
-    @observable pageTitle = 'Report';
+    @observable currentPage = '';
+    @observable pageTitle = '';
     @observable showMainMenu = false;
     @observable isLoading = false;
     @observable loadingMessage = '';
@@ -32,6 +32,13 @@ export default class Store {
     @observable metrics = [];
     @observable cableData = [];
 
+    /**
+     * Loads the db with the given name from the given folder.
+     * @param folder
+     * @param name
+     * @returns {Promise<any>}
+     * @private
+     */
     _loadDB(folder, name) {
         return new Promise((resolve, reject) => {
             let dataPath;
@@ -48,11 +55,14 @@ export default class Store {
         });
     }
 
+    /**
+     * Loads the user data
+     * @returns {Promise<any>}
+     */
     loadState() {
         return new Promise((resolve, reject) => {
             this._loadDB('', 'appstate')
                 .then(() => {
-                    console.log(this.stores.appstate)
                     this.stores.appstate.find({})
                         .then((docs) => {
                             this.userState.userName = docs[0].userName;
@@ -70,6 +80,11 @@ export default class Store {
     }
 
 
+    /**
+     * Loads the bridge data
+     * @param bridge
+     * @returns {Promise<any>}
+     */
     loadBridge(bridge) {
         return new Promise((resolve, reject) => {
             if (this.userState.bridges.indexOf(bridge) >= 0) {
@@ -88,6 +103,10 @@ export default class Store {
         });
     }
 
+    /**
+     * Loads the metric data
+     * @returns {Promise<any>}
+     */
     loadMetrics() {
         return new Promise((resolve, reject) => {
             this.stores.metrics.find({})
@@ -99,6 +118,10 @@ export default class Store {
         });
     }
 
+    /**
+     * Loads the cable data
+     * @returns {Promise<any>}
+     */
     loadCableData() {
         return new Promise((resolve, reject) => {
             this.stores.construction
@@ -110,6 +133,10 @@ export default class Store {
         });
     }
 
+    /**
+     * Loads the data from the different dbs
+     * @returns {Promise<any>}
+     */
     init() {
         return new Promise((resolve, reject) => {
             let userState = this.userState,
