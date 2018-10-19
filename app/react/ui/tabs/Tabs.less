@@ -6,17 +6,35 @@
     float: none;
 }
 
+.tabs__header {
+    position: relative;
+    margin-bottom: 20px;
+    .clearfix();
+}
+
+.tabs__header__line {
+    position: absolute;
+    background-color: @blue;
+    height: 2px;
+    .transition300ms();
+    left: 0;
+    bottom: 0;
+}
+
 .tab__header__item {
-    padding-right: 20px;
     cursor: pointer;
     display: inline-block;
     .fontLight();
     font-size: 1.5rem;
     float: left;
     line-height: 2rem;
+    padding: 0 10px 8px 10px;
     color: @blue;
     .transition300ms();
 
+    &:first-child {
+        padding-left: 0;
+    }
     &.active {
         color: @blue;
 

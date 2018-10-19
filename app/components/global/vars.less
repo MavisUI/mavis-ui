@@ -101,3 +101,11 @@
 .transition1s() {
 	-webkit-transition: 1s ease-in-out;
 }
+
+.clearfix() {
+    &::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+}
