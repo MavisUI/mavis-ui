@@ -13,14 +13,24 @@ export default class Tabs extends React.Component {
         }
     };
 
+    /**
+     * @inheritDoc
+     */
     componentDidMount() {
         this.updateLinePosition();
     }
 
+    /**
+     * @inheritDoc
+     */
     componentDidUpdate() {
         this.updateLinePosition();
     }
 
+    /**
+     * @inheritDoc
+     * @returns {*}
+     */
     render() {
         let {children} = {...this.props},
             {selectedIndex} = {...this.state};
@@ -48,10 +58,18 @@ export default class Tabs extends React.Component {
         )
     }
 
+    /**
+     * Event handler for the click event on a tab item.
+     * @param {number} index
+     */
     onClickTab(index) {
-        return this.setState({selectedIndex: index});
+        this.setState({selectedIndex: index});
     }
 
+    /**
+     * Updates the line position and width based on the currently
+     * selected tab item.
+     */
     updateLinePosition() {
         let activeHeaderItemRef = this.itemRefs[this.state.selectedIndex],
             targetWidth, itemBox;
@@ -61,7 +79,6 @@ export default class Tabs extends React.Component {
             if (lineNode && itemNode) {
                 itemBox = itemNode.getBoundingClientRect();
                 targetWidth = itemBox.width;
-                console.log('item', itemBox);
                 lineNode.style.width = targetWidth + 'px';
                 lineNode.style.transform = 'translateX(' + itemNode.offsetLeft + 'px)';
             }
