@@ -18,6 +18,14 @@ export default class App extends React.Component{
         {title: 'Visuelle Inspektion', name: 'inspection'},
         {title: 'Einstellungen', name: 'settings'},
     ];
+
+    componentDidMount() {
+        this.setLoading(true);
+        this.store
+            .init()
+            .then(() => this.setLoading(false));
+    }
+
     render() {
         return (
             <Provider store={this.store} app={this}>
