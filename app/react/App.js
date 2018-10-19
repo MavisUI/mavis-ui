@@ -23,7 +23,10 @@ export default class App extends React.Component{
         this.setLoading(true);
         this.store
             .init()
-            .then(() => this.setLoading(false));
+            .then(() => {
+                this.setLoading(false);
+                this.loadPage('report');
+            });
     }
 
     render() {
