@@ -79,7 +79,7 @@ export default class Tabs extends React.Component {
             if (lineNode && itemNode) {
                 itemBox = itemNode.getBoundingClientRect();
                 targetWidth = itemBox.width;
-                lineNode.style.width = targetWidth + 'px';
+                lineNode.style.width = parseInt(targetWidth) + 'px';
                 lineNode.style.transform = 'translateX(' + itemNode.offsetLeft + 'px)';
             }
         }
