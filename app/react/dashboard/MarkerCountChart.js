@@ -45,7 +45,7 @@ export default class MarkerCountChart extends React.Component {
             .then(modules => {
                 let data = [],
                     categories,
-                    results = this.props.data;
+                    results = this.props.data || [];
                 modules.map((module, i) => {
                     let obj = {};
                     obj.label = module.label;

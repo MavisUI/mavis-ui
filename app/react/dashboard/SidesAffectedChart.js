@@ -63,7 +63,7 @@ export default class SidesAffectedChart extends React.Component {
             .then(docs => {
                 let data = [],
                     categories,
-                    results = this.props.data,
+                    results = this.props.data || [],
                     sideNames = docs[0].meta.cableSides,
                     chartData,
                     sides = {
