@@ -57,13 +57,16 @@ export default class App extends React.Component{
         )
     }
 
-    loadPage(name) {
+    loadPage(name, delay = 50) {
         let s = this.store,
             pageToLoad = this.pages.find(p => p.name === name);
         if (pageToLoad) {
-            s.currentPage = pageToLoad.name;
-            s.pageTitle = pageToLoad.title;
-            s.showMainMenu = false;
+            setTimeout(() => {
+                s.currentPage = pageToLoad.name;
+                s.pageTitle = pageToLoad.title;
+                s.showMainMenu = false;
+            }, delay);
+
         }
     }
 
