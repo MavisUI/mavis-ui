@@ -15,11 +15,14 @@
 .tabs__header__line {
     position: absolute;
     background-color: @blue;
-    width: 0;
+    width: 1px;
+    display: block;
     height: 2px;
-    transition: all .4s ease-out;
+    transition: transform .3s ease-out;
+    transform-origin: 0 0;
     left: 0;
     bottom: 0;
+    overflow: hidden;
 }
 
 .tab__header__item {

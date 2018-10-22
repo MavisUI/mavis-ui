@@ -72,15 +72,16 @@ export default class Tabs extends React.Component {
      */
     updateLinePosition() {
         let activeHeaderItemRef = this.itemRefs[this.state.selectedIndex],
-            targetWidth, itemBox;
+            targetWidth, itemBox, targetScale;
         if (activeHeaderItemRef && this.lineRef) {
             let itemNode = activeHeaderItemRef.current,
                 lineNode = this.lineRef.current;
             if (lineNode && itemNode) {
                 itemBox = itemNode.getBoundingClientRect();
                 targetWidth = itemBox.width;
-                lineNode.style.width = parseInt(targetWidth) + 'px';
-                lineNode.style.transform = 'translateX(' + itemNode.offsetLeft + 'px)';
+                targetScale = targetWidth * 100;
+                // lineNode.style.width = parseInt(targetWidth) + 'px';
+                lineNode.style.transform = 'translateX(' + itemNode.offsetLeft + 'px) scaleX(' + targetWidth + ')';
             }
         }
     }
