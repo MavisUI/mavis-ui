@@ -128,7 +128,7 @@ export default class Filter extends React.Component {
                 .sort(s.order)
                 .then(results => {
                     if (onChange) {
-                        onChange(results);
+                        onChange(results, s.criteria);
                     }
                 });
         });

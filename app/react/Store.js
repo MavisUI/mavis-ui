@@ -12,6 +12,8 @@ export default class Store {
     @observable isLoading = false;
     @observable loadingMessage = '';
 
+    paletteBlue = ['#02070C', '#08213C', '#0C3461', '#104784', '#25578F', '#3B689A', '#4A6E96', '#5179A5', '#6085AD', '#6689B0', '#718CAA', '#7C9ABB', '#87A3C1', '#92ABC7', '#99ABBF', '#A8BCD2', '#AFC2D6', '#BDCCDD', '#C0C9D3', '#D3DDE8', '#D7E0EA', '#E9EEF3'];
+
     @observable userState = {
         userName: null,
         userRole: null,
