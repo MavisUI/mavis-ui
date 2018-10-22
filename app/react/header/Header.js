@@ -31,8 +31,9 @@ export default class Header extends React.Component {
                         <div className="icon iconLogo"/>
                         </div>
                         <div className="right">
-                        <button id="getHelp">? Hilfe</button>
-                    </div>
+                            React
+                            <button id="getHelp">? Hilfe</button>
+                        </div>
                 </div>
             </header>
         )

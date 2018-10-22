@@ -3,6 +3,7 @@ import {observer} from 'mobx-react';
 import Tabs from '../ui/tabs/Tabs';
 import Tab from '../ui/tabs/Tab';
 import Dashboard from '../dashboard/Dashboard';
+import MarkerList from '../marker-list/MarkerList';
 
 @observer
 export class ReportPage extends React.Component {
@@ -14,7 +15,7 @@ export class ReportPage extends React.Component {
                         <Dashboard/>
                     </Tab>
                     <Tab title="Liste">
-                        Liste
+                        <MarkerList/>
                     </Tab>
                 </Tabs>
             </div>
