@@ -8,6 +8,10 @@ import {inject, observer} from 'mobx-react';
 @observer
 export default class RatingFilter extends React.Component {
 
+    /**
+     * Constructor
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -16,6 +20,17 @@ export default class RatingFilter extends React.Component {
         this.loadItems();
     }
 
+    /**
+     * @inheritDoc
+     * @returns {*}
+     */
+    render() {
+        return (<BaseFilter id="rating" label="Schadensklasse" items={this.state.items} onChange={this.props.onChange}/> );
+    }
+
+    /**
+     * Loads the items from the store.
+     */
     loadItems() {
         let {store} = {... this.props};
         store.stores.classes
@@ -30,11 +45,6 @@ export default class RatingFilter extends React.Component {
                     items: items
                 });
             });
-    }
-
-    render() {
-
-        return (<BaseFilter id="rating" label="Schadensklasse" items={this.state.items} onChange={this.props.onChange}/> );
     }
 }
 

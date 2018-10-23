@@ -20,9 +20,11 @@ export default class SortFilter extends React.Component {
         {value: '9', name: 'Wert absteigend'},
     ];
 
-
+    /**
+     * @inheritDoc
+     * @returns {*}
+     */
     render() {
-
         return (<BaseFilter id="sort" label="Sortierung" items={this.items} onChange={this.props.onChange}/>);
     }
 }

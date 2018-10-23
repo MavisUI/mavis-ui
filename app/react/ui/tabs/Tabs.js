@@ -6,6 +6,10 @@ export default class Tabs extends React.Component {
     itemRefs = [];
     lineRef = React.createRef();
 
+    /**
+     * Constructor
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.state = {

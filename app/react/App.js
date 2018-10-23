@@ -11,14 +11,25 @@ import {SettingsPage} from './pages/SettingsPage';
 
 @observer
 export default class App extends React.Component{
-    store = new Store();
-    pages = [
-        {title: 'Report', name: 'report'},
-        {title: '3D Modell', name: 'model'},
-        {title: 'Visuelle Inspektion', name: 'inspection'},
-        {title: 'Einstellungen', name: 'settings'},
-    ];
 
+    /**
+     * Constructor
+     * @param props
+     */
+    constructor(props) {
+        super(props);
+        this.store = new Store();
+        this.pages = [
+            {title: 'Report', name: 'report'},
+            {title: '3D Modell', name: 'model'},
+            {title: 'Visuelle Inspektion', name: 'inspection'},
+            {title: 'Einstellungen', name: 'settings'},
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
     componentDidMount() {
         this.setLoading(true);
         this.store
@@ -29,6 +40,11 @@ export default class App extends React.Component{
             });
     }
 
+    /**
+     * Provides both the App and store to all children (recursively).
+     * @inheritDoc
+     * @returns {*}
+     */
     render() {
         return (
             <Provider store={this.store} app={this}>
@@ -57,6 +73,11 @@ export default class App extends React.Component{
         )
     }
 
+    /**
+     * Loads the page with the given name and applies it after the given delay.
+     * @param {string} name
+     * @param {number} delay
+     */
     loadPage(name, delay = 50) {
         let s = this.store,
             pageToLoad = this.pages.find(p => p.name === name);
@@ -70,6 +91,11 @@ export default class App extends React.Component{
         }
     }
 
+    /**
+     * Sets the isLoading flag to the given value and sets the message.
+     * @param {boolean} value
+     * @param {string} message
+     */
     setLoading(value, message = 'Loading') {
         let s = this.store;
         s.isLoading = value;
