@@ -6,12 +6,23 @@ import PlayerControls from './PlayerControls';
 import Filter from '../ui/filter/Filter';
 import PlayerSideView from './PlayerSideView';
 import path from 'path';
+import PlayerGraph from './PlayerGraph';
 
 @inject('store')
 @observer
 export default class Player extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: null,
+            criteria: null
+        }
+    }
+
     render() {
         let {store} = {...this.props},
+            {data} = {...this.state},
             playerState = store.playerState,
             cable = this.getCurrentCable(),
             frame = this.getCurrentFrame(),
@@ -21,7 +32,9 @@ export default class Player extends React.Component {
             <div className="player">
                 <div id="cableSelection">
                     <label htmlFor="cableSelectionOptions">Seil: </label>
-                    <select id="cableSelectOptions" value={playerState.cableIndex} onChange={(e) => playerState.cableIndex = parseInt(e.target.value)}>
+                    <select id="cableSelectOptions"
+                            value={playerState.cableIndex}
+                            onChange={(e) => playerState.cableIndex = parseInt(e.target.value)}>
                         {store.cableData.map((cable, i) => <option key={i} value={i}>{cable.name}</option> )}
                     </select>
                 </div>
@@ -44,11 +57,18 @@ export default class Player extends React.Component {
                 </div>
                 <div id="inspectionFilter">
                     <Filter
+                        criteria={{cable: playerState.cableIndex}}
                         hideSort={true}
-                        hideCable={true}/>
+                        hideCable={true}
+                        onChange={(d, c) => this.setState({data: d, criteria: c})}/>
                 </div>
-                <div id="graph"></div>
-
+                <div id="graph">
+                    <PlayerGraph
+                        position={playerState.position}
+                        maxLength={cable.drivenLength}
+                        data={data}
+                        onChangePosition={(position) => playerState.position = position}/>
+                </div>
             </div>
         );
     }
@@ -69,9 +89,8 @@ export default class Player extends React.Component {
 
     getBaseImagePath() {
         let {store} = {...this.props},
-            {playerState, userState} = {...store},
-            imagePath = '/data/' + userState.activeBridge + '/' + playerState.cableIndex;
-         return imagePath;
+            {playerState, userState} = {...store};
+        return '/data/' + userState.activeBridge + '/' + playerState.cableIndex;
     }
 }
 

@@ -19,7 +19,7 @@ export default class PlayerControls extends React.Component {
             <div className="playerControls">
                 <menu id="player">
                     <label htmlFor="playerPosition">Position: </label>
-                        <input type="number" id="playerPosition" value={position} min={0} onChange={(e) => this.setPosition(e.target.value)}/>
+                        <input type="number" id="playerPosition" className="playerControls__field__position" value={position} min={0} onChange={(e) => this.setPosition(e.target.value)}/>
                     <label > m</label>
                     <button id="playerToStart" title="zum Anfang" onClick={() => this.toStart()}>
                         <Icon name="iconToStart" />
