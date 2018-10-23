@@ -7,11 +7,16 @@ import Store from '../Store';
 import Downloads from './Downloads';
 import FlipMove from 'react-flip-move';
 import crypto  from  'crypto';
+import App from '../App';
 
-@inject('store')
+@inject('store', 'app')
 @observer
 export default class MarkerList extends React.Component {
 
+    /**
+     * Constructor
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -20,8 +25,11 @@ export default class MarkerList extends React.Component {
         }
     }
 
+    /**
+     * @inheritDoc
+     * @returns {*}
+     */
     render() {
-
         let {store, maxItemsToShow} = {...this.props},
             {data} = {...this.state},
             noData = !data || (data && data.length === 0);
@@ -64,7 +72,7 @@ export default class MarkerList extends React.Component {
                                     <div className="item itemRating">{'SK ' + item.rating}</div>
                                     <div className="item itemValue">{item.value} <span dangerouslySetInnerHTML={{__html: item.metric}}/></div>
                                     <div className="item itemLink">
-                                        <a className="loadVisual" data-cable="' + item.cable + '" data-position="' + item.position + '">
+                                        <a className="loadVisual" onClick={() => this.navigateToPlayer(item.cable, item.position)}>
                                             Zur Seilprüfungsansicht
                                         </a>
                                     </div>
@@ -80,9 +88,17 @@ export default class MarkerList extends React.Component {
             </div>
         )
     }
+
+    navigateToPlayer(cableIndex, position) {
+        let {app, store} = {...this.props};
+        store.playerState.cableIndex = cableIndex;
+        store.playerState.position = position;
+        app.loadPage('inspection')
+    }
 }
 MarkerList.propTypes = {
     store: PropTypes.instanceOf(Store),
+    app: PropTypes.instanceOf(App),
     maxItemsToShow: PropTypes.number
 };
 
