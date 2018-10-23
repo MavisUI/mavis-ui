@@ -34,6 +34,18 @@ export default class Filter extends React.Component {
 
     /**
      * @inheritDoc
+     * @param prevProps
+     */
+    componentDidUpdate(prevProps) {
+        let {criteria} = {...this.props};
+        if (JSON.stringify(criteria) !== JSON.stringify(prevProps.criteria)) {
+            this.filterData();
+        }
+
+    }
+
+    /**
+     * @inheritDoc
      * @returns {*}
      */
     render() {
@@ -117,7 +129,6 @@ export default class Filter extends React.Component {
      * Filters the data result based on the criteria and sorts
      * them based on the order in the state. It triggers the onChange
      * handler given through the props.
-     * @returns {Promise<any>}
      */
     filterData() {
         let {store, onChange, criteria} = {...this.props},

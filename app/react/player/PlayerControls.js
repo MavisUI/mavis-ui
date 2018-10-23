@@ -20,11 +20,13 @@ export default class PlayerControls extends React.Component {
      * @param prevProps
      */
     componentDidUpdate(prevProps) {
-        let {speed} = {...this.props};
+        let {speed, position, maxPosition} = {...this.props};
         if (speed !== prevProps.speed && this.isPlaying()) {
-            console.log('restart');
             this.pause();
             this.play();
+        }
+        if (position > maxPosition) {
+            this.setPosition(maxPosition);
         }
     }
 
@@ -83,11 +85,16 @@ export default class PlayerControls extends React.Component {
             clearInterval(interval);
         }
         interval = setInterval(() => {
-            let {position} = {...this.props},
+            let {position, maxPosition} = {...this.props},
                 pos = +(position * 100);
             pos++;
             pos = (pos / 100).toFixed(2);
+            pos = Math.min(pos, maxPosition);
             this.setPosition(+pos);
+            if (pos === maxPosition) {
+                this.pause();
+            }
+
         }, speed);
         this.setState({
             interval: interval
@@ -202,6 +209,7 @@ export default class PlayerControls extends React.Component {
 
 PlayerControls.propTypes = {
     position: PropTypes.number,
+    maxPosition: PropTypes.number,
     speed: PropTypes.number,
     speedOptions : PropTypes.arrayOf(
         PropTypes.shape(

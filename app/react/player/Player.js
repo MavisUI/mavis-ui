@@ -37,21 +37,22 @@ export default class Player extends React.Component {
             baseImagePath = this.getBaseImagePath();
         return (
             <div className="player">
-                <div id="cableSelection">
+                <div id="cableSelection" className="player__cableSelection">
                     <label htmlFor="cableSelectionOptions">Seil: </label>
                     <select id="cableSelectOptions"
                             value={playerState.cableIndex}
                             onChange={(e) => playerState.cableIndex = parseInt(e.target.value)}>
-                        {store.cableData.map((cable, i) => <option key={i} value={i}>{cable.name}</option> )}
+                        {store.cableData.map((cable, i) => <option key={i} value={i}>{cable.name} ({cable.drivenLength} m)</option> )}
                     </select>
                 </div>
-                <div id="controlsPlayer">
-                <PlayerControls
-                    speed={playerState.speed}
-                    position={playerState.position}
-                    frames={cable.trigger}
-                    onChangePosition={(position) => playerState.position = position}
-                    onChangeSpeed={(speed) => playerState.speed = speed}/>
+                <div id="controlsPlayer" className="player__controls">
+                    <PlayerControls
+                        speed={playerState.speed}
+                        position={playerState.position}
+                        maxPosition={cable.drivenLength}
+                        frames={cable.trigger}
+                        onChangePosition={(position) => playerState.position = position}
+                        onChangeSpeed={(speed) => playerState.speed = speed}/>
 
                 </div>
                 <div id="controlsComment"></div>
