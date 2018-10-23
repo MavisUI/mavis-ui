@@ -17,12 +17,24 @@ export default class PlayerControls extends React.Component {
 
     /**
      * @inheritDoc
+     * @param prevProps
+     */
+    componentDidUpdate(prevProps) {
+        let {speed} = {...this.props};
+        if (speed !== prevProps.speed && this.isPlaying()) {
+            console.log('restart');
+            this.pause();
+            this.play();
+        }
+    }
+
+    /**
+     * @inheritDoc
      * @returns {*}
      */
     render() {
         let {position, speedOptions, speed, onChangeSpeed} = {...this.props},
-            {interval} = {...this.state};
-        onChangeSpeed = onChangeSpeed ? onChangeSpeed : () => {};
+            isPlaying = this.isPlaying();
         return (
             <div className="playerControls">
                 <menu id="player">
@@ -36,8 +48,8 @@ export default class PlayerControls extends React.Component {
                         <Icon name="iconSkipPrevious" />
                     </button>
                     <button id="playerPlayPause" title="Starten/Stoppen" onClick={() => this.toggle()}>
-                        {interval === null && <Icon name="iconPlay" />}
-                        {interval && <Icon name="iconPause" /> }
+                        {!isPlaying && <Icon name="iconPlay" />}
+                        {isPlaying && <Icon name="iconPause" /> }
                     </button>
                     <button id="playerNext" title="ein Frame weiter" onClick={() => this.nextFrame()}>
                         <Icon name="iconSkipNext" />
@@ -65,17 +77,17 @@ export default class PlayerControls extends React.Component {
      * Starts playing
      */
     play() {
-        let {speed, position} = {...this.props},
+        let {speed} = {...this.props},
             {interval} = {... this.state};
         if (interval) {
             clearInterval(interval);
         }
         interval = setInterval(() => {
-            position = (position * 100);
-            position++;
-            position = (position / 100).toFixed(2);
-            this.setPosition(position);
-            console.log('tick', position);
+            let {position} = {...this.props},
+                pos = +(position * 100);
+            pos++;
+            pos = (pos / 100).toFixed(2);
+            this.setPosition(+pos);
         }, speed);
         this.setState({
             interval: interval
@@ -113,7 +125,6 @@ export default class PlayerControls extends React.Component {
     setSpeed(speed) {
         let {onChangeSpeed} = {...this.props};
         speed = parseInt(speed);
-        this.pause();
         if (onChangeSpeed) {
             onChangeSpeed(speed);
         }
@@ -178,6 +189,14 @@ export default class PlayerControls extends React.Component {
     getCurrentFrame() {
         let {frames, position} = {...this.props};
         return Math.max((frames ||[]).findIndex(frame => position < frame) - 1, 0);
+    }
+
+    /**
+     * Returns true if the player is currently playing. False otherwise.
+     * @returns {boolean}
+     */
+    isPlaying() {
+        return !!this.state.interval;
     }
 }
 
