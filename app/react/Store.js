@@ -23,6 +23,13 @@ export default class Store {
         activePosition: 0.00
     };
 
+    @observable playerState = {
+        cableIndex: 0,
+        speed: 400,
+        position: 0,
+        maxPosition: 0,
+    };
+
     @observable stores = {
         classes: null,
         metrics: null,

@@ -25,7 +25,7 @@ export default class App extends React.Component{
             .init()
             .then(() => {
                 this.setLoading(false);
-                this.loadPage('report');
+                this.loadPage('inspection');
             });
     }
 

@@ -32,7 +32,7 @@ export default class Downloads extends React.Component {
                 label : item.label,
                 caption : item.caption,
                 rating : 'SK' + item.rating,
-                cable : store.cableData[item.cable].name,
+                cable : store.cableData[item.cableIndex].name,
                 position : item.position.toFixed(2) + ' m',
                 distance : item.distance,
                 value : item.value,
