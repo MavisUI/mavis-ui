@@ -12,6 +12,10 @@ import PlayerGraph from './PlayerGraph';
 @observer
 export default class Player extends React.Component {
 
+    /**
+     * Constructor
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -20,6 +24,10 @@ export default class Player extends React.Component {
         }
     }
 
+    /**
+     * @inheritDoc
+     * @returns {*}
+     */
     render() {
         let {store} = {...this.props},
             {data} = {...this.state},
@@ -27,7 +35,6 @@ export default class Player extends React.Component {
             cable = this.getCurrentCable(),
             frame = this.getCurrentFrame(),
             baseImagePath = this.getBaseImagePath();
-        console.log('baseImagePath', baseImagePath);
         return (
             <div className="player">
                 <div id="cableSelection">
@@ -73,6 +80,10 @@ export default class Player extends React.Component {
         );
     }
 
+    /**
+     * Returns the current frame based on the current position
+     * @returns {number}
+     */
     getCurrentFrame() {
         let {store} = {...this.props},
             {position} = {...store.playerState},
@@ -81,12 +92,20 @@ export default class Player extends React.Component {
         return Math.max((frames ||[]).findIndex(frame => position < frame) - 1, 0);
     }
 
+    /**
+     * Returns the current cable data based on the store index.
+     * @returns {*}
+     */
     getCurrentCable() {
         let {store} = {...this.props},
             playerState = store.playerState;
         return store.cableData[playerState.cableIndex];
     }
 
+    /**
+     * Returns the base image path
+     * @returns {string}
+     */
     getBaseImagePath() {
         let {store} = {...this.props},
             {playerState, userState} = {...store};

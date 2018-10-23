@@ -6,6 +6,11 @@ var Highcharts = require('highcharts');
 require('highcharts/modules/xrange')(Highcharts);
 
 export default class PlayerGraph extends React.Component {
+
+    /**
+     * Constructor
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.chartRef = React.createRef();
@@ -14,6 +19,7 @@ export default class PlayerGraph extends React.Component {
     }
 
     /**
+     * Updates the chart data and/or line position based on the changed props.
      * @inheritDoc
      */
     componentDidUpdate(prevProps) {
@@ -33,6 +39,10 @@ export default class PlayerGraph extends React.Component {
         this.applyChart();
     }
 
+    /**
+     * @inheritDoc
+     * @returns {*}
+     */
     render() {
         return (
             <div id="chart" className="playerGraph">
@@ -48,12 +58,16 @@ export default class PlayerGraph extends React.Component {
         )
     }
 
-    plotLine(n) {
+    /**
+     * Draws the line on the chart at the given position
+     * @param {number} position
+     */
+    plotLine(position) {
         let lineId = 'chartsmarkerPlotLine',
             chart = this.getChartReference();
         chart.xAxis[0].removePlotLine(lineId);
         chart.xAxis[0].addPlotLine({
-            value: n,
+            value: position,
             color: '#000000',
             width: 2,
             dashStyle: 'ShortDot',
@@ -61,6 +75,9 @@ export default class PlayerGraph extends React.Component {
         });
     }
 
+    /**
+     * Applies the zoom to the chart.
+     */
     doZoom() {
         let {maxLength, position} = {...this.props},
             chart = this.getChartReference(),
@@ -84,6 +101,9 @@ export default class PlayerGraph extends React.Component {
         chart.xAxis[0].setExtremes(zoomStart, zoomEnd);
     }
 
+    /**
+     * Zooms in, the amount is based on the props.
+     */
     zoomIn() {
         let {maxZoom, zoomStep} = {...this.props};
         if (this.currentZoom < maxZoom) {
@@ -92,6 +112,9 @@ export default class PlayerGraph extends React.Component {
         }
     }
 
+    /**
+     * Zooms out, the amount is based on the props.
+     */
     zoomOut() {
         let {zoomStep} = {...this.props};
         if (this.currentZoom > 1) {
@@ -100,11 +123,18 @@ export default class PlayerGraph extends React.Component {
         }
     }
 
+    /**
+     * Resets the zoom
+     */
     zoomReset() {
         this.currentZoom = 1;
         this.doZoom();
     }
 
+    /**
+     * Builds the cart data, that can be passed to highcarts.
+     * @returns {object}
+     */
     buildChartData() {
         let {data} = {...this.props},
             chartData,
@@ -156,6 +186,9 @@ export default class PlayerGraph extends React.Component {
         return this.chartData = returnData;
     }
 
+    /**
+     * Applies highcharts to the DOM element with the current data.
+     */
     applyChart() {
         let {maxLength, onChangePosition, onEditMarker, position} = {...this.props},
             data = this.buildChartData(),
@@ -271,6 +304,10 @@ export default class PlayerGraph extends React.Component {
         });
     }
 
+    /**
+     * Returns a reference to the hightcarts chart reference.
+     * @returns {Highcharts.Chart}
+     */
     getChartReference() {
         let chartContainer = this.chartRef.current;
         return Highcharts.charts[Highcharts.attr(chartContainer, 'data-highcharts-chart')];

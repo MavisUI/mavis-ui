@@ -7,6 +7,11 @@ import Icon from '../ui/icon/Icon';
 import path from 'path';
 
 export default class PlayerSideView extends React.Component {
+
+    /**
+     * @inheritDoc
+     * @returns {*}
+     */
     render() {
         let {frame} = {...this.props},
             pictures = this.getPictures(frame),
@@ -23,6 +28,12 @@ export default class PlayerSideView extends React.Component {
         );
     }
 
+    /**
+     * Returns picture DOM nodes for the given frame based on the amount
+     * of sides passed as props.
+     * @param {int} frame
+     * @returns {*}
+     */
     getPictures(frame) {
         let {sides, basePath, maxFrames} = {...this.props};
         frame = Math.min(frame, maxFrames);
@@ -41,6 +52,11 @@ export default class PlayerSideView extends React.Component {
         });
     }
 
+    /**
+     * Returns the image file name for the given frame.
+     * @param frame
+     * @returns {string}
+     */
     getFileName(frame) {
         return padStart(frame + 1, 4, '0') +'.jpg';
     }

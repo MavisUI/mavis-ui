@@ -4,6 +4,10 @@ import Icon from '../ui/icon/Icon';
 
 export default class PlayerControls extends React.Component {
 
+    /**
+     * Constructor
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -11,6 +15,10 @@ export default class PlayerControls extends React.Component {
         }
     }
 
+    /**
+     * @inheritDoc
+     * @returns {*}
+     */
     render() {
         let {position, speedOptions, speed, onChangeSpeed} = {...this.props},
             {interval} = {...this.state};
@@ -46,10 +54,16 @@ export default class PlayerControls extends React.Component {
         );
     }
 
+    /**
+     * Toggles play and pause of the player.
+     */
     toggle() {
         this.state.interval ? this.pause() : this.play();
     }
 
+    /**
+     * Starts playing
+     */
     play() {
         let {speed, position} = {...this.props},
             {interval} = {... this.state};
@@ -68,6 +82,9 @@ export default class PlayerControls extends React.Component {
         });
     }
 
+    /**
+     * Stops playing.
+     */
     pause() {
         if (this.state.interval) {
             clearInterval(this.state.interval);
@@ -77,6 +94,10 @@ export default class PlayerControls extends React.Component {
         });
     }
 
+    /**
+     * Sets the position of the player.
+     * @param {number} position
+     */
     setPosition(position) {
         position = +position;
         let {onChangePosition} = {...this.props};
@@ -85,6 +106,10 @@ export default class PlayerControls extends React.Component {
         }
     }
 
+    /**
+     * Sets the speed
+     * @param {number} speed
+     */
     setSpeed(speed) {
         let {onChangeSpeed} = {...this.props};
         speed = parseInt(speed);
@@ -94,12 +119,18 @@ export default class PlayerControls extends React.Component {
         }
     }
 
+    /**
+     * Jumps to the start.
+     */
     toStart() {
         // pause player
         this.pause();
         this.setPosition(0);
     }
 
+    /**
+     * Jumps to the previous frame.
+     */
     previousFrame(){
         let {frames = []} = {...this.props};
         // pause player
@@ -113,6 +144,9 @@ export default class PlayerControls extends React.Component {
         }
     }
 
+    /**
+     * Jumps to the next frame
+     */
     nextFrame(){
         let {frames = []} = {...this.props};
         // pause player
@@ -127,6 +161,9 @@ export default class PlayerControls extends React.Component {
         }
     }
 
+    /**
+     * Jumps to the end.
+     */
     toEnd() {
         let {frames = []} = {...this.props};
         // pause player
@@ -134,6 +171,10 @@ export default class PlayerControls extends React.Component {
         this.setPosition(frames[frames.length - 1]);
     }
 
+    /**
+     * Returns the current frame based on the current position.
+     * @returns {number}
+     */
     getCurrentFrame() {
         let {frames, position} = {...this.props};
         return Math.max((frames ||[]).findIndex(frame => position < frame) - 1, 0);
