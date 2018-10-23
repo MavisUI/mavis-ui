@@ -120,23 +120,22 @@ export default class Filter extends React.Component {
      * @returns {Promise<any>}
      */
     filterData() {
-        let {store, onChange} = {...this.props},
+        let {store, onChange, criteria} = {...this.props},
             s = this.state;
-        return new Promise((resolve, reject) => {
-            store.stores.results
-                .find(s.criteria)
-                .sort(s.order)
-                .then(results => {
-                    if (onChange) {
-                        onChange(results, s.criteria);
-                    }
-                });
-        });
+        store.stores.results
+            .find({...criteria, ...s.criteria})
+            .sort(s.order)
+            .then(results => {
+                if (onChange) {
+                    onChange(results, s.criteria);
+                }
+            });
     }
 }
 
 Filter.propTypes = {
     store: PropTypes.instanceOf(Store),
+    criteria: PropTypes.any,
     onChange: PropTypes.func,
     hideCable: PropTypes.bool,
     hideCableSides: PropTypes.bool,
