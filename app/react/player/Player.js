@@ -35,7 +35,6 @@ export default class Player extends React.Component {
             cable = this.getCurrentCable(),
             frame = this.getCurrentFrame(),
             baseImagePath = this.getBaseImagePath();
-        console.log('frame', frame);
         return (
             <div className="player">
                 <div id="cableSelection" className="player__cableSelection">

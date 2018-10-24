@@ -10,7 +10,7 @@ export default class Icon  extends React.Component {
     render() {
         let {name, ...otherProps} = {...this.props};
         return (
-            <span className={'icon ' + name} {...otherProps}></span>
+            <span className={'icon ' + name} {...otherProps}/>
         )
     }
 }

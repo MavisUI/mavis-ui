@@ -5,6 +5,7 @@ export default class Button extends React.Component {
 
     render() {
         let {type, onClick, children, className = ''} = {...this.props},
+
             css = ['button', type, className].join(' ');
         return (
             <button className={css} onClick={onClick}>{children}</button>
