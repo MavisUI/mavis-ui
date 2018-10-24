@@ -40,6 +40,7 @@ export default class Store {
     };
     @observable metrics = [];
     @observable cableData = [];
+    @observable constructionData = [];
 
     /**
      * Loads the db with the given name from the given folder.
@@ -143,6 +144,21 @@ export default class Store {
     }
 
     /**
+     * Loads the cable data
+     * @returns {Promise<any>}
+     */
+    loadConstructionData() {
+        return new Promise((resolve, reject) => {
+            this.stores.construction
+                .find({})
+                .then(construction => {
+                    this.constructionData = construction[0];
+                    resolve();
+                });
+        });
+    }
+
+    /**
      * Loads the data from the different dbs
      * @returns {Promise<any>}
      */
@@ -155,6 +171,7 @@ export default class Store {
                 await self.loadBridge(userState.activeBridge);
                 await self.loadMetrics();
                 await self.loadCableData();
+                await self.loadConstructionData();
                 resolve();
             }
 

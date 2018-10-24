@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 export default class Button extends React.Component {
 
     render() {
-        let {type, onClick, children, className} = {...this.props},
-            css = "button " + type + className;
+        let {type, onClick, children, className = ''} = {...this.props},
+            css = ['button', type, className].join(' ');
         return (
             <button className={css} onClick={onClick}>{children}</button>
         )
@@ -15,7 +15,7 @@ export default class Button extends React.Component {
 Button.propTypes = {
     id: PropTypes.string,
     onClick: PropTypes.func,
-    type: PropTypes.oneOf(['confirm', 'reset', 'cancel']),
+    type: PropTypes.oneOf(['confirm', 'reset', 'cancel', 'blue']),
     children: PropTypes.any,
     className : PropTypes.string
 };
