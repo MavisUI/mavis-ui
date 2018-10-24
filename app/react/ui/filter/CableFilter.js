@@ -31,7 +31,7 @@ export default class CableFilter extends React.Component {
             .then(construction => {
                 let items = [{name: 'Alle Seile', value: 'all'}]
                     .concat((construction[0].cables || []).map(cable => {
-                        return {name: cable.name, value: cable.index};
+                        return {name: cable.name + ' (' + cable.drivenLength + ' m)', value: cable.index};
                     }));
                 this.setState({
                     items: items
