@@ -7,7 +7,8 @@
     "start": "node build/server.js",
     "dev": "node build/server.js",
     "build": "node build/build.js",
-    "package": "build --tasks win-x64 --mirror https://dl.nwjs.io/ dist"
+    "package": "build --tasks win-x64 --mirror https://dl.nwjs.io/ dist",
+    "packageLinux": "build --tasks linux-x64 --mirror https://dl.nwjs.io/ dist"
   },
   "repository": {
     "type": "git",
