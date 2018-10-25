@@ -1,0 +1,30 @@
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+.tooltip__content {
+    display: inline-block;
+    cursor: pointer;
+}
+.tooltip__layer {
+    display: inline-block;
+    width: 15rem;
+    height: 13.5rem;
+    position: absolute;
+    float: right;
+    left: 2.5rem;
+    top: -17rem;
+    z-index: @foregroundOverlay;
+    margin-bottom: -17rem;
+    padding: .5rem;
+    background-color: @white;
+    border: 1px solid @grey;
+    box-shadow: 2px 2px 4px 0 @grey;
+    text-align: center;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+
+    &.hidden {
+        display: none;
+    }
+}
