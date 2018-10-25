@@ -2,6 +2,8 @@ import React from 'react';
 import {observer} from 'mobx-react';
 import Tabs from '../_ui/tabs/Tabs';
 import Tab from '../_ui/tabs/Tab';
+import {CustomMarkersList} from '../settings/custom-markers-list/CustomMarkersList';
+import PresetMarkersList from '../settings/preset-markers-list/PresetMarkersList';
 
 @observer
 export class SettingsPage extends React.Component {
@@ -10,10 +12,10 @@ export class SettingsPage extends React.Component {
             <div id="settings">
                 <Tabs>
                     <Tab title="Custom">
-                        Custom
+                        <CustomMarkersList/>
                     </Tab>
                     <Tab title="Presets">
-                        Presets
+                        <PresetMarkersList/>
                     </Tab>
                     <Tab title="Verfahren">
                         Verfahren
