@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 export default class Button extends React.Component {
 
     render() {
-        let {type, onClick, children, className = ''} = {...this.props},
+        let {type, onClick, children, className = '', disabled = false, ...otherProps} = {...this.props},
 
-            css = ['button', type, className].join(' ');
+            css = ['button', type, className, disabled].join(' ');
         return (
-            <button className={css} onClick={onClick}>{children}</button>
+            <button className={css} onClick={onClick} disabled={disabled} {...otherProps}>{children}</button>
         )
     }
 }
@@ -18,7 +18,8 @@ Button.propTypes = {
     onClick: PropTypes.func,
     type: PropTypes.oneOf(['confirm', 'reset', 'cancel', 'blue']),
     children: PropTypes.any,
-    className : PropTypes.string
+    className : PropTypes.string,
+    disabled: PropTypes.bool
 };
 
 Button.defaultProps = {
