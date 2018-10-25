@@ -1,10 +1,10 @@
 import React from 'react';
-import Icon from '../ui/icon/Icon';
+import Icon from '../_ui/icon/Icon';
 import PropTypes from 'prop-types';
 import {inject, observer} from 'mobx-react';
 import Store from '../Store';
 import App from '../App';
-import Button from '../ui/button/Button';
+import Button from '../_ui/button/Button';
 
 const THREE = require('three');
 const OrbitControls = require('three-orbit-controls')(THREE);

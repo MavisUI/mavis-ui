@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from '../ui/icon/Icon';
+import Icon from '../../_ui/icon/Icon';
 
 var Highcharts = require('highcharts');
 require('highcharts/modules/xrange')(Highcharts);

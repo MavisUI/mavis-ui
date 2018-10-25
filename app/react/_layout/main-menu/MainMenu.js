@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {inject, observer} from 'mobx-react';
-import Store from '../Store';
-import App from '../App';
+import Store from '../../Store';
+import App from '../../App';
 
 @inject("store", "app")
 @observer

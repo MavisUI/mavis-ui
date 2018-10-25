@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '../ui/button/Button';
+import Button from '../../_ui/button/Button';
 import {inject, observer} from 'mobx-react';
-import Store from '../Store';
+import Store from '../../Store';
 import exportFromJSON from 'export-from-json';
 import JsZip from 'jszip';
-import App from '../App';
+import App from '../../App';
 import fs from 'fs';
 import path from 'path';
 

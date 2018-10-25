@@ -1,5 +1,5 @@
 import React from 'react';
-import Filter from '../ui/filter/Filter';
+import Filter from '../../_ui/filter/Filter';
 import MarkerCountChart from './MarkerCountChart';
 import RatingCountChart from './RatingCountChart';
 import SidesAffectedChart from './SidesAffectedChart';

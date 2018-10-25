@@ -1,13 +1,13 @@
 import React from 'react';
-import Header from './header/Header';
+import Header from './_layout/header/Header';
 import Store from './Store';
 import {observer, Provider} from 'mobx-react';
-import Loader from './loader/Loader';
-import MainMenu from './main-menu/MainMenu';
-import {ReportPage} from './pages/ReportPage';
-import {ModelPage} from './pages/ModelPage';
-import {InspectionPage} from './pages/InspectionPage';
-import {SettingsPage} from './pages/SettingsPage';
+import Loader from './_layout/loader/Loader';
+import MainMenu from './_layout/main-menu/MainMenu';
+import {ReportPage} from './_pages/ReportPage';
+import {ModelPage} from './_pages/ModelPage';
+import {InspectionPage} from './_pages/InspectionPage';
+import {SettingsPage} from './_pages/SettingsPage';
 
 @observer
 export default class App extends React.Component{
@@ -36,7 +36,7 @@ export default class App extends React.Component{
             .init()
             .then(() => {
                 this.setLoading(false);
-                this.loadPage('model');
+                this.loadPage('settings');
             });
     }
 

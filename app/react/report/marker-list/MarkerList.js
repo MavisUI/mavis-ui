@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {inject, observer} from 'mobx-react';
-import CableImage from '../ui/cable-image/CableImage';
-import Filter from '../ui/filter/Filter';
-import Store from '../Store';
+import CableImage from '../../_ui/cable-image/CableImage';
+import Filter from '../../_ui/filter/Filter';
+import Store from '../../Store';
 import Downloads from './Downloads';
 import FlipMove from 'react-flip-move';
 import crypto  from  'crypto';
-import App from '../App';
+import App from '../../App';
 
 @inject('store', 'app')
 @observer

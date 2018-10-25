@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {inject, observer} from 'mobx-react';
-import Store from '../Store';
-import BarChart from '../ui/charts/BarChart';
+import Store from '../../Store';
+import BarChart from '../../_ui/charts/BarChart';
 
 @inject('store')
 @observer

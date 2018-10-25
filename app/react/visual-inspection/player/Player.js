@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Store from '../Store';
+import Store from '../../Store';
 import {inject, observer} from 'mobx-react';
 import PlayerControls from './PlayerControls';
-import Filter from '../ui/filter/Filter';
+import Filter from '../../_ui/filter/Filter';
 import PlayerSideView from './PlayerSideView';
 import path from 'path';
 import PlayerGraph from './PlayerGraph';

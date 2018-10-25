@@ -1,7 +1,7 @@
 import React from 'react';
 import {inject, observer} from 'mobx-react';
 import BridgeRenderer from '../bridge-renderer/BridgeRenderer';
-import Filter from '../ui/filter/Filter';
+import Filter from '../_ui/filter/Filter';
 import PropTypes from 'prop-types';
 import Store from '../Store';
 

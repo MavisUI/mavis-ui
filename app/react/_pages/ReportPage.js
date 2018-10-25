@@ -1,9 +1,9 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import Tabs from '../ui/tabs/Tabs';
-import Tab from '../ui/tabs/Tab';
-import Dashboard from '../dashboard/Dashboard';
-import MarkerList from '../marker-list/MarkerList';
+import Tabs from '../_ui/tabs/Tabs';
+import Tab from '../_ui/tabs/Tab';
+import Dashboard from '../report/dashboard/Dashboard';
+import MarkerList from '../report/marker-list/MarkerList';
 
 @observer
 export class ReportPage extends React.Component {

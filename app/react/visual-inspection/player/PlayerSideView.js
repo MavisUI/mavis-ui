@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import chunk from 'lodash/chunk';
 import range from 'lodash/range';
 import padStart from 'lodash/padStart'
-import Icon from '../ui/icon/Icon';
+import Icon from '../../_ui/icon/Icon';
 import path from 'path';
 
 export default class PlayerSideView extends React.Component {

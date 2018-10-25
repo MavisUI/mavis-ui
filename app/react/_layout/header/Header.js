@@ -1,6 +1,6 @@
 import React from 'react';
 import {inject, observer} from 'mobx-react';
-import Store from '../Store';
+import Store from '../../Store';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
