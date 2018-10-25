@@ -1,0 +1,38 @@
+.colorPicker {
+    display: inline-block;
+    padding: .5em;
+    margin: 0 0 .5em 0;
+    width: 14.5em;
+    .clearfix();
+}
+.colorPicker__color {
+    border-radius: 50%;
+    border: 1px solid @greyBright;
+    display: inline-block;
+    height: 30px;
+    overflow: hidden;
+    width: 30px;
+    margin: .3rem;
+    cursor: pointer;
+}
+
+.colorPicker__layer {
+    display: flex;
+    width: 130px;
+}
+.colorPicker__picker {
+    cursor: crosshair;
+    width: 100px;
+    height: 80px;
+    margin-right: 1em;
+    position: relative;
+    flex-grow: 0;
+}
+
+.colorPicker__slide {
+    cursor: crosshair;
+    height: 80px;
+    position: relative;
+    width: 20px;
+    flex-grow: 0;
+}
