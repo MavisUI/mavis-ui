@@ -1,10 +1,8 @@
 .colorPicker {
     display: inline-block;
-    padding: .5em;
-    margin: 0 0 .5em 0;
-    width: 14.5em;
     .clearfix();
 }
+
 .colorPicker__color {
     border-radius: 50%;
     border: 1px solid @greyBright;
@@ -12,14 +10,20 @@
     height: 30px;
     overflow: hidden;
     width: 30px;
-    margin: .3rem;
-    cursor: pointer;
+    transition: background-color 0.3s ease-out;
 }
 
 .colorPicker__layer {
     display: flex;
+    flex-direction: column;
     width: 130px;
 }
+
+.colorPicker__pickerContainer {
+    display: flex;
+    flex-direction: row;
+}
+
 .colorPicker__picker {
     cursor: crosshair;
     width: 100px;
@@ -35,4 +39,26 @@
     position: relative;
     width: 20px;
     flex-grow: 0;
+}
+
+.colorPicker__layer__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 10px 0 0 0;
+}
+
+.colorPicker__cancel,
+.colorPicker__confirm {
+    cursor: pointer;
+    appearance: none;
+}
+
+.colorPicker__cancel {
+    color: @red;
+    font-size: 1.5rem;
+}
+
+.colorPicker__confirm {
+    color: @green;
 }
