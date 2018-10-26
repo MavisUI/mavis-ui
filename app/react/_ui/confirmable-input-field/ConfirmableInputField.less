@@ -1,0 +1,31 @@
+.confirmableInputField {
+    box-sizing: border-box;
+    padding-right:80px;
+    position: relative;
+}
+
+.confirmableInputField__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 80px;
+    position: absolute;
+    top: 0;
+    right:0;
+}
+
+.confirmableInputField__cancel,
+.confirmableInputField__confirm {
+    cursor: pointer;
+    appearance: none;
+    margin: 0 10px;
+}
+
+.confirmableInputField__cancel {
+    color: @red;
+    font-size: 1.5rem;
+}
+
+.confirmableInputField__confirm {
+    color: @green;
+}
