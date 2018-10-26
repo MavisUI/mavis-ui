@@ -1,5 +1,5 @@
 .editableMarkerList {
-
+    max-width: 890px;
 }
 .editableMarkerList__list {
     margin-bottom: 2rem;
@@ -12,7 +12,7 @@
     margin-bottom: .25rem;
     border-bottom: 1px solid @greyBright;
     font-size: 1.5rem;
-    justify-content: space-between;
+    justify-content: flex-start;
 
 }
 .editableMarkerList__buttons {
@@ -21,5 +21,66 @@
         &:last-child {
             margin-right: 0;
         }
+    }
+}
+
+.editableMarkerList__item__color,
+.editableMarkerList__item__metric,
+.editableMarkerList__item__delete {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.editableMarkerList__item__label {
+    flex-grow: 999;
+
+    input {
+        -webkit-appearance: none;
+        background-color: transparent;
+        border: none;
+        color: @black;
+        outline: none;
+        float: left;
+        .fontLight();
+        line-height: 3.8rem;
+        font-size: 1.5rem;
+        position: relative;
+        width: @gridWidth-12;
+        margin: .1rem 0;
+    }
+}
+
+.editableMarkerList__item__color {
+    flex-grow: 0;
+    width: 50px;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.editableMarkerList__item__metric {
+    flex-grow: 0;
+    width:100px;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.editableMarkerList__item__delete {
+    flex-grow: 0;
+    width: 50px;
+    text-align: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+    font-size: 2rem;
+    justify-content: center;
+
+}
+
+.editableMarkerList__item__deleteBtn {
+    cursor: pointer;
+    text-align: center;
+    .icon {
+        margin:0;
+        top: 0;
     }
 }
