@@ -10,14 +10,15 @@ import {inject, observer} from 'mobx-react';
 export default class PresetMarkersList extends React.Component{
     @observable presetMarkers = [];
 
-    componentDidMount() {
+    constructor(props) {
+        super(props);
         this.loadMarkers();
     }
 
     render() {
         return (
             <div  id="settingsManualList" className="presetMarkersList">
-                <EditableMarkerList markers={this.presetMarkers}/>
+                <EditableMarkerList markers={this.presetMarkers} viewOnly={true}/>
             </div>
         );
     }

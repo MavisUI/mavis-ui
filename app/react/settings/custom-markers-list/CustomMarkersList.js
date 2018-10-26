@@ -11,7 +11,8 @@ export class CustomMarkersList extends React.Component{
 
     @observable customMarkers = [];
 
-    componentDidMount() {
+    constructor(props) {
+        super(props);
         this.loadMarkers();
     }
 
