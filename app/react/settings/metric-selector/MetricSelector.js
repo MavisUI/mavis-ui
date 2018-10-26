@@ -7,11 +7,19 @@ import Store from '../../Store';
 @observer
 export default class MetricSelector extends React.Component{
     render() {
-        let {selected, store, onChange} = {...this.props};
+        let {selected, store, onChange, viewOnly} = {...this.props},
+            selectedMetric = store.metrics.find(metric =>  metric.id === selected);
         return (
-            <select className="metricSelector" value={selected} onChange={(e) => onChange(e.target.value)}>
-                {store.metrics.map(metric => <option key={metric.id} value={metric.id} dangerouslySetInnerHTML={{__html: metric.metric}} />)}
-            </select>
+            <div className="metricSelector">
+                {viewOnly ?
+                    <span dangerouslySetInnerHTML={{__html: selectedMetric && selectedMetric.metric}} />
+                    :
+                    <select className="metricSelector__select" value={selected} onChange={(e) => onChange(e.target.value)}>
+                        {store.metrics.map(metric => <option key={metric.id} value={metric.id} dangerouslySetInnerHTML={{__html: metric.metric}} />)}
+                    </select>
+                }
+            </div>
+
         );
     }
 }
@@ -19,7 +27,8 @@ export default class MetricSelector extends React.Component{
 MetricSelector.propTypes = {
     store: PropTypes.instanceOf(Store),
     selected: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    viewOnly: PropTypes.bool
 };
 
 MetricSelector.defaultProps = {
