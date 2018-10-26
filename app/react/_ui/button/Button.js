@@ -6,7 +6,7 @@ export default class Button extends React.Component {
     render() {
         let {type, onClick, children, className = '', disabled = false, ...otherProps} = {...this.props},
 
-            css = ['button', type, className, disabled].join(' ');
+            css = ['button', type, className].join(' ');
         return (
             <button className={css} onClick={onClick} disabled={disabled} {...otherProps}>{children}</button>
         )
@@ -16,7 +16,7 @@ export default class Button extends React.Component {
 Button.propTypes = {
     id: PropTypes.string,
     onClick: PropTypes.func,
-    type: PropTypes.oneOf(['confirm', 'reset', 'cancel', 'blue']),
+    type: PropTypes.oneOf(['confirm', 'reset', 'cancel', 'blue', 'noStyle']),
     children: PropTypes.any,
     className : PropTypes.string,
     disabled: PropTypes.bool

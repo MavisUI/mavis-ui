@@ -1,6 +1,6 @@
 .button {
     .buttons();
-
+    color: inherit;
     transition:all 0.3s ease-out;
 
     .icon {
@@ -11,7 +11,17 @@
         margin-right: .5rem;
     }
     &:disabled {
-        opacity: 0.7;
+        opacity: 0.6;
         cursor: not-allowed;
+    }
+
+    &.noStyle {
+        appearance: none;
+        background: none;
+        border: none;
+        padding:0;
+        margin:0;
+        box-shadow: none;
+        line-height: normal;
     }
 }
