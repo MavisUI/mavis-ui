@@ -19,9 +19,47 @@ export class CustomMarkersList extends React.Component{
     render() {
         return (
             <div  id="settingsManualList" className="customMarkersList">
-                <EditableMarkerList markers={this.customMarkers}/>
+                <EditableMarkerList
+                    markers={this.customMarkers}
+                    onSave={(markers) =>  this.onSave(markers)}
+                    canAddNewMarkers={true}/>
             </div>  
         );
+    }
+
+    onSave(markers) {
+        console.log('changed markers', markers);
+        let {store} = {... this.props},
+            db = store.stores.modules,
+            deletedMarkers = (markers ||[]).filter(marker => marker._deleted),
+            updatedMarkers = (markers ||[]).filter(marker => !marker._deleted && marker._id),
+            newMarkers = (markers ||[]).filter(marker => !marker._deleted && !marker._id);
+
+        //remove all deleted
+        deletedMarkers.map(marker => {
+            db.remove({_id: marker._id});
+        });
+
+        // update existing
+        updatedMarkers.map(marker => {
+            // remove the _isDirty and _deleted flags
+            let {_isDirty, _deleted, ...markerClone} = {...marker};
+            db.update(
+                {_id: markerClone._id},
+                {$set:
+                    markerClone
+                });
+        });
+
+        // insert new
+        newMarkers.map(marker => {
+            // remove the _isDirty and _deleted flags
+            let {_isDirty, _deleted, ...markerClone} = {...marker};
+            markerClone.type = 'manual';
+            db.insert(markerClone);
+        });
+
+        this.loadMarkers();
     }
 
     loadMarkers() {
