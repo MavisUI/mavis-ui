@@ -39,7 +39,7 @@ export default class EditableMarkerList extends React.Component {
      * @returns {*}
      */
     render() {
-        let {store, markers = [], viewOnly} = {...this.props};
+        let {store, markers = [], viewOnly, canAddNewMarkers} = {...this.props};
         return (
             <div className="editableMarkerList">
                 <FlipMove
@@ -84,18 +84,33 @@ export default class EditableMarkerList extends React.Component {
                         )
                     })}
                 </FlipMove>,
-                {(markers.length > 0 || this.isDirty) &&
+                {canAddNewMarkers &&
+                    <a className="editableMarkerList__addMarker" onClick={() => this.addMarker()}>
+                        Merkmal hinzufügen <Icon name="iconPlus" />
+                    </a>
+                }
+                {(!viewOnly && markers.length > 0 || this.isDirty) &&
                     <div className="editableMarkerList__buttons">
                         <Button type="reset" disabled={!this.isDirty} onClick={() =>  this.reset()}>
                             <Icon name="iconRefresh"/> zurücksetzen
                         </Button>,
-                        <Button type="confirm" disabled={!this.isDirty}>
+                        <Button type="confirm" disabled={!this.isDirty} onClick={() => this.onSave()}>
                             <Icon name="iconConfirm"/> speichern
                         </Button>
                     </div>
                 }
             </div>
         )
+    }
+
+    /**
+     * Event handler for the click event, when the save button is clicked. Calls the onSave prop
+     * with all items that has been changed.
+     */
+    onSave() {
+        let {onSave} = {...this.props},
+            changedItems = this.clonedMarkers.filter(marker => marker._isDirty);
+        onSave(changedItems);
     }
 
     /**
@@ -117,6 +132,35 @@ export default class EditableMarkerList extends React.Component {
             marker._deleted = false;
         });
         this.clonedMarkers = clonedMarkers || [];
+    }
+
+    /**
+     * Adds a marker to the temporary list.
+     */
+    addMarker() {
+        let length = this.clonedMarkers.length;
+        this.clonedMarkers.push({
+            _isDirty: false,
+            _deleted: false,
+            label: 'Please set marker name',
+            metric: 0,
+            active: true,
+            chart: {
+                pointInterval: 0,
+                type: ""
+            },
+            color: '#000000',
+            index: this.clonedMarkers.length,
+            max: 0,
+            min: 0,
+            name: 'user' + length,
+            points: 1,
+            steps: 1,
+            threshMax: 0,
+            threshMin: 0,
+            type: 'manual',
+        });
+        this.forceUpdate();
     }
 
     /**
@@ -150,8 +194,10 @@ EditableMarkerList.propTypes = {
     markers: PropTypes.arrayOf(PropTypes.object),
     viewOnly: PropTypes.bool,
     onSave: PropTypes.func,
+    canAddNewMarkers: PropTypes.bool
 };
 
 EditableMarkerList.defaultProps = {
-    onSave: () => {}
+    onSave: () => {},
+    canAddNewMarkers: false
 };

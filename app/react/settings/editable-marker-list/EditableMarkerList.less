@@ -2,7 +2,6 @@
     max-width: 890px;
 }
 .editableMarkerList__list {
-    margin-bottom: 2rem;
     list-style: none inside;
 }
 
@@ -16,6 +15,7 @@
 
 }
 .editableMarkerList__buttons {
+    margin-top: 20px;
     button {
         margin-right: 10px;
         &:last-child {
@@ -41,13 +41,12 @@
         border: none;
         color: @black;
         outline: none;
-        float: left;
         .fontLight();
         line-height: 3.8rem;
         font-size: 1.5rem;
         position: relative;
-        width: @gridWidth-12;
         margin: .1rem 0;
+        width: 100%;
     }
 }
 
@@ -82,5 +81,30 @@
     .icon {
         margin:0;
         top: 0;
+    }
+}
+
+.editableMarkerList__addMarker {
+    display: inline-block;
+    border: none;
+    color: @blue;
+    cursor: pointer;
+    outline: none;
+    .fontLight();
+    font-size: 1.5rem;
+    padding: 1rem 0;
+    position: relative;
+    .transition400ms();
+
+    .icon {
+        display: inline-block;
+        font-size: 1.8rem;
+        position: relative;
+        top: .2rem;
+        margin-left: .75rem;
+    }
+
+    &:hover {
+        color: @blueBright;
     }
 }
