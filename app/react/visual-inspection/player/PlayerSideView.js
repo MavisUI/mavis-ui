@@ -5,8 +5,17 @@ import range from 'lodash/range';
 import padStart from 'lodash/padStart'
 import Icon from '../../_ui/icon/Icon';
 import path from 'path';
+import Modal from '../../_ui/modal/Modal';
 
 export default class PlayerSideView extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedImage: null,
+            modalOpen: false
+        }
+    }
 
     /**
      * @inheritDoc
@@ -14,6 +23,7 @@ export default class PlayerSideView extends React.Component {
      */
     render() {
         let {frame} = {...this.props},
+            {modalOpen, selectedImage} = {...this.state},
             pictures = this.getPictures(frame),
             pictureChunks = chunk(pictures, 3);
         // preload next images
@@ -24,6 +34,10 @@ export default class PlayerSideView extends React.Component {
                 <div id="pictures">
                     {pictureChunks.map((pictureChunk, i) => <div key={i} className="pictureRow">{pictureChunk}</div>)}
                 </div>
+                <Modal open={modalOpen} type="full" onClose={() => this.setState({modalOpen: false})}>
+                    <div className="playerSideView__modal" style={{backgroundImage: 'url(' + selectedImage + ')'}}>
+                    </div>
+                </Modal>
             </div>
         );
     }
@@ -44,7 +58,7 @@ export default class PlayerSideView extends React.Component {
             preload.src = imagePath;
             return (
                 <div key={i} className="pictureWindow playerSideView__window">
-                    <div className="picture playerSideView__picture" style={{backgroundImage: 'url(' + imagePath + ')'}}>
+                    <div className="picture playerSideView__picture" style={{backgroundImage: 'url(' + imagePath + ')'}} onClick={() => this.openModal(imagePath)}>
                         <Icon name={'iconCableActive' + i}/>
                     </div>
                 </div>
@@ -59,6 +73,17 @@ export default class PlayerSideView extends React.Component {
      */
     getFileName(frame) {
         return padStart(frame + 1, 4, '0') +'.jpg';
+    }
+
+    /**
+     * Opens the modal with the given image
+     * @param withImage
+     */
+    openModal(withImage) {
+        this.setState({
+            selectedImage: withImage,
+            modalOpen: true
+        });
     }
 }
 
