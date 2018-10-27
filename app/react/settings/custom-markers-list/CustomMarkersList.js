@@ -11,24 +11,36 @@ export class CustomMarkersList extends React.Component{
 
     @observable customMarkers = [];
 
+    /**
+     * Constructor
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.loadMarkers();
     }
 
+    /**
+     * @inheritDoc
+     * @returns {*}
+     */
     render() {
+        let {modalOpen} = {...this.state};
         return (
             <div  id="settingsManualList" className="customMarkersList">
                 <EditableMarkerList
                     markers={this.customMarkers}
                     onSave={(markers) =>  this.onSave(markers)}
                     canAddNewMarkers={true}/>
-            </div>  
+            </div>
         );
     }
 
+    /**
+     * Saves the given markers to the db.
+     * @param markers
+     */
     onSave(markers) {
-        console.log('changed markers', markers);
         let {store} = {... this.props},
             db = store.stores.modules,
             deletedMarkers = (markers ||[]).filter(marker => marker._deleted),
@@ -62,6 +74,9 @@ export class CustomMarkersList extends React.Component{
         this.loadMarkers();
     }
 
+    /**
+     * Loads the current manual markers from the db.
+     */
     loadMarkers() {
         let {store} = {...this.props};
         store.stores.modules
