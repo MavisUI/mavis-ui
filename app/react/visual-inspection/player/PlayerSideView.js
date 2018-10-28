@@ -9,10 +9,14 @@ import Modal from '../../_ui/modal/Modal';
 
 export default class PlayerSideView extends React.Component {
 
+    /**
+     * Constructor
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.state = {
-            selectedImage: null,
+            selectedSide: null,
             modalOpen: false
         }
     }
@@ -23,7 +27,7 @@ export default class PlayerSideView extends React.Component {
      */
     render() {
         let {frame} = {...this.props},
-            {modalOpen, selectedImage} = {...this.state},
+            {modalOpen, selectedSide} = {...this.state},
             pictures = this.getPictures(frame),
             pictureChunks = chunk(pictures, 3);
         // preload next images
@@ -35,8 +39,9 @@ export default class PlayerSideView extends React.Component {
                     {pictureChunks.map((pictureChunk, i) => <div key={i} className="pictureRow">{pictureChunk}</div>)}
                 </div>
                 <Modal open={modalOpen} type="full" onClose={() => this.setState({modalOpen: false})}>
-                    <div className="playerSideView__modal" style={{backgroundImage: 'url(' + selectedImage + ')'}}>
-                    </div>
+                    {selectedSide &&
+                        <div className="playerSideView__modal" style={{backgroundImage: 'url(' + this.getImageForSide(selectedSide, frame) + ')'}}/>
+                    }
                 </Modal>
             </div>
         );
@@ -49,21 +54,33 @@ export default class PlayerSideView extends React.Component {
      * @returns {*}
      */
     getPictures(frame) {
-        let {sides, basePath, maxFrames} = {...this.props};
-        frame = Math.min(frame, maxFrames);
+        let {sides} = {...this.props};
         return range(sides).map((side, i) => {
-            let fileName = this.getFileName(frame),
-                imagePath = [basePath, side, fileName].join('/'),
+            let imagePath = this.getImageForSide(side, frame),
                 preload = new Image();
             preload.src = imagePath;
             return (
                 <div key={i} className="pictureWindow playerSideView__window">
-                    <div className="picture playerSideView__picture" style={{backgroundImage: 'url(' + imagePath + ')'}} onClick={() => this.openModal(imagePath)}>
+                    <div className="picture playerSideView__picture" style={{backgroundImage: 'url(' + imagePath + ')'}} onClick={() => this.openModal(side)}>
                         <Icon name={'iconCableActive' + i}/>
                     </div>
                 </div>
             );
         });
+    }
+
+    /**
+     * Returns the image path for the given side and frame.
+     * @param {number} side
+     * @param {number} frame
+     * @returns {string}
+     */
+    getImageForSide(side, frame) {
+        let {basePath, maxFrames} = {...this.props},
+            fileName;
+        frame = Math.min(frame, maxFrames);
+        fileName = this.getFileName(frame);
+        return [basePath, side, fileName].join('/');
     }
 
     /**
@@ -76,12 +93,12 @@ export default class PlayerSideView extends React.Component {
     }
 
     /**
-     * Opens the modal with the given image
-     * @param withImage
+     * Opens the modal with the given side
+     * @param withSide
      */
-    openModal(withImage) {
+    openModal(withSide) {
         this.setState({
-            selectedImage: withImage,
+            selectedSide: withSide,
             modalOpen: true
         });
     }
