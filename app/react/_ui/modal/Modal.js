@@ -41,7 +41,7 @@ export default class Modal extends React.Component {
     }
 
     renderModal() {
-        let {children, open, type, userCanClose} = {...this.props},
+        let {children, open, type} = {...this.props},
             {closed} = {...this.state},
             css = classNames({modal: true, open: open, closed: closed}),
             contentCss = classNames({modal__content: true}, type),
