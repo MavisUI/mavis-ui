@@ -172,10 +172,38 @@ export default class Store {
                 await self.loadMetrics();
                 await self.loadCableData();
                 await self.loadConstructionData();
+                await self.remapResultsToMarkers();
                 resolve();
             }
 
             initialize();
+        });
+    }
+
+    //// DB fixes
+
+    remapResultsToMarkers() {
+        console.log('remapping results');
+        return Promise.all([
+            this.stores.results.find({}),
+            this.stores.modules.find({}),
+        ]).then(([results, markers]) => {
+            let promises = [];
+            results
+                .filter(result => new RegExp(/^\d+$/).test(result.case))
+                .map(result => {
+                    let marker = markers.find(m => m.label === result.label);
+                    if (marker) {
+                        promises.push(
+                            this.stores.results.update({_id: result._id}, {$set: {
+                                label: marker.label,
+                                case: marker._id,
+                                color: marker.color
+                            }})
+                        )
+                    }
+                });
+            return promises;
         });
     }
 }
