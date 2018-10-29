@@ -48,7 +48,7 @@ export default class PlayerSideView extends React.Component {
                     {pictureChunks.map((pictureChunk, i) => <div key={i} className="pictureRow">{pictureChunk}</div>)}
                 </div>
                 <Modal open={modalOpen} type="full" onClose={() => this.setState({modalOpen: false})}>
-                    {selectedSide &&
+                    {selectedSide !== null &&
                         <div className="playerSideView__modal" style={{backgroundImage: 'url(' + this.getImageForSide(selectedSide, frame) + ')'}}/>
                     }
                 </Modal>
