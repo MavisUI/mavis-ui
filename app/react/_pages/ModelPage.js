@@ -24,7 +24,6 @@ export class ModelPage extends React.Component {
     render() {
         let {store} = {...this.props},
             {data} = {...this.state};
-        console.log(data);
         return (
             <div>
                 <Filter
