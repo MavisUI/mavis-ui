@@ -5,18 +5,19 @@ import Modal from '../modal/Modal';
 
 export default class Notification extends React.Component {
     render() {
-        let {show, message = {}, onClick} = {...this.props};
+        let {show, message = {}, onClick} = {...this.props},
+            m = message || {};
         return (
             <Modal open={show} type="noStyle" onClose={() => onClick()} userCanClose={false}>
-                <div className={'notification ' + message.noteType}>
+                <div className={'notification ' + m.noteType}>
                     <h1 className="notification__headline">
-                        {message.headline || ''}
+                        {m.headline || ''}
                     </h1>
                     <p className="notification__text">
-                        {message.noteText || ''}
+                        {m.noteText || ''}
                     </p>
                     <Button className="notification__button" onClick={() => onClick()}>
-                        {message.buttonText || ''}
+                        {m.buttonText || ''}
                     </Button>
                 </div>
             </Modal>

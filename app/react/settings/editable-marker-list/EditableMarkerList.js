@@ -76,6 +76,7 @@ export default class EditableMarkerList extends React.Component {
                                         disabled={viewOnly}
                                         type="noStyle"
                                         className="editableMarkerList__item__deleteBtn"
+                                        showDeleteWarning={true}
                                         onClick={() => this.updateMarker(marker, '_deleted', true)}>
                                         <Icon name="iconTrash"/>
                                     </ConfirmableButton>
@@ -167,7 +168,7 @@ export default class EditableMarkerList extends React.Component {
      * Update a prop with the value of the given marker.
      * @param {object} marker
      * @param {string} prop
-     * @param {string} value
+     * @param {*} value
      */
     updateMarker(marker, prop, value) {
         let previousValue = marker[prop];
