@@ -97,6 +97,10 @@ export class CustomMarkersList extends React.Component{
 
     }
 
+    /**
+     * Shows the given notification message
+     * @param message
+     */
     showNotification(message) {
         this.setState({
             showNotification: true,
@@ -104,6 +108,9 @@ export class CustomMarkersList extends React.Component{
         });
     }
 
+    /**
+     * Hides the notification
+     */
     hideNotification() {
         this.setState({
            showNotification: false
