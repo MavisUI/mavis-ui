@@ -16,7 +16,7 @@ export default class Button extends React.Component {
 Button.propTypes = {
     id: PropTypes.string,
     onClick: PropTypes.func,
-    type: PropTypes.oneOf(['confirm', 'reset', 'cancel', 'blue', 'noStyle']),
+    type: PropTypes.oneOf(['confirm', 'reset', 'cancel', 'blue', 'grey', 'transparent', 'noStyle']),
     children: PropTypes.any,
     className : PropTypes.string,
     disabled: PropTypes.bool
