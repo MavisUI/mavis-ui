@@ -14,7 +14,7 @@ export default class MetricSelector extends React.Component{
                 {viewOnly ?
                     <span dangerouslySetInnerHTML={{__html: selectedMetric && selectedMetric.metric}} />
                     :
-                    <select className="metricSelector__select" value={selected} onChange={(e) => onChange(e.target.value)}>
+                    <select className="metricSelector__select" value={selected} onChange={(e) => onChange(Number(e.target.value))}>
                         {store.metrics.map(metric => <option key={metric.id} value={metric.id} dangerouslySetInnerHTML={{__html: metric.metric}} />)}
                     </select>
                 }

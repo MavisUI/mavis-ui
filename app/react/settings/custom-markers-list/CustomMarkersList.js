@@ -68,11 +68,12 @@ export class CustomMarkersList extends React.Component {
                 metric = store.metrics.find(metric => marker.metric === metric.id);
             promises.push(db.update({_id: markerClone._id}, {$set: markerClone}));
 
+            console.log('metric', metric, markerClone);
             // update all comments in the results db.
             promises.push(resultDb.update({case: markerClone._id}, {$set: {
                     color: markerClone.color,
                     label: markerClone.label,
-                    metric: metric.label
+                    metric: metric.metric
                 }}, {multi: true})
             );
         });
