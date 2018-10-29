@@ -6,10 +6,8 @@ import Player from '../visual-inspection/player/Player';
 export class InspectionPage extends React.Component {
     render() {
         return (
-            <div className="inner">',
-                <div id="inspection">
-                    <Player/>
-                </div>
+            <div >
+                <Player/>
             </div>
         )
     }
