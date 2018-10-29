@@ -23,7 +23,7 @@ export default class Player extends React.Component {
         this.state = {
             data: null,
             criteria: null,
-            showComment: true,
+            showComment: false,
             commentToEdit: null
         };
         this.playerControlsRef = React.createRef();
