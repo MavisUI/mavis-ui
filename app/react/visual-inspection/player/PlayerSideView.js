@@ -10,6 +10,15 @@ import Modal from '../../_ui/modal/Modal';
 export default class PlayerSideView extends React.Component {
 
     /**
+     * Returns the image file name for the given frame.
+     * @param frame
+     * @returns {string}
+     */
+    static getFileName(frame) {
+        return padStart(frame + 1, 4, '0') +'.jpg';
+    }
+
+    /**
      * Constructor
      * @param props
      */
@@ -79,18 +88,11 @@ export default class PlayerSideView extends React.Component {
         let {basePath, maxFrames} = {...this.props},
             fileName;
         frame = Math.min(frame, maxFrames);
-        fileName = this.getFileName(frame);
+        fileName = PlayerSideView.getFileName(frame);
         return [basePath, side, fileName].join('/');
     }
 
-    /**
-     * Returns the image file name for the given frame.
-     * @param frame
-     * @returns {string}
-     */
-    getFileName(frame) {
-        return padStart(frame + 1, 4, '0') +'.jpg';
-    }
+
 
     /**
      * Opens the modal with the given side

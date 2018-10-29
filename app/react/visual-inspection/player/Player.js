@@ -7,6 +7,8 @@ import Filter from '../../_ui/filter/Filter';
 import PlayerSideView from './PlayerSideView';
 import path from 'path';
 import PlayerGraph from './PlayerGraph';
+import Icon from '../../_ui/icon/Icon';
+import Comment from '../comment/Comment';
 
 @inject('store')
 @observer
@@ -20,8 +22,11 @@ export default class Player extends React.Component {
         super(props);
         this.state = {
             data: null,
-            criteria: null
-        }
+            criteria: null,
+            showComment: true,
+            commentToEdit: null
+        };
+        this.playerControlsRef = React.createRef();
     }
 
     /**
@@ -30,7 +35,7 @@ export default class Player extends React.Component {
      */
     render() {
         let {store} = {...this.props},
-            {data} = {...this.state},
+            {data, showComment, commentToEdit} = {...this.state},
             playerState = store.playerState,
             cable = this.getCurrentCable(),
             frame = this.getCurrentFrame(),
@@ -47,6 +52,7 @@ export default class Player extends React.Component {
                 </div>
                 <div id="controlsPlayer" className="player__controls">
                     <PlayerControls
+                        ref={this.playerControlsRef}
                         speed={playerState.speed}
                         position={playerState.position}
                         maxPosition={cable.drivenLength}
@@ -55,7 +61,9 @@ export default class Player extends React.Component {
                         onChangeSpeed={(speed) => playerState.speed = speed}/>
 
                 </div>
-                <div id="controlsComment"></div>
+                <button className="player__addComment" onClick={() =>  this.showComment(null)}>
+                    <Icon name="iconChat" />
+                </button>
                 <div id="visual">
                     <PlayerSideView
                         sides={cable.sides}
@@ -75,8 +83,18 @@ export default class Player extends React.Component {
                         position={playerState.position}
                         maxLength={cable.drivenLength}
                         data={data}
-                        onChangePosition={(position) => playerState.position = position}/>
+                        onChangePosition={(position) => playerState.position = position}
+                        onEditMarker={(comment) => this.showComment(comment)}/>
                 </div>
+                <Comment open={showComment}
+                         commentToEdit={commentToEdit}
+                         position={playerState.position}
+                         cable={playerState.cableIndex}
+                         frame={frame}
+                         baseImagePath={baseImagePath}
+                         onClose={() => this.hideComment()}
+                         onCancel={() => this.hideComment()}>
+                </Comment>
             </div>
         );
     }
@@ -111,6 +129,37 @@ export default class Player extends React.Component {
         let {store} = {...this.props},
             {playerState, userState} = {...store};
         return '/data/' + userState.activeBridge + '/' + playerState.cableIndex;
+    }
+
+    /**
+     * Shows the comment component with the "commentToEdit"
+     * @param commentToEdit
+     */
+    showComment(commentToEdit = null) {
+        if (this.playerControlsRef.current) {
+            this.playerControlsRef.current.pause();
+        }
+        console.log('commentToEdit', commentToEdit);
+        this.setState({
+            showComment: true,
+            commentToEdit: commentToEdit
+        });
+    }
+
+    /**
+     * Hides the comment overlay.
+     */
+    hideComment() {
+        this.setState({
+            showComment: false
+        });
+    }
+
+    /**
+     * Toggles the comment overlay
+     */
+    toggleComment() {
+        this.state.showComment ? this.hideComment() : this.showComment();
     }
 }
 
