@@ -4,12 +4,11 @@ import {observable} from 'mobx';
 import {inject, observer} from 'mobx-react';
 import Store from '../../Store';
 import EditableMarkerList from '../editable-marker-list/EditableMarkerList';
-import {NotificationMessages} from '../../_ui/notification/Notification';
-import Notification from '../../_ui/notification/Notification';
+import Notification, {NotificationMessages} from '../../_ui/notification/Notification';
 
 @inject('store')
 @observer
-export class CustomMarkersList extends React.Component{
+export class CustomMarkersList extends React.Component {
 
     @observable customMarkers = [];
 
@@ -33,10 +32,10 @@ export class CustomMarkersList extends React.Component{
     render() {
         let {showNotification, message} = {...this.state};
         return (
-            <div  id="settingsManualList" className="customMarkersList">
+            <div id="settingsManualList" className="customMarkersList">
                 <EditableMarkerList
                     markers={this.customMarkers}
-                    onSave={(markers) =>  this.onSave(markers)}
+                    onSave={(markers) => this.onSave(markers)}
                     canAddNewMarkers={true}/>
                 <Notification show={showNotification} message={message} onClick={() => this.hideNotification()}/>
             </div>
@@ -48,30 +47,33 @@ export class CustomMarkersList extends React.Component{
      * @param markers
      */
     onSave(markers) {
-        let {store} = {... this.props},
+        let {store} = {...this.props},
             db = store.stores.modules,
-            deletedMarkers = (markers ||[]).filter(marker => marker._deleted),
-            updatedMarkers = (markers ||[]).filter(marker => !marker._deleted && marker._id),
-            newMarkers = (markers ||[]).filter(marker => !marker._deleted && !marker._id),
+            resultDb = store.stores.results,
+            deletedMarkers = (markers || []).filter(marker => marker._deleted),
+            updatedMarkers = (markers || []).filter(marker => !marker._deleted && marker._id),
+            newMarkers = (markers || []).filter(marker => !marker._deleted && !marker._id),
             promises = [];
 
         //remove all deleted
         deletedMarkers.map(marker => {
-            promises.push(
-                db.remove({_id: marker._id})
-            );
+            promises.push(db.remove({_id: marker._id}));
+            promises.push(resultDb.remove({case: marker._id}, {multi: true}));
         });
 
         // update existing
         updatedMarkers.map(marker => {
             // remove the _isDirty and _deleted flags
-            let {_isDirty, _deleted, ...markerClone} = {...marker};
-            promises.push(
-                db.update(
-                {_id: markerClone._id},
-                {$set:
-                    markerClone
-                })
+            let {_isDirty, _deleted, ...markerClone} = {...marker},
+                metric = store.metrics.find(metric => marker.metric === metric.id);
+            promises.push(db.update({_id: markerClone._id}, {$set: markerClone}));
+
+            // update all comments in the results db.
+            promises.push(resultDb.update({case: markerClone._id}, {$set: {
+                    color: markerClone.color,
+                    label: markerClone.label,
+                    metric: metric.label
+                }}, {multi: true})
             );
         });
 
@@ -113,7 +115,7 @@ export class CustomMarkersList extends React.Component{
      */
     hideNotification() {
         this.setState({
-           showNotification: false
+            showNotification: false
         });
     }
 
