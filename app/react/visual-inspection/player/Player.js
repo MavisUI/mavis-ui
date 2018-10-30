@@ -20,6 +20,7 @@ export default class Player extends React.Component {
      */
     constructor(props) {
         super(props);
+        this.filterRef = React.createRef();
         this.state = {
             data: null,
             criteria: null,
@@ -73,6 +74,7 @@ export default class Player extends React.Component {
                 </div>
                 <div id="inspectionFilter">
                     <Filter
+                        ref={this.filterRef}
                         criteria={{cable: playerState.cableIndex}}
                         hideSort={true}
                         hideCable={true}
@@ -93,7 +95,9 @@ export default class Player extends React.Component {
                          frame={frame}
                          baseImagePath={baseImagePath}
                          onClose={() => this.hideComment()}
-                         onCancel={() => this.hideComment()}>
+                         onCancel={() => this.hideComment()}
+                         onDelete={(comment) => this.onDeleteComment(comment)}
+                         onSave={(comment) => this.onSaveComment(comment)}>
                 </Comment>
             </div>
         );
@@ -160,6 +164,31 @@ export default class Player extends React.Component {
      */
     toggleComment() {
         this.state.showComment ? this.hideComment() : this.showComment();
+    }
+
+    /**
+     * Calls filterData on the filter to get an updated list.
+     * @param comment
+     */
+    onSaveComment(comment) {
+        this.filterData();
+        this.hideComment();
+    }
+
+    /**
+     * Calls filterData on the filter to get an updated list.
+     * @param comment
+     */
+    onDeleteComment(comment) {
+        this.filterData();
+        this.hideComment();
+    }
+
+    filterData() {
+        let f = this.filterRef.current && this.filterRef.current.wrappedInstance;
+        if (f) {
+            f.filterData();
+        }
     }
 }
 

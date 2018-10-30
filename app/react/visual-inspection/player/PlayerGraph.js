@@ -232,7 +232,7 @@ export default class PlayerGraph extends React.Component {
                             click: function () {
                                 let commentData = {};
 
-                                commentData.id = this.id;
+                                commentData._id = this._id;
                                 commentData.cable = this.cable;
                                 commentData.caption = this.caption;
                                 commentData.case = this.case;
@@ -244,6 +244,7 @@ export default class PlayerGraph extends React.Component {
                                 commentData.value = this.value;
                                 commentData.position = this.x;
                                 commentData.sides = this.sides;
+                                commentData.images = this.images;
                                 onEditMarker(commentData);
                             }
                         }

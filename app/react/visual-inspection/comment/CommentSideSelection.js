@@ -32,13 +32,15 @@ export default class CommentSideSelection extends React.Component {
      * @param side
      */
     toggleSide(side) {
-        let {onChange, value} = {...this.props},
+        let {onChange, value, frame} = {...this.props},
             hasSideSelected = (value || []).filter(s =>  s === side).length > 0,
-            newValue = (value || []).filter(s =>  s !== side);
+            newValue = (value || []).filter(s =>  s !== side),
+            images;
         if (!hasSideSelected) {
             newValue.push(side);
         }
-        onChange(newValue);
+        images = newValue.map(side => this.getImageForSide(side, frame));
+        onChange(newValue, images);
     }
 
     /**

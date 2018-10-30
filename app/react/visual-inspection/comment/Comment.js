@@ -4,9 +4,11 @@ import classNames from 'classnames';
 import Icon from '../../_ui/icon/Icon';
 import {inject, observer} from 'mobx-react';
 import Store from '../../Store';
+import * as mobx from 'mobx';
 import {observable} from 'mobx';
 import CommentSideSelection from './CommentSideSelection';
 import Button from '../../_ui/button/Button';
+import Notification, {NotificationMessages} from '../../_ui/notification/Notification';
 
 @inject('store')
 @observer
@@ -18,6 +20,10 @@ export default class Comment extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            showNotification: false,
+            message: null
+        };
         this.cloneCommentToEdit();
     }
 
@@ -26,7 +32,6 @@ export default class Comment extends React.Component {
      * @inheritDoc
      */
     componentDidMount() {
-        let {commentToEdit} = {...this.props};
         this.loadData();
     }
 
@@ -38,15 +43,15 @@ export default class Comment extends React.Component {
         let {commentToEdit, store} = {...this.props};
 
         if (commentToEdit !== prevProps.commentToEdit) {
-            this.commentToEdit = commentToEdit ? {...commentToEdit} : {...EmptyComment};
+            this.cloneCommentToEdit();
         }
     }
 
     render() {
         let {open, onClose, frame, baseImagePath} = {...this.props},
+            {showNotification, message} = {...this.state},
             css = classNames('comment', {hidden: !open}),
-            frequencyMetric = this.getMetricForMarker(this.commentToEdit.case);
-        console.log('comment to edit', this.commentToEdit);
+            frequencyMetric = this.getMetricForMarkerId(this.commentToEdit.case);
         return (
             <div className={css}>
                 <div className="inner">
@@ -63,7 +68,14 @@ export default class Comment extends React.Component {
                         <label>Merkmal</label>
                         <select id="commentCasesSelection"
                                 value={this.commentToEdit.case}
-                                onChange={(e) => this.commentToEdit.case = e.target.value}>
+                                onChange={(e) => {
+                                    let markerId = e.target.value,
+                                        marker = this.getMarker(markerId),
+                                        metric = this.getMetricForMarkerId(markerId);
+                                    this.commentToEdit.case = markerId;
+                                    this.commentToEdit.label = marker.label;
+                                    this.commentToEdit.metric = metric && metric.metric || '';
+                                }}>
 
                             <option value="">Schadensmerkmal auswählen</option>
                             {this.markers.map((marker, i) => <option key={marker._id}
@@ -109,7 +121,8 @@ export default class Comment extends React.Component {
                                value={this.commentToEdit.value}
                                min="0"
                                onChange={(e) => this.commentToEdit.value = Number(e.target.value)}/>
-                        <span className="comment__frequency__metric" dangerouslySetInnerHTML={{__html: frequencyMetric && frequencyMetric.metric}}/>
+                        <span className="comment__frequency__metric"
+                              dangerouslySetInnerHTML={{__html: frequencyMetric && frequencyMetric.metric}}/>
                     </div>
 
                     <div className="comment__item" id="commentImages">
@@ -119,7 +132,10 @@ export default class Comment extends React.Component {
                                 value={this.commentToEdit.sides}
                                 frame={frame}
                                 baseImagePath={baseImagePath}
-                                onChange={(sides) =>  this.commentToEdit.sides = sides}/>
+                                onChange={(sides, images) => {
+                                    this.commentToEdit.sides = sides;
+                                    this.commentToEdit.images = images;
+                                }}/>
                         </div>
                     </div>
 
@@ -130,41 +146,85 @@ export default class Comment extends React.Component {
                                   onChange={(e) => this.commentToEdit.caption = e.target.value}/>
                     </div>
                     <div className="comment__item" id="commentFunctions">
-                        <Button id="commentReset" type="transparent" onClick={() => this.onReset()}><Icon name="iconRefresh"/> zurücksetzen</Button>
+                        <Button id="commentReset" type="transparent" onClick={() => this.onReset()}><Icon
+                            name="iconRefresh"/> zurücksetzen</Button>
                         {!this.commentToEdit.id &&
-                            <Button id="commentCancel" type="cancel" onClick={() => this.onCancel()}><Icon name="iconCancel"/> abbrechen</Button>
+                        <Button id="commentCancel" type="cancel" onClick={() => this.onCancel()}><Icon
+                            name="iconCancel"/> abbrechen</Button>
                         }
                         {this.commentToEdit.id &&
-                            <Button id="commentRemove" type="grey" onClick={() => this.onDelete()}>
-                                <Icon name="iconTrash"/> löschen
-                            </Button>
+                        <Button id="commentRemove" type="grey" onClick={() => this.onDelete()}>
+                            <Icon name="iconTrash"/> löschen
+                        </Button>
                         }
                         <Button id="commentSave" type="confirm" onClick={() => this.onSave()}>
-                            <Icon name="iconConfirm" /> speichern
+                            <Icon name="iconConfirm"/> speichern
                         </Button>
                     </div>
                 </div>
+                <Notification show={showNotification} message={message} onClick={() => this.hideNotification()}/>
             </div>
         )
     }
 
     validate() {
+        let c = this.commentToEdit;
 
+        if (!c.case) {
+            this.showNotification(NotificationMessages.WARNING_PLEASE_SELECT_MARKER);
+            return false;
+        }
+        if ((c.images || []).length === 0) {
+            this.showNotification(NotificationMessages.WARNING_PLEASE_SELECT_SIDES);
+            return false;
+        }
+        return true;
     }
 
     //// EVENT HANDLERS
 
     onSave() {
-        let {onSave, store} = {...this.props};
+        let {onSave, store} = {...this.props},
+            db = store.stores.results,
+            comment = mobx.toJS(this.commentToEdit);
+        console.log('comment to save', comment);
         if (this.validate()) {
-            store.stores.results
+            let promise;
+            if (comment._id) {
+                promise = db.update({_id: comment._id}, {$set: comment});
+            } else {
+                promise = db.insert(comment);
+            }
+            promise
+                .then(() => {
+                    this.showNotification(NotificationMessages.SUCCESS_CHANGES_HAVE_BEEN_SAVED);
+                    onSave(comment);
+                })
+                .catch(err => {
+                    console.error(err);
+                    this.showNotification(NotificationMessages.ERROR_FAILURE_TO_SAVE_DATA);
+                });
+
+            // ;
         }
-        onSave();
+
     }
 
     onDelete() {
-        let {onDelete} = {...this.props};
-        onDelete();
+        let {onDelete, store} = {...this.props},
+            db = store.stores.results,
+            comment = mobx.toJS(this.commentToEdit);
+
+        db.remove({_id: comment._id})
+            .then(() => {
+                this.showNotification(NotificationMessages.SUCCESS_CHANGES_HAVE_BEEN_SAVED);
+                onDelete(comment);
+            })
+            .catch(err => {
+                console.error(err);
+                this.showNotification(NotificationMessages.ERROR_FAILURE_TO_SAVE_DATA);
+            });
+
     }
 
     onCancel() {
@@ -181,6 +241,28 @@ export default class Comment extends React.Component {
         onClose();
     }
 
+    /**
+     * Shows the given notification message
+     * @param message
+     */
+    showNotification(message) {
+        this.setState({
+            showNotification: true,
+            message: message
+        });
+    }
+
+    /**
+     * Hides the notification
+     */
+    hideNotification() {
+        this.setState({
+            showNotification: false
+        });
+    }
+
+
+    //// DATA LOADING
 
     /**
      * Loads the data from the store to populate the dropdowns.
@@ -221,11 +303,15 @@ export default class Comment extends React.Component {
      * @param markerId
      * @returns {*|null}
      */
-    getMetricForMarker(markerId) {
+    getMetricForMarkerId(markerId) {
         let {store} = {...this.props},
-            marker = this.markers.find(m => m._id ===  markerId);
+            marker = this.getMarker(markerId);
 
         return marker && store.metrics.find(metric => metric.id === marker.metric) || null;
+    }
+
+    getMarker(markerId) {
+        return this.markers.find(m => m._id === markerId);
     }
 
     /**
@@ -233,9 +319,10 @@ export default class Comment extends React.Component {
      * If no comment is given, an empty comment will be created
      */
     cloneCommentToEdit() {
-        let {commentToEdit} = {...this.props};
-        this.loadData();
+        let {commentToEdit, cable} = {...this.props};
+
         this.commentToEdit = commentToEdit ? {...commentToEdit} : {...EmptyComment};
+        this.commentToEdit.cable = cable;
     }
 }
 
@@ -253,14 +340,19 @@ Comment.propTypes = {
     onDelete: PropTypes.func,
 };
 Comment.defaultProps = {
-    onCancel: () => {},
-    onSave: () => {},
-    onDelete: () => {},
-    onClose: () => {},
+    onCancel: () => {
+    },
+    onSave: () => {
+    },
+    onDelete: () => {
+    },
+    onClose: () => {
+    },
     position: 0
 };
 
 const EmptyComment = {
+    type: 'manual',
     caption: '',
     case: '',
     distance: 0.1,
@@ -269,4 +361,6 @@ const EmptyComment = {
     rating: 0,
     sides: [],
     value: 0,
+    images: [],
+    cable: 0
 };
