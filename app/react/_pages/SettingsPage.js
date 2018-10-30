@@ -4,6 +4,7 @@ import Tabs from '../_ui/tabs/Tabs';
 import Tab from '../_ui/tabs/Tab';
 import {CustomMarkersList} from '../settings/custom-markers-list/CustomMarkersList';
 import PresetMarkersList from '../settings/preset-markers-list/PresetMarkersList';
+import Procedures from '../settings/procedures/Procedures';
 
 @observer
 export class SettingsPage extends React.Component {
@@ -18,7 +19,7 @@ export class SettingsPage extends React.Component {
                         <PresetMarkersList/>
                     </Tab>
                     <Tab title="Verfahren">
-                        Verfahren
+                        <Procedures/>
                     </Tab>
                 </Tabs>
             </div>
