@@ -187,7 +187,6 @@ export default class Comment extends React.Component {
         let {onSave, store} = {...this.props},
             db = store.stores.results,
             comment = mobx.toJS(this.commentToEdit);
-        console.log('comment to save', comment);
         if (this.validate()) {
             let promise;
             if (comment._id) {

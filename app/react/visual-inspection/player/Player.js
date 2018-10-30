@@ -143,7 +143,6 @@ export default class Player extends React.Component {
         if (this.playerControlsRef.current) {
             this.playerControlsRef.current.pause();
         }
-        console.log('commentToEdit', commentToEdit);
         this.setState({
             showComment: true,
             commentToEdit: commentToEdit
