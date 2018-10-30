@@ -8,7 +8,10 @@
     "dev": "node build/server.js",
     "build": "node build/build.js",
     "package": "build --tasks win-x64 --mirror https://dl.nwjs.io/ dist",
-    "packageLinux": "build --tasks linux-x64 --mirror https://dl.nwjs.io/ dist"
+    "packageLinux": "build --tasks linux-x64 --mirror https://dl.nwjs.io/ dist",
+    "packageMac": "build --tasks mac-x64 --mirror https://dl.nwjs.io/ dist",
+    "packageWinX86": "build --tasks win-x86 --mirror https://dl.nwjs.io/ dist",
+    "packageAll": "build --tasks win-x86,win-x64,linux-x64,mac-x64 --mirror https://dl.nwjs.io/ dist"
   },
   "repository": {
     "type": "git",
