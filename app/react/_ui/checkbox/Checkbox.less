@@ -2,7 +2,6 @@
     display: inline-block;
     width: 40px;
     height: 25px;
-    border: 1px solid red;
     position: relative;
     box-sizing: border-box;
 }
@@ -26,11 +25,11 @@
         width: 23px;
         height: 23px;
         background: @white;
-        box-shadow: 0 0 5px 0 rgba(0,0,0,0.75);
+        box-shadow: 0 0 4px 0 rgba(0,0,0,0.75);
         transform: translateX(0);
         transition: transform 0.2s ease-out;
         position: absolute;
-        top: 0;
+        top: 1px;
         left: 0;
     }
 }
@@ -44,6 +43,6 @@
 .checkbox__input:checked + .checkbox__proxy {
     background: @green;
     &:after {
-        transform: translateX(15px);
+        transform: translateX(18px);
     }
 }
