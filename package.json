@@ -96,6 +96,7 @@
     "react-click-outside": "^3.0.1",
     "react-dom": "^16.5.2",
     "react-flip-move": "^3.0.3",
+    "react-input-range": "^1.3.0",
     "three": "^0.91.0",
     "three-orbit-controls": "^82.1.0",
     "three-projector-renderer": "^1.0.1"
