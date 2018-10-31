@@ -1,3 +1,121 @@
+@import "../../../styles/vars.less";
+.playerControls {
+
+}
+.playerControls__container {
+    display: block;
+    width: 66rem;
+    float: none;
+
+    label {
+        display: inline-block;
+        float: left;
+        font-size: 1.5rem;
+        .fontLight();
+        line-height: 5rem;
+    }
+
+    select,
+    input {
+        display: inline-block;
+        float: left;
+        -webkit-appearance: none;
+        background: transparent;
+        border: none;
+        color: @blue;
+        font-size: 1.5rem;
+        line-height: 5rem;
+        margin: 0 4rem 0 1rem;
+        .fontBold();
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    #playerPosition {
+        width: 6.5rem;
+        text-align: right;
+        margin: 0;
+    }
+
+    button {
+        height: 5rem;
+        width: 5rem;
+        float: left;
+        -webkit-appearance: none;
+        border-radius: 2.5rem;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        .transition200ms();
+
+        .icon {
+            font-size: 3rem;
+        }
+
+        &#playerPlayPause {
+            background-color: @blue;
+            margin: 0 1rem;
+
+            .icon {
+                color: @white;
+            }
+        }
+
+        &#playerToStart,
+        &#playerPrevious,
+        &#playerNext,
+        &#playerToEnd {
+            background-color: transparent;
+
+            .icon {
+                color: @blue;
+            }
+        }
+
+        &:active {
+            box-shadow: 0 1px 2px @greyDark inset;
+        }
+
+    }
+
+    label {
+
+        &:nth-of-type(2) {
+            margin-right: 6rem;
+        }
+
+        &:nth-of-type(3) {
+            margin-left: 4rem;
+        }
+
+    }
+
+    &.paused {
+        .iconPlay {
+            display: block;
+        }
+
+        .iconPause {
+            display: none;
+        }
+    }
+
+    &.playing {
+        .iconPlay {
+            display: none;
+        }
+
+        .iconPause {
+            display: block;
+        }
+    }
+
+    #playerSpeed {
+        margin-right: 0;
+    }
+}
 .playerControls__field__position {
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {

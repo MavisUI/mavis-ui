@@ -1,4 +1,4 @@
-
+@import "../../../styles/vars.less";
 
 .comment {
     display: inline-block;
@@ -25,14 +25,6 @@
     .fontBold;
 }
 
-.comment__frequency__metric {
-    color: @white;
-    font-size: 2rem;
-    text-align: left;
-    .fontBold();
-}
-
-
 
 .comment__item {
     display: inline-block;
@@ -49,8 +41,6 @@
 
     select,
     input {
-        display: inline-block;
-        width: @gridWidth-12;
         margin: 0;
         -webkit-appearance: none;
         background: transparent;
@@ -64,10 +54,7 @@
             outline: none;
         }
 
-        &#commentFrequencyInput {
-            display: inline;
-            width: 5rem;
-        }
+
 
         &#commentFrequencyInputMetric {
             display: inline;
@@ -91,30 +78,7 @@
         outline: none;
     }
 
-    &#commentClose {
-        width: @gridWidth-12;
-        margin-top: 1rem;
-        text-align: right;
 
-        #commentCloseButton {
-            color: @white;
-            .fontBold();
-            font-size: 1.5rem;
-            -webkit-appearance: none;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            outline: none;
-
-            .icon {
-                display: inline-block;
-                position: relative;
-                top: 0.75rem;
-                color: #FFFFFF;
-                font-size: 3rem;
-            }
-        }
-    }
 
     &#commentCases {
         width: @gridWidth-4;
@@ -122,50 +86,92 @@
         margin-right: @gridMargin;
     }
 
-    &#commentRating {
-        width: @gridWidth-2;
-        margin-right: @gridWidth-3;
-    }
+}
+.comment__close {
+    width: @gridWidth-12;
+    margin-top: 1rem;
+    text-align: right;
 
-    &#commentPosition {
-        width: @gridWidth-2;
-        margin-left: @gridWidth-3;
-        margin-right: @gridMargin;
-    }
 
-    &#commentDistance {
-        width: @gridWidth-2;
-        margin-right: @gridMargin;
-    }
+}
 
-    &#commentImages {
-        width: @gridWidth-6;
-        margin-left: @gridWidth-3;
-        margin-right: @gridWidth-3;
-    }
+.comment__close__button {
+    color: @white;
+    .fontBold();
+    font-size: 1.5rem;
+    -webkit-appearance: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    margin-right: 20px;
 
-    &#commentText {
-        width: @gridWidth-6;
-        margin-left: @gridWidth-3;
-        margin-right: @gridWidth-3;
-
-        #commentTextInput {
-            padding: .5rem;
-            font-size: 1.5rem;
-        }
-    }
-
-    &#commentFunctions {
+    .icon {
         display: inline-block;
-        width: @gridWidth-6;
-        margin-left: @gridWidth-3;
-        margin-right: @gridWidth-3;
-        margin-top: 3em;
-        text-align: center;
-
-        button {
-            margin-right: 1.25%;
-        }
+        position: relative;
+        top: 0.75rem;
+        color: #FFFFFF;
+        font-size: 3rem;
     }
+}
+
+.comment__rating {
+    width: @gridWidth-2;
+    margin-right: @gridWidth-3;
+}
+.comment__position {
+    width: @gridWidth-2;
+    margin-left: @gridWidth-3;
+    margin-right: @gridMargin;
+}
+
+.comment__distance {
+    width: @gridWidth-2;
+    margin-right: @gridMargin;
+}
+
+.comment__images {
+    width: @gridWidth-6;
+    margin-left: @gridWidth-3;
+    margin-right: @gridWidth-3;
+    clear:both;
+}
+.comment__text {
+    width: @gridWidth-6;
+    margin-left: @gridWidth-3;
+    margin-right: @gridWidth-3;
+
+    textarea {
+        padding: .5rem;
+        font-size: 1.5rem;
+    }
+}
+
+.comment__functions {
+    display: inline-block;
+    width: @gridWidth-6;
+    margin-left: @gridWidth-3;
+    margin-right: @gridWidth-3;
+    margin-top: 3em;
+    text-align: center;
+
+    button {
+        margin-right: 1.25%;
+    }
+}
+
+.comment__frequency {
+}
+
+.comment__frequency__input {
+    display: inline;
+    width: 5rem ;
+}
+
+.comment__frequency__metric {
+    color: @white;
+    font-size: 2rem;
+    text-align: left;
+    .fontBold();
 }
 

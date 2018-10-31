@@ -39,17 +39,17 @@ export default class MarkerList extends React.Component {
                 <div className="markerList__info">
                     Es werden maximal {maxItemsToShow} Einträge angzeigt.
                 </div>
-                <div id="list">
-                    <div id="listHeader">
-                        <label>Schadensfall ({data ? data.length : '--'})</label>
-                        <label>Seil</label>
-                        <label>Position</label>
-                        <label>Seiten</label>
-                        <label>Schadensklasse</label>
-                        <label>Wert</label>
-                        <label>Links</label>
+                <div id="list" className="markerList__list">
+                    <div id="listHeader" className="markerList__header">
+                        <label className="markerList__header__label">Schadensfall ({data ? data.length : '--'})</label>
+                        <label className="markerList__header__label">Seil</label>
+                        <label className="markerList__header__label">Position</label>
+                        <label className="markerList__header__label">Seiten</label>
+                        <label className="markerList__header__label">Schadensklasse</label>
+                        <label className="markerList__header__label">Wert</label>
+                        <label className="markerList__header__label">Links</label>
                         </div>
-                    <FlipMove id="listBody"
+                    <FlipMove className="markerList__list__body"
                               typeName="ul"
                               easing="ease-out"
                               enterAnimation="fade"
@@ -59,20 +59,20 @@ export default class MarkerList extends React.Component {
                         {data && data.slice(0, maxItemsToShow).map((item, i) => {
                             let key = crypto.randomBytes(16).toString("hex");
                             return (
-                                <li className="result markerList__item"  key={key}>
-                                    <div className="item itemLabel">
+                                <li className="markerList__row"  key={key}>
+                                    <div className="markerList__item itemLabel">
                                         <div className="colorBar markerList__item__colorBar" style={{backgroundColor: item.color}}/>
                                         {item.label}
                                     </div>
-                                    <div className="item itemCable">{store.cableData[item.cable].name}</div>
-                                    <div className="item itemPosition">{item.position + ' m'}</div>
-                                    <div className="item itemSides">
+                                    <div className="markerList__item itemCable">{store.cableData[item.cable].name}</div>
+                                    <div className="markerList__item itemPosition">{item.position + ' m'}</div>
+                                    <div className="markerList__item itemSides">
                                         <CableImage selectedSides={item.sides}/>
                                     </div>
-                                    <div className="item itemRating">{'SK ' + item.rating}</div>
-                                    <div className="item itemValue">{item.value} <span dangerouslySetInnerHTML={{__html: item.metric}}/></div>
-                                    <div className="item itemLink">
-                                        <a className="loadVisual" onClick={() => this.navigateToPlayer(item.cable, item.position)}>
+                                    <div className="markerList__item itemRating">{'SK ' + item.rating}</div>
+                                    <div className="markerList__item itemValue">{item.value} <span dangerouslySetInnerHTML={{__html: item.metric}}/></div>
+                                    <div className="markerList__item itemLink">
+                                        <a className="markerList__link" onClick={() => this.navigateToPlayer(item.cable, item.position)}>
                                             Zur Seilprüfungsansicht
                                         </a>
                                     </div>

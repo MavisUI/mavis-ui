@@ -79,9 +79,6 @@ export default class BridgeRenderer extends React.Component {
         let {cableInfo} = {...this.state};
         return (
             <div className="bridgeRenderer">
-                <div className="inner">
-                    <menu id="modelFilter"/>
-                </div>
                 <div className="bridgeRenderer__stageWrapper">
                     <div id="model"
                          className="bridgeRenderer__stage"

@@ -3,38 +3,37 @@ import {inject, observer} from 'mobx-react';
 import Store from '../../Store';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Icon from '../../_ui/icon/Icon';
 
 @inject("store")
 @observer
 export default class Header extends React.Component {
     render() {
         let {store} = {... this.props},
-            iconCss = classNames({open: store.showMainMenu}),
-            pageTitleCss = classNames({hidden:  store.showMainMenu}),
-            menuTitleCss = classNames({hidden:  !store.showMainMenu});
+            iconCss = classNames('header__nav__icon', {open: store.showMainMenu}),
+            pageTitleCss = classNames('header__pageTitle', {hidden:  store.showMainMenu}),
+            menuTitleCss = classNames('header__pageTitle', {hidden:  !store.showMainMenu});
         return (
-            <header>
-                <div className="inner">
-                    <div className="left">
-                        <nav id="mainMenuToggle" onClick={this.handleNavIconClick}>
-                            <div id="navIcon" className={iconCss}>
-                                <span/>
-                                <span/>
-                                <span/>
-                                <span/>
-                            </div>
-                            <div id="pageTitle" className={pageTitleCss}>{store.pageTitle}</div>
-                            <div id="menuTitle" className={menuTitleCss}>Menü</div>
-                        </nav>
-                    </div>
-                    <div className="center">
-                        <div className="icon iconLogo"/>
+            <header className="header">
+                <div className="header__left">
+                    <nav className="header__nav" onClick={this.handleNavIconClick}>
+                        <div className={iconCss}>
+                            <span/>
+                            <span/>
+                            <span/>
+                            <span/>
                         </div>
-                        <div className="right">
-                            React
-                            <button id="getHelp">? Hilfe</button>
-                        </div>
+                        <div  className={pageTitleCss}>{store.pageTitle}</div>
+                        <div  className={menuTitleCss}>Menü</div>
+                    </nav>
                 </div>
+                <div className="header__center">
+                    <Icon name="iconLogo"/>
+                </div>
+                    <div className="header__right">
+                        React
+                        <button id="getHelp" className="header__help">? Hilfe</button>
+                    </div>
             </header>
         )
     }

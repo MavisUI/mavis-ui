@@ -1,0 +1,94 @@
+@import 'vars.less';
+
+
+@font-face {
+	font-family: 'din_light';
+	src: url('../assets/fonts/dinpro-light.eot');
+	src: url('../assets/fonts/dinpro-light.eot?#iefix') format('embedded-opentype'),
+			 url('../assets/fonts/dinpro-light.woff') format('woff'),
+			 url('../assets/fonts/dinpro-light.ttf') format('truetype'),
+			 url('../assets/fonts/dinpro-light.svg#WebSymbolsRegular') format('svg');
+}
+
+@font-face {
+	font-family: 'din_bold';
+	src: url('../assets/fonts/dinpro-bold.eot');
+	src: url('../assets/fonts/dinpro-bold.eot?#iefix') format('embedded-opentype'),
+			 url('../assets/fonts/dinpro-bold.woff') format('woff'),
+			 url('../assets/fonts/dinpro-bold.ttf') format('truetype'),
+			 url('../assets/fonts/dinpro-bold.svg#WebSymbolsRegular') format('svg');
+}
+
+* {
+	box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+	margin: 0;
+	padding: 0;
+
+	&::selection {
+		background: transparent; /* WebKit/Blink Browsers */
+	}
+}
+
+html {
+	font-size: 10px;
+    .fontLight();
+	body  {
+        background-color: @white;
+
+        &::-webkit-scrollbar {
+            width: 0 !important
+        }
+
+        #app {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background-color: @white;
+        }
+
+        #content {
+            display: block;
+            width: 100vw;
+            height: calc(100vh - 5.2rem);
+            box-sizing: border-box;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: inherit;
+            font-size: 3rem;
+            .fontBold();
+        }
+
+        h2 {
+            color: inherit;
+            font-size: 2rem;
+            .fontLight();
+        }
+
+        p {
+            color: inherit;
+            font-size: 1.5rem;
+            .fontLight();
+        }
+
+        img {
+            border: none;
+            outline: none;
+        }
+
+        input[type="text"],
+        textarea {
+            &::selection {
+                background: @grey; /* WebKit/Blink Browsers */
+            }
+        }
+    }
+}
+
+.buttons() {
+
+}

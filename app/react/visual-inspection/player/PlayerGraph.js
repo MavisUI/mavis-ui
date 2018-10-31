@@ -46,10 +46,10 @@ export default class PlayerGraph extends React.Component {
     render() {
         return (
             <div id="chart" className="playerGraph">
-                <div id="markerZoom">
-                    <button id="markerZoomIn" onClick={() => this.zoomIn()}>+</button>
-                    <button id="markerZoomOut" onClick={() => this.zoomOut()}>-</button>
-                    <button id="markerZoomReset" onClick={() => this.zoomReset()}>
+                <div className="playerGraph__zoom">
+                    <button className="playerGraph__zoom__in" onClick={() => this.zoomIn()}>+</button>
+                    <button className="playerGraph__zoom__out" onClick={() => this.zoomOut()}>-</button>
+                    <button className="playerGraph__zoom__reset" onClick={() => this.zoomReset()}>
                         <Icon name={'iconRefresh'}/>
                     </button>
                 </div>

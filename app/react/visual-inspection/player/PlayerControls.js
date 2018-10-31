@@ -39,7 +39,7 @@ export default class PlayerControls extends React.Component {
             isPlaying = this.isPlaying();
         return (
             <div className="playerControls">
-                <menu id="player">
+                <menu className="playerControls__container">
                     <label htmlFor="playerPosition">Position: </label>
                         <input type="number" id="playerPosition" className="playerControls__field__position" value={position} min={0} onChange={(e) => this.setPosition(e.target.value)}/>
                     <label > m</label>

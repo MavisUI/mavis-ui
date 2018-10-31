@@ -10,7 +10,7 @@ import Procedures from '../settings/procedures/Procedures';
 export class SettingsPage extends React.Component {
     render() {
         return (
-            <div id="settings">
+            <div>
                 <Tabs>
                     <Tab title="Custom">
                         <CustomMarkersList/>

@@ -12,18 +12,26 @@ import path from 'path';
 @inject('store', 'app')
 @observer
 export default class Downloads extends React.Component {
+    /**
+     * @inheritDoc
+     * @returns {*}
+     */
     render() {
         return (
-            <div id="reportDownload">
-                <Button id="downloadXls" className="downloadButton" onClick={() => this.exportData('xls')}>als .XLS speichern</Button>
-                <Button id="downloadCsv" className="downloadButton" onClick={() => this.exportData('csv')} >als .CSV speichern</Button>
-                <Button id="downloadJson" className="downloadButton" onClick={() => this.exportData('json')}>als .JSON speichern</Button>
-                <Button id="downloadTxt" className="downloadButton" onClick={() => this.exportData('txt')}>als .TXT speichern</Button>
+            <div className="downloads">
+                <Button id="downloadXls" className="download__button" onClick={() => this.exportData('xls')}>als .XLS speichern</Button>
+                <Button id="downloadCsv" className="download__button" onClick={() => this.exportData('csv')} >als .CSV speichern</Button>
+                <Button id="downloadJson" className="download__button" onClick={() => this.exportData('json')}>als .JSON speichern</Button>
+                <Button id="downloadTxt" className="download__button" onClick={() => this.exportData('txt')}>als .TXT speichern</Button>
                 <Button id="downloadImages" onClick={() => this.saveImages()}>Bilder speichern</Button>
             </div>
         )
     }
 
+    /**
+     * Retrieves the data to export.
+     * @returns {*}
+     */
     retrieveData() {
         let {data, store} = {...this.props};
         return data.map((item, i) => {
@@ -41,7 +49,11 @@ export default class Downloads extends React.Component {
             }
         });
     }
-    
+
+    /**
+     * Exports the data in the given type.
+     * @param type
+     */
     exportData(type) {
         let fileName = 'mavis',
             itemsToExport;
@@ -49,6 +61,9 @@ export default class Downloads extends React.Component {
         exportFromJSON({data:itemsToExport, fileName:fileName, exportType: type});
     }
 
+    /**
+     * Saves the images into a zip file.
+     */
     saveImages() {
         let totalImages = [],
             {app, store} = {...this.props},
@@ -85,6 +100,11 @@ export default class Downloads extends React.Component {
 
     }
 
+    /**
+     * Helper to trigger the download dialog of the browser.
+     * @param {string} url
+     * @param {string} fileName
+     */
     downloadFile(url, fileName) {
         const anchor = document.createElement('a');
         anchor.href = url;

@@ -44,14 +44,14 @@ export default class Player extends React.Component {
         return (
             <div className="player">
                 <div id="cableSelection" className="player__cableSelection">
-                    <label htmlFor="cableSelectionOptions">Seil: </label>
-                    <select id="cableSelectOptions"
+                    <label className="player__cableSelection__label" htmlFor="cableSelectionOptions">Seil: </label>
+                    <select className="player__cableSelection__select"
                             value={playerState.cableIndex}
                             onChange={(e) => playerState.cableIndex = parseInt(e.target.value)}>
                         {store.cableData.map((cable, i) => <option key={i} value={i}>{cable.name} ({cable.drivenLength} m)</option> )}
                     </select>
                 </div>
-                <div id="controlsPlayer" className="player__controls">
+                <div className="player__controls">
                     <PlayerControls
                         ref={this.playerControlsRef}
                         speed={playerState.speed}

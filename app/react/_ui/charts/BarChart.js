@@ -27,16 +27,18 @@ export default class BarChart extends React.Component {
         let {data, label} = {...this.props},
             hasData = this.hasData();
         return (
-            <div>
+            <div className="barCart">
                 {hasData ?
                     <div id={this.getChartName()}/>
                     :
-                    <section className="reportDashboardNoResults">
-                        <div className="row">
-                            <h5>{label}</h5>
+                    <section className="barCart__noResults">
+                        <div className="barCart__noResults__row">
+                            <h5 className="barCart__noResults__headline">{label}</h5>
                         </div>
-                        <div className="row">
-                            <label>Zu diesen Filtereinstellungen <br/> liegen keine Schadensfälle vor.</label>
+                        <div className="barCart__noResults__row">
+                            <div className="barCart__noResults__row__text">
+                                Zu diesen Filtereinstellungen <br/> liegen keine Schadensfälle vor.
+                            </div>
                         </div>
                     </section>
                 }

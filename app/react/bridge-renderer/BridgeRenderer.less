@@ -1,10 +1,16 @@
+@import "../../styles/vars.less";
+
 .bridgeRenderer {
     position: relative;
 }
 
 .bridgeRenderer__stage {
-    width: auto !important;
+    width: auto ;
     display: block !important;
+    height: calc(100vh - 10.2rem);
+    position: relative;
+    z-index: @background;
+
 }
 
 .bridgeRenderer__stageWrapper {

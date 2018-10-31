@@ -1,0 +1,30 @@
+@import "../../../styles/vars.less";
+
+.barChart__noResults {
+    display: table;
+    height: 300px;
+    width: @gridWidth-12;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.barCart__noResults__row {
+    display: table-row;
+    width: @gridWidth-12;
+}
+
+.barCart__noResults__headline {
+    display: table-cell;
+    width: @gridWidth-12;
+    font-size: 1.5rem;
+    .fontLight();
+    vertical-align: bottom;
+}
+
+.barCart__noResults__text{
+    display: table-cell;
+    width: @gridWidth-12;
+    font-size: 2rem;
+    .fontLight();
+    vertical-align: top;
+}

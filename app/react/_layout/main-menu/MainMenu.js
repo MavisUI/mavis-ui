@@ -10,17 +10,17 @@ import App from '../../App';
 export default class MainMenu extends React.Component {
 
     render() {
-        let css = classNames({hidden : !this.props.store.showMainMenu}),
+        let css = classNames('mainMenu', {hidden : !this.props.store.showMainMenu}),
             items = this.props.items;
         return (
-            <menu id="mainMenu" className={css}>
+            <menu className={css}>
                 <div className="inner">
-                    <button id="mainMenuClose" onClick={() => this.onMenuClose()}>
+                    <button id="mainMenuClose" className="mainMenu__close" onClick={() => this.onMenuClose()}>
                         <div className="icon iconCancel" />
                         <span>Menü schließen</span>
                     </button>
-                    <div id="mainMenuLinks">
-                        {items.map((item, i) => <a key={i} onClick={() => this.onPageChange(item)}>{item.title}</a>)}
+                    <div id="mainMenuLinks" className="mainMenu__links">
+                        {items.map((item, i) => <a className="mainMenu__links__link" key={i} onClick={() => this.onPageChange(item)}>{item.title}</a>)}
                     </div>
                 </div>
             </menu>

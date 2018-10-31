@@ -44,8 +44,8 @@ export default class PlayerSideView extends React.Component {
 
         return (
             <div className="playerSideView">
-                <div id="pictures">
-                    {pictureChunks.map((pictureChunk, i) => <div key={i} className="pictureRow">{pictureChunk}</div>)}
+                <div id="pictures" className="playerSideView__pictures">
+                    {pictureChunks.map((pictureChunk, i) => <div key={i} className="playerSideView__pictureRow">{pictureChunk}</div>)}
                 </div>
                 <Modal open={modalOpen} type="full" onClose={() => this.setState({modalOpen: false})}>
                     {selectedSide !== null &&

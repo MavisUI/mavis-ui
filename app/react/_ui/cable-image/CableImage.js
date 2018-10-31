@@ -4,7 +4,7 @@ export default class CableImage extends React.Component {
 
     render() {
         let {selectedSides} = {...this.props},
-            css = 'model ';
+            css = 'cableImage ';
         if(selectedSides.indexOf(1) > -1) css += 'one ';
         if(selectedSides.indexOf(2) > -1) css += 'two ';
         if(selectedSides.indexOf(3) > -1) css += 'three ';
