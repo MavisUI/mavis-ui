@@ -76,7 +76,7 @@ export default class EditableMarkerList extends React.Component {
                                         disabled={viewOnly}
                                         type="noStyle"
                                         className="editableMarkerList__item__deleteBtn"
-                                        showDeleteWarning={true}
+                                        showDeleteWarning={!!marker._id}
                                         onClick={() => this.updateMarker(marker, '_deleted', true)}>
                                         <Icon name="iconTrash"/>
                                     </ConfirmableButton>
