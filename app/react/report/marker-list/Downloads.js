@@ -35,17 +35,17 @@ export default class Downloads extends React.Component {
     retrieveData() {
         let {data, store} = {...this.props};
         return data.map((item, i) => {
-            return  {
-                id : (i + 1),
-                label : item.label,
-                caption : item.caption,
-                rating : 'SK' + item.rating,
-                cable : store.cableData[item.cableIndex].name,
-                position : item.position.toFixed(2) + ' m',
-                distance : item.distance,
-                value : item.value,
-                sides : item.sides,
-                images : item.images,
+            return {
+                id: (i + 1),
+                label: item.label,
+                caption: item.caption,
+                rating: 'SK' + item.rating,
+                cable: store.cableData[item.cable].name,
+                position: item.position.toFixed(2) + ' m',
+                distance: item.distance,
+                value: item.value,
+                sides: item.sides,
+                images: item.images,
             }
         });
     }
