@@ -51,7 +51,9 @@ export default class Comment extends React.Component {
         let {open, onClose, frame, baseImagePath} = {...this.props},
             {showNotification, message} = {...this.state},
             css = classNames('comment', {hidden: !open}),
-            frequencyMetric = this.getMetricForMarkerId(this.commentToEdit.case);
+            frequencyMetric = this.getMetricForMarkerId(this.commentToEdit.case),
+            isNewEntry = this.commentToEdit._id === undefined;
+        console.log('comment to edit', this.commentToEdit._id);
         return (
             <div className={css}>
                 <div className="comment__item comment__close" >
@@ -60,7 +62,7 @@ export default class Comment extends React.Component {
                     </button>
                 </div>
                 <h2 className="comment__headline">
-                    {this.commentToEdit._id ? 'Eintrag bearbeiten' : 'Eintrag erstellen'}
+                    {isNewEntry ? 'Eintrag erstellen' : 'Eintrag bearbeiten'}
                 </h2>
 
                 <div className="comment__item comment__cases" id="commentCases">
@@ -148,11 +150,11 @@ export default class Comment extends React.Component {
                 <div className="comment__item comment__functions">
                     <Button id="commentReset" type="transparent" onClick={() => this.onReset()}><Icon
                         name="iconRefresh"/> zurücksetzen</Button>
-                    {!this.commentToEdit.id &&
+                    {isNewEntry &&
                     <Button id="commentCancel" type="cancel" onClick={() => this.onCancel()}><Icon
                         name="iconCancel"/> abbrechen</Button>
                     }
-                    {this.commentToEdit.id &&
+                    {!isNewEntry &&
                     <Button id="commentRemove" type="grey" onClick={() => this.onDelete()}>
                         <Icon name="iconTrash"/> löschen
                     </Button>

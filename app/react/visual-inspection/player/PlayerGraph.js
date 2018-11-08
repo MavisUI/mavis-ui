@@ -153,7 +153,7 @@ export default class PlayerGraph extends React.Component {
                 dur = Number(start) + .4;
             }
             let el = {};
-            el.id = item._id;
+            el._id = item._id;
             el.cable = item.cable;
             el.caption = item.caption;
             el.case = item.case;
