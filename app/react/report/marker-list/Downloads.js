@@ -19,11 +19,11 @@ export default class Downloads extends React.Component {
     render() {
         return (
             <div className="downloads">
-                <Button id="downloadXls" className="download__button" onClick={() => this.exportData('xls')}>als .XLS speichern</Button>
-                <Button id="downloadCsv" className="download__button" onClick={() => this.exportData('csv')} >als .CSV speichern</Button>
-                <Button id="downloadJson" className="download__button" onClick={() => this.exportData('json')}>als .JSON speichern</Button>
-                <Button id="downloadTxt" className="download__button" onClick={() => this.exportData('txt')}>als .TXT speichern</Button>
-                <Button id="downloadImages" onClick={() => this.saveImages()}>Bilder speichern</Button>
+                <Button id="downloadXls" className="downloads__button" onClick={() => this.exportData('xls')}>als .XLS speichern</Button>
+                <Button id="downloadCsv" className="downloads__button" onClick={() => this.exportData('csv')} >als .CSV speichern</Button>
+                <Button id="downloadJson" className="downloads__button" onClick={() => this.exportData('json')}>als .JSON speichern</Button>
+                <Button id="downloadTxt" className="downloads__button" onClick={() => this.exportData('txt')}>als .TXT speichern</Button>
+                <Button id="downloadImages" className="downloads__button" onClick={() => this.saveImages()}>Bilder speichern</Button>
             </div>
         )
     }

@@ -8,6 +8,7 @@ import Downloads from './Downloads';
 import FlipMove from 'react-flip-move';
 import crypto  from  'crypto';
 import App from '../../App';
+import classNames from 'classnames';
 
 @inject('store', 'app')
 @observer
@@ -31,14 +32,18 @@ export default class MarkerList extends React.Component {
      */
     render() {
         let {store, maxItemsToShow} = {...this.props},
-            {data} = {...this.state},
-            noData = !data || (data && data.length === 0);
+            {data = []} = {...this.state},
+            noData = !data || (data && data.length === 0),
+            displaysOnlyPartial = !noData && data.length > maxItemsToShow,
+            css = classNames('markerList', {displaysOnlyPartial: displaysOnlyPartial});
         return (
-            <div id="reportContainerList" className="markerList">
+            <div id="reportContainerList" className={css}>
                 <Filter onChange={(d, c) => this.setState({data: d, criteria: c})} hideSort={false}/>
-                <div className="markerList__info">
-                    Es werden maximal {maxItemsToShow} Einträge angzeigt.
-                </div>
+                {displaysOnlyPartial &&
+                    <div className="markerList__info">
+                        Es werden maximal {maxItemsToShow} Einträge angezeigt.
+                    </div>
+                }
                 <div id="list" className="markerList__list">
                     <div id="listHeader" className="markerList__header">
                         <label className="markerList__header__label">Schadensfall ({data ? data.length : '--'})</label>
@@ -96,6 +101,7 @@ export default class MarkerList extends React.Component {
         app.loadPage('inspection')
     }
 }
+
 MarkerList.propTypes = {
     store: PropTypes.instanceOf(Store),
     app: PropTypes.instanceOf(App),
@@ -103,5 +109,5 @@ MarkerList.propTypes = {
 };
 
 MarkerList.defaultProps = {
-    maxItemsToShow: 100
+    maxItemsToShow: 999
 };

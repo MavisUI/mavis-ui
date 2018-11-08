@@ -23,7 +23,7 @@
 }
 
 .markerList__list {
-    display: inline-block;
+    display: block;
     margin-top: .5rem;
     width: @gridWidth-12;
 
@@ -50,8 +50,9 @@
 }
 
 .markerList__list__body {
-    height: calc(100vh - 37rem);
-    overflow: scroll;
+    height: calc(100vh - 33rem);
+    overflow: hidden;
+    overflow-y: scroll;
     position: relative;
     z-index: @background;
     border-bottom: 1px solid @greyBright;
@@ -64,6 +65,10 @@
         line-height: 6rem;
     }
 
+}
+
+.displaysOnlyPartial .markerList__list__body {
+    height: calc(100vh - 37rem);
 }
 
 .markerList__link {

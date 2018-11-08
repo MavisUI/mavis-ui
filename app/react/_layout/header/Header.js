@@ -30,9 +30,11 @@ export default class Header extends React.Component {
                 <div className="header__center">
                     <Icon name="iconLogo"/>
                 </div>
-                <div className="header__right">
-                    <button id="getHelp" className="header__help">? Hilfe</button>
-                </div>
+                {false &&
+                    <div className="header__right">
+                        <button id="getHelp" className="header__help"></button>
+                    </div>
+                }
             </header>
         )
     }
