@@ -53,7 +53,6 @@ export default class Comment extends React.Component {
             css = classNames('comment', {hidden: !open}),
             frequencyMetric = this.getMetricForMarkerId(this.commentToEdit.case),
             isNewEntry = this.commentToEdit._id === undefined;
-        console.log('comment to edit', this.commentToEdit._id);
         return (
             <div className={css}>
                 <div className="comment__item comment__close" >
@@ -343,9 +342,9 @@ export default class Comment extends React.Component {
      * If no comment is given, an empty comment will be created
      */
     cloneCommentToEdit() {
-        let {commentToEdit, cable} = {...this.props};
+        let {commentToEdit, cable, position} = {...this.props};
 
-        this.commentToEdit = commentToEdit ? {...commentToEdit} : {...EmptyComment};
+        this.commentToEdit = commentToEdit ? {...commentToEdit} : {...EmptyComment, position: position};
         this.commentToEdit.cable = cable;
     }
 }
@@ -375,7 +374,7 @@ Comment.defaultProps = {
     position: 0
 };
 
-const EmptyComment = {
+export const EmptyComment = {
     type: 'manual',
     caption: '',
     case: '',

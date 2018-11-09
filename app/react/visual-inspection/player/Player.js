@@ -8,7 +8,7 @@ import PlayerSideView from './PlayerSideView';
 import path from 'path';
 import PlayerGraph from './PlayerGraph';
 import Icon from '../../_ui/icon/Icon';
-import Comment from '../comment/Comment';
+import Comment, {EmptyComment} from '../comment/Comment';
 
 @inject('store')
 @observer
@@ -140,8 +140,15 @@ export default class Player extends React.Component {
      * @param commentToEdit
      */
     showComment(commentToEdit = null) {
+        let {store} = {...this.props};
         if (this.playerControlsRef.current) {
             this.playerControlsRef.current.pause();
+        }
+        if (commentToEdit === null) {
+            commentToEdit = {
+                ...EmptyComment,
+                position: store.playerState.position
+            }
         }
         this.setState({
             showComment: true,
