@@ -108,7 +108,7 @@ export default class Comment extends React.Component {
                     <label htmlFor="commentDistanceInput">Bis (m)</label>
                     <input type="number"
                            id="commentDistanceInput"
-                           value={Number(this.commentToEdit.position) + Number(this.commentToEdit.distance)}
+                           value={(Number(this.commentToEdit.position) + Number(this.commentToEdit.distance)).toFixed(2)}
                            min={Number(this.commentToEdit.position) + 0.1}
                            steps="0.1"
                            onChange={(e) => this.commentToEdit.distance = Number(e.target.value) - this.commentToEdit.position}/>
