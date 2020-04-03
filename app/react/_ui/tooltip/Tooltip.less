@@ -1,0 +1,60 @@
+@import "../../../styles/vars.less";
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip__content {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tooltip.viewOnly .tooltip__content{
+    cursor: default;
+}
+
+
+.tooltip__layer {
+    display: inline-block;
+    max-width: 150px;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    z-index: @foregroundOverlay;
+    padding: 10px;
+    background-color: @white;
+    border: 1px solid @grey;
+    box-shadow: 2px 2px 4px 0 @grey;
+    transform: translateX(-50%) translateY(calc(~"-100% - 15px"));
+
+    &.hidden {
+        display: none;
+    }
+
+    &:before {
+        border-color: @grey transparent;
+        border-style: solid;
+        border-width: 17px 17px 0;
+        bottom: -17px;
+        content: '';
+        display: block;
+        left: 50%;
+        position: absolute;
+        width: 0;
+        transform: translateX(-50%);
+    }
+
+    &:after {
+        border-color: @white transparent;
+        border-style: solid;
+        border-width: 14px 14px 0;
+        bottom: -14px;
+        content: '';
+        display: block;
+        left: 50%;
+        position: absolute;
+        width: 0;
+        transform: translateX(-50%);
+    }
+}

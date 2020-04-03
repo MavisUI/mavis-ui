@@ -1,0 +1,108 @@
+@import "../../styles/vars.less";
+
+.bridgeRenderer {
+    position: relative;
+}
+
+.bridgeRenderer__stage {
+    width: auto ;
+    display: block !important;
+    height: calc(100vh - 10.2rem);
+    position: relative;
+    z-index: @background;
+
+}
+
+.bridgeRenderer__stageWrapper {
+    position: relative;
+    margin: 0 -20px;
+}
+
+.bridgeRenderer__cableInfo__pivot {
+    transition: transform 0.3s ease-out;
+    transform-origin: 0 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.bridgeRenderer__cableInfo {
+    position: absolute;
+    background-color: @white;
+    border: 1px solid @greyBright;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+    display: block;
+    height: 19rem;
+    padding: 1rem;
+    width: 25rem;
+    z-index: @foregroundOverlay;
+    top: 0;
+    left: 0;
+    margin-top: -15px;
+    transform: translateX(-50%) translateY(-100%);
+
+    &:before {
+        content: "";
+        position: absolute;
+        bottom: -1.7rem;
+        left: 10.8rem;
+        border-width: 1.7rem 1.7rem 0;
+        border-style: solid;
+        border-color: #e7e9eb transparent;
+        display: block;
+        width: 0;
+    }
+
+    &:after {
+        content: "";
+        position: absolute;
+        bottom: -1.5rem;
+        left: 11rem;
+        border-width: 1.5rem 1.5rem 0;
+        border-style: solid;
+        border-color: #FFFFFF transparent;
+        display: block;
+        width: 0;
+    }
+
+}
+
+.bridgeRenderer__cableInfo__close {
+    font-size: 1.5rem;
+    float: right;
+    cursor: pointer;
+}
+
+.bridgeRenderer__cableInfo__headline {
+    display: inline-block;
+    overflow: hidden;
+    height: 5rem;
+    width: 100%;
+    color: @black;
+    font-size: 1.5em;
+    .fontBold();
+}
+
+.bridgeRenderer__cableInfo__label {
+    color: @black;
+    display: inline-block;
+    font-size: 1.5em;
+    .fontLight();
+}
+
+.bridgeRenderer__cableInfo__position,
+.bridgeRenderer__cableInfo__cable {
+    color: @black;
+    display: inline-block;
+    font-size: 1.5em;
+    .fontLight();
+}
+
+.bridgeRenderer__cableInfo__button {
+    margin-left: 5%;
+    margin-top: 1em;
+    width: 90%;
+    bottom: 1em;
+    outline: none;
+    padding: .25em 1em !important;
+}

@@ -1,0 +1,50 @@
+@import "../../../styles/vars.less";
+
+.checkbox {
+    display: inline-block;
+    width: 40px;
+    height: 25px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.checkbox__proxy {
+    display: block;
+    border-radius: 20px;
+    background: @greyBright;
+    transition: background-color 0.2s ease-out;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right:0;
+    bottom: 0;
+    margin: auto;
+    &:after {
+        content: '';
+        display: block;
+        border-radius: 50%;
+        width: 23px;
+        height: 23px;
+        background: @white;
+        box-shadow: 0 0 4px 0 rgba(0,0,0,0.75);
+        transform: translateX(0);
+        transition: transform 0.2s ease-out;
+        position: absolute;
+        top: 1px;
+        left: 0;
+    }
+}
+
+.checkbox__input {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+.checkbox__input:checked + .checkbox__proxy {
+    background: @green;
+    &:after {
+        transform: translateX(18px);
+    }
+}

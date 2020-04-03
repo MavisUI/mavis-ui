@@ -1,0 +1,58 @@
+@import "../../../styles/vars.less";
+
+.notification {
+    background: @white;
+    max-width: 640px;
+    padding: 30px;
+    text-align: center;
+    &.error {
+
+        .notification__button {
+            background-color: @red;
+            border-color: @red;
+        }
+
+        .notification__headline {
+            color: @red;
+        }
+    }
+
+    &.warning {
+
+        .notification__button {
+            background-color: @orange;
+            border-color: @orange;
+        }
+
+        .notification__headline {
+            color: @orange;
+        }
+    }
+
+    &.success {
+
+        .notification__button {
+            background-color: @green;
+            border-color: @green;
+        }
+
+        .notification__headline {
+            color: @green;
+        }
+    }
+}
+
+.notification__headline {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+}
+.notification__text {
+    text-align: left;
+}
+.notification__button {
+    margin-top: 40px;
+    text-align: center;
+    display: inline-block;
+    min-width: 200px;
+}

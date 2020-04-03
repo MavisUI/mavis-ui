@@ -1,0 +1,59 @@
+@import "../../../styles/vars.less";
+
+.tabs {
+    float: none;
+}
+
+.tab {
+    float: none;
+}
+
+.tabs__header {
+    position: relative;
+    margin-bottom: 20px;
+    .clearfix();
+}
+
+.tabs__header__line {
+    position: absolute;
+    background-color: @blue;
+    width: 1px;
+    display: block;
+    height: 2px;
+    transition: transform .3s ease-out;
+    transform-origin: 0 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.tab__header__item {
+    cursor: pointer;
+    display: inline-block;
+    .fontLight();
+    font-size: 1.5rem;
+    float: left;
+    line-height: 2rem;
+    padding: 10px 10px 8px 10px;
+    color: @blue;
+    .transition300ms();
+
+    &:first-child {
+        padding-left: 0;
+    }
+    &.active {
+        color: @blue;
+
+        &:hover {
+            color: @blue;
+        }
+    }
+
+    &:hover {
+        color: @blueBright;
+    }
+}
+
+.tabs__content {
+    clear: both;
+}

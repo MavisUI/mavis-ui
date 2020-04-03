@@ -41,4 +41,10 @@ let prodWebpackConfig = merge(baseWebpackConfig, {
   plugins: [definePlugin, new webpack.optimize.OccurrenceOrderPlugin(), new webpack.NoEmitOnErrorsPlugin(), uglifyPlugin]
 });
 
+// remove the data copying pluging because it causes "too many files opened" error in production build.
+// new CopyWebpackPlugin([
+//       {from:'app/data',to:'data'}
+//     ]),
+// we just remove the 5th plugin, if you add a new plugin in between you need to update the index
+prodWebpackConfig.plugins.splice(4, 1);
 module.exports = prodWebpackConfig;

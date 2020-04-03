@@ -1,0 +1,111 @@
+/*==========  grid  ==========*/
+
+@gridWidth-1: 6.5%;
+@gridWidth-2: 15%;
+@gridWidth-3: 23.5%;
+@gridWidth-4: 32%;
+@gridWidth-5: 40.5%;
+@gridWidth-6: 49%;
+@gridWidth-7: 57.5%;
+@gridWidth-8: 66%;
+@gridWidth-9: 74.5%;
+@gridWidth-10: 83%;
+@gridWidth-11: 91.5%;
+@gridWidth-12: 100%;
+
+@gridMargin: 2%;
+
+@appHeight: 1020px;
+
+/*==========  z-axis  ==========*/
+
+@background: 0;
+@backgroundOverlay: 10;
+@midground: 100;
+@midgroundOverlay: 110;
+@foreground: 1000;
+@foregroundOverlay: 1010;
+
+/*==========  colors  ==========*/
+
+@black: #000000;
+@almostBlack: #232323;
+@blackAlpha: rgba(0,0,0,0.7);
+@white: #FFFFFF;
+@whiteAlpha: rgba(255,255,255,0.9);
+@blue: #104784;
+@blueDark: #0b2b4f;
+@blueBright: #3E92CC;
+@grey: #efefef;
+@greyBright: #e7e9eb;
+@greyMid: #acacac;
+@greyDark: #4b4b4b;
+@green: #38bc15;
+@greenDark: #206d0c;
+@orange: #e5a426;
+@red: #ef0000;
+
+.backgroundBlueGradient() {
+  background: #3e92cc;
+  background: -webkit-linear-gradient(-45deg, #3e92cc 0%, #104784 100%);
+  background: linear-gradient(135deg, #3e92cc 0%, #104784 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3e92cc', endColorstr='#104784', GradientType=1);
+}
+
+/*==========  font mixins  ==========*/
+
+.fontLight() {
+	font-family: 'din_light';
+	font-weight: 100;
+}
+
+.fontBold() {
+	font-family: 'din_bold';
+	font-weight: 700;
+}
+
+/*==========  animation mixins  ==========*/
+
+.transition200ms() {
+	-webkit-transition: .2s ease-in-out;
+}
+
+.transition300ms() {
+	-webkit-transition: .3s ease-out;
+}
+
+.transition400ms() {
+	-webkit-transition: .4s ease-out;
+}
+
+.transition500ms() {
+	-webkit-transition: .5s ease-out;
+}
+
+.transition600ms() {
+	-webkit-transition: .6s ease-out;
+}
+
+.transition700ms() {
+	-webkit-transition: .7s ease-out;
+}
+
+.transition800ms() {
+	-webkit-transition: .8s ease-out;
+}
+
+.transition900ms() {
+	-webkit-transition: .9s ease-out;
+}
+
+.transition1s() {
+	-webkit-transition: 1s ease-out;
+}
+
+.clearfix() {
+    &::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+}

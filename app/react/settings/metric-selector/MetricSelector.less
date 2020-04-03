@@ -1,0 +1,19 @@
+@import "../../../styles/vars.less";
+.metricSelector {
+    display: inline-block;
+    line-height: 4rem;
+}
+
+.metricSelector__select {
+    -webkit-appearance: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: @black;
+    display: inline-block;
+    .fontLight();
+    font-size: 1.5rem;
+    &:focus {
+        outline: none;
+    }
+}

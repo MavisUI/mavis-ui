@@ -1,6 +1,11 @@
-// include css
-require('./styles.less');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './react/App';
+import './styles.less';
+import './index.html';
 
+ReactDOM.render(<App />, document.getElementById('app'));
+/**
 // include index
 require('./index.html');
 
@@ -30,3 +35,6 @@ async function init() {
 }
 
 init();
+
+ */
+

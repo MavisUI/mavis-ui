@@ -1,0 +1,22 @@
+@import "../../../styles/vars.less";
+.confirmableButton__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.confirmableButton__cancel,
+.confirmableButton__confirm {
+    cursor: pointer;
+    appearance: none;
+    margin: 0 10px;
+}
+
+.confirmableButton__cancel {
+    color: @red;
+    font-size: 1.5rem;
+}
+
+.confirmableButton__confirm {
+    color: @green;
+}

@@ -9,7 +9,7 @@
       "email": "philipp.boue@gmail.com"
     }
   ],
-  "version": "4.0.0",
+  "version": "4.1.0",
   "main": "index.html",
   "window": {
     "title": "MAVIS UI",
@@ -48,5 +48,9 @@
   },
   "dependencies": {
     "archiver": "^0.14.4"
+  },
+  "build": {
+    "nwVersion": "0.34.0",
+    "output": "../packages/"
   }
 }
